@@ -7,3 +7,5 @@ Logo
 select2 kullanılabilir
 
 Alert Mesajlarında tipine göre icon kullanılabilir
+butonlarda loader see template buttons
+submenu icons düzenlenecek

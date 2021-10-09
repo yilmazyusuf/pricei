@@ -1,4 +1,4 @@
-@extends('layouts.index')
+@extends('layouts.layout')
 @section('meta.title', 'Products')
 @section('content')
     <div class="breadcrumb justify-content-between align-items-center" style="flex-direction: row">
