@@ -8,8 +8,6 @@ trait FileQueryCacheable {
 
     use QueryCacheable;
 
-    protected static bool $flushCacheOnUpdate = true;
-
     protected function getCacheBaseTags() : array
     {
         return [];

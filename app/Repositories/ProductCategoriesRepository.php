@@ -12,7 +12,6 @@ class ProductCategoriesRepository
     {
         return ProductCategories::query()
             ->orderBy('name', 'asc')
-            //->cacheFor(now()->addDays(30))
             ->get();
     }
 }

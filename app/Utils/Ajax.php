@@ -49,7 +49,7 @@ class Ajax {
      *
      * @return RedirectResponse|JsonResponse
      */
-    function redirect($to, $status = 302, $headers = [], $secure = null)
+    function redirect(string $to, int $status = 302, array $headers = [], ?bool $secure = null): JsonResponse|RedirectResponse
     {
         $this->json['redirect'] = $to;
         if ($this->is())

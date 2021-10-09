@@ -13,7 +13,6 @@
 @section('content')
     <div class="breadcrumb justify-content-between align-items-center" style="flex-direction: row">
         <h1 class="mr-2">Create Category</h1>
-
     </div>
     <div class="separator-breadcrumb border-top"></div>
     <div class="row">
@@ -30,7 +29,7 @@
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label" for="parent">Parent Category</label>
                             <div class="col-sm-10">
-                                <x-select2 :selectItem="new \App\View\Components\Form\SelectProductCategories()"/>
+                                <x-select2 :selectItem="$categoriesComponent"/>
                             </div>
                         </div>
                     </div>
