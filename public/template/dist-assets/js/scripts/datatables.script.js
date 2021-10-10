@@ -22,7 +22,7 @@ let DataTable = {
             "columns": [
                 {"data": "id", "orderable": true,},
                 {"data": "name", "orderable": true},
-                {"data": "parent", "orderable": true}
+                {"data": "parent", "name":"parent.name","orderable": true}
             ],
 
         });

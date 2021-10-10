@@ -13,7 +13,7 @@
     <link href="/template/dist-assets/css/plugins/perfect-scrollbar.min.css" rel="stylesheet" />
     <link href="/template/dist-assets/css/plugins/fontawesome-5.min.css" rel="stylesheet" />
     <link href="/template/dist-assets/js/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="/template/dist-assets/css/plugins/datatables.min.css" />
+    <link href="/template/dist-assets/css/plugins/datatables.min.css" rel="stylesheet" />
 </head>
 
 <body class="text-left">
@@ -22,7 +22,6 @@
     <x-layout.header/>
 
     <x-layout.left-side/>
-
 
     <div class="main-content-wrap sidenav-open d-flex flex-column">
         <!-- ============ Body content start ============= -->
@@ -52,6 +51,7 @@
 <script src="/template/dist-assets/js/plugins/datatables.min.js"></script>
 <script src="/template/dist-assets/js/scripts/datatables.script.js"></script>
 <script src="/template/dist-assets/js/scripts/customizer.script.min.js"></script>
+<script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
 
 
 <script>

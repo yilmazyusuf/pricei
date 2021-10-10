@@ -11,6 +11,7 @@ class ProductCategoriesRepository
     public static function get() : Collection
     {
         return ProductCategories::query()
+            ->with('parent')
             ->orderBy('name', 'asc')
             ->get();
     }

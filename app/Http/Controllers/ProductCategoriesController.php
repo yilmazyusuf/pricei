@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\ProductCategoriesDataTable;
 use App\Http\Requests\StoreProductCategoriesRequest;
 use App\Http\Transformers\ProductCategoriesTransformer;
 use App\Models\ProductCategories;
@@ -10,6 +11,7 @@ use App\Utils\Ajax;
 use App\View\Components\Alert;
 use App\View\Components\Form\SelectProductCategories;
 use App\View\Composers\FlashMessageViewComposer;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -23,9 +25,9 @@ class ProductCategoriesController extends Controller
      *
      * @return View
      */
-    public function index() : View
+    public function index(ProductCategoriesDataTable $dataTable) : mixed
     {
-        return view('products_categories.index');
+        return $dataTable->render('products_categories.index');
     }
 
     /**
@@ -103,17 +105,4 @@ class ProductCategoriesController extends Controller
         //
     }
 
-    public function indexDataTable(Request $request)
-    {
-
-        $productCategories = ProductCategoriesRepository::get();
-        if (request()->has('order') === false) {
-
-        }
-
-        return datatables()->of($productCategories)
-            ->setTransformer(new ProductCategoriesTransformer())
-            ->toJson();
-
-    }
 }

@@ -11,8 +11,8 @@ class SelectProductCategories extends Select2Builder implements iSelect2Builder
 
     public function build() : self
     {
-        $this->setId('parent_category')
-            ->setName('parent_category')
+        $this->setId('parent_id')
+            ->setName('parent_id')
             ->setSource(ProductCategoriesRepository::get())
             ->setSourceMapping(
                 [
