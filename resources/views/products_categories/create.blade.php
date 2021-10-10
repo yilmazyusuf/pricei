@@ -22,20 +22,20 @@
                     <div class="card-body">
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label" for="name">Category Name</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-4">
                                 <input class="form-control" id="name" type="text" name="name">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label" for="parent">Parent Category</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-4">
                                 <x-select2 :selectItem="$categoriesComponent"/>
                             </div>
                         </div>
                     </div>
 
                     <div class="card-footer">
-                        <button class="btn btn-primary ajax_btn" type="submit">Create Category</button>
+                        <button class="btn btn-primary ajax_btn " type="submit">Create Category</button>
                     </div>
                 </div>
             </form>

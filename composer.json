@@ -14,7 +14,9 @@
         "laravel/sanctum": "^2.11",
         "laravel/telescope": "^4.6",
         "laravel/tinker": "^2.5",
+        "league/fractal": "^0.19.2",
         "rennokki/laravel-eloquent-query-cache": "^3.1",
+        "yajra/laravel-datatables-fractal": "^1.6",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {

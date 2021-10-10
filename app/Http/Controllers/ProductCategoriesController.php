@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProductCategoriesRequest;
+use App\Http\Transformers\ProductCategoriesTransformer;
 use App\Models\ProductCategories;
+use App\Repositories\ProductCategoriesRepository;
 use App\Utils\Ajax;
 use App\View\Components\Alert;
 use App\View\Components\Form\SelectProductCategories;
@@ -42,11 +45,12 @@ class ProductCategoriesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param StoreProductCategoriesRequest $request
      * @param ProductCategories $productCategories
+     * @param Ajax $ajax
      * @return JsonResponse
      */
-    public function store(Request $request, ProductCategories $productCategories, Ajax $ajax): JsonResponse
+    public function store(StoreProductCategoriesRequest $request, ProductCategories $productCategories, Ajax $ajax): JsonResponse
     {
         $productCategories->query()->create($request->all());
 
@@ -97,5 +101,19 @@ class ProductCategoriesController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function indexDataTable(Request $request)
+    {
+
+        $productCategories = ProductCategoriesRepository::get();
+        if (request()->has('order') === false) {
+
+        }
+
+        return datatables()->of($productCategories)
+            ->setTransformer(new ProductCategoriesTransformer())
+            ->toJson();
+
     }
 }

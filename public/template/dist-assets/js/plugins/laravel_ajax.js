@@ -155,10 +155,16 @@ var factory = function () {
         }
 
         $(this.sender).find('.ajax_btn').prop('disabled', false);
+        $(this.sender).find('.ajax_btn').removeClass('disabled');
+        $(this.sender).find('.ajax_btn i.fa-spin').remove();
 
     };
     laravel.ajax.beforeSendHandler = function (xhr,object) {
+        let spinner = '<i class="fas fa-circle-notch fa-spin"></i> ';
+        $(this.sender).find('.ajax_btn').prepend(spinner);
+
         $(this.sender).find('.ajax_btn').prop('disabled', true);
+        $(this.sender).find('.ajax_btn').addClass('disabled');
         $(this.sender).find('#alerts').html('');
     },
         laravel.ajax.errorHandler = function (event) {
@@ -188,6 +194,8 @@ var factory = function () {
             }
 
             $(this.sender).find('.ajax_btn').prop('disabled', false);
+            $(this.sender).find('.ajax_btn').removeClass('disabled');
+            $(this.sender).find('.ajax_btn i.fa-spin').remove();
         };
     laravel.ajax.formData = function (form) {
         var $form = $(form);

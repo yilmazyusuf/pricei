@@ -19,4 +19,7 @@ use App\Http\Controllers\IndexController;
 Route::get('/', [IndexController::class, 'index']);
 Route::resource('products', ProductController::class);
 Route::resource('products_categories', ProductCategoriesController::class);
+Route::get('/products_categories/index/data_table', [ProductCategoriesController::class, 'indexDataTable'])
+    ->name('products_categories.index.data_table');
+
 

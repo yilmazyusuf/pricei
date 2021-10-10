@@ -13,6 +13,7 @@
     <link href="/template/dist-assets/css/plugins/perfect-scrollbar.min.css" rel="stylesheet" />
     <link href="/template/dist-assets/css/plugins/fontawesome-5.min.css" rel="stylesheet" />
     <link href="/template/dist-assets/js/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/template/dist-assets/css/plugins/datatables.min.css" />
 </head>
 
 <body class="text-left">
@@ -48,6 +49,11 @@
 <script src="/template/dist-assets/js/scripts/customizer.script.min.js"></script>
 <script src="/template/dist-assets/js/plugins/laravel_ajax.js"></script>
 <script src="/template/dist-assets/js/plugins/select2/dist/js/select2.full.min.js"></script>
+<script src="/template/dist-assets/js/plugins/datatables.min.js"></script>
+<script src="/template/dist-assets/js/scripts/datatables.script.js"></script>
+<script src="/template/dist-assets/js/scripts/customizer.script.min.js"></script>
+
+
 <script>
     $( document ).ready(function() {
 
