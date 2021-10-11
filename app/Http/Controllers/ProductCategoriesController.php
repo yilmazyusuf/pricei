@@ -4,16 +4,12 @@ namespace App\Http\Controllers;
 
 use App\DataTables\ProductCategoriesDataTable;
 use App\Http\Requests\StoreProductCategoriesRequest;
-use App\Http\Transformers\ProductCategoriesTransformer;
 use App\Models\ProductCategories;
-use App\Repositories\ProductCategoriesRepository;
 use App\Utils\Ajax;
 use App\View\Components\Alert;
 use App\View\Components\Form\SelectProductCategories;
 use App\View\Composers\FlashMessageViewComposer;
-use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
@@ -25,7 +21,7 @@ class ProductCategoriesController extends Controller
      *
      * @return View
      */
-    public function index(ProductCategoriesDataTable $dataTable) : mixed
+    public function index(ProductCategoriesDataTable $dataTable): mixed
     {
         return $dataTable->render('products_categories.index');
     }
@@ -35,7 +31,7 @@ class ProductCategoriesController extends Controller
      *
      * @return View
      */
-    public function create() : View
+    public function create(): View
     {
         return view('products_categories.create')->with(
             [
@@ -56,7 +52,7 @@ class ProductCategoriesController extends Controller
     {
         $productCategories->query()->create($request->all());
 
-        Alert::flashAlert(Alert::MESSAGE_SUCCESS,'Category Created');
+        Alert::flashAlert(Alert::MESSAGE_SUCCESS, 'Category Created');
         return $ajax->redirect(route('products_categories.index'));
     }
 
@@ -77,9 +73,13 @@ class ProductCategoriesController extends Controller
      * @param int $id
      * @return Response
      */
-    public function edit(int $id): Response
+    public function edit(int $id)
     {
-        //
+        return view('products_categories.create')->with(
+            [
+                'categoriesComponent' => new SelectProductCategories()
+            ]
+        );
     }
 
     /**

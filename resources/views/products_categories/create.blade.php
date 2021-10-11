@@ -1,5 +1,5 @@
 @extends('layouts.layout')
-@section('meta.title', 'Create Category')
+@section('meta.title', 'Products ›› Categories ›› Create')
 
 @push('scripts')
     <script>
@@ -11,9 +11,15 @@
 @endpush
 
 @section('content')
-    <div class="breadcrumb justify-content-between align-items-center" style="flex-direction: row">
+    <div class="breadcrumb align-items-center">
         <h1 class="mr-2">Create Category</h1>
+        <ul>
+            <li><a href="{{route('products.index')}}">Products</a></li>
+            <li><a href="{{route('products_categories.index')}}">Categories</a></li>
+            <li>Create</li>
+        </ul>
     </div>
+
     <div class="separator-breadcrumb border-top"></div>
     <div class="row">
         <div class="col-lg-12 col-md-6 col-sm-6">

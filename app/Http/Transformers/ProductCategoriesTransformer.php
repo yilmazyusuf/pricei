@@ -14,13 +14,16 @@ class ProductCategoriesTransformer extends TransformerAbstract
      * @param ProductCategories $productCategories
      * @return  array
      */
-    #[ArrayShape(['id' => "int", 'name' => "string", 'parent' => "string"])]
     public function transform(ProductCategories $productCategories): array
     {
 
         return [
             'id' => $productCategories->id,
             'name' => $productCategories->name,
+            'urls' => [
+                'edit' => route('products_categories.edit',$productCategories->id),
+                'destroy' => route('products_categories.destroy',$productCategories->id)
+            ],
             'parent' => [
                 'name' => $productCategories->parent->name ?? null
             ],

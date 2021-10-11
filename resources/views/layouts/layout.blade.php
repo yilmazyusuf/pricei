@@ -14,6 +14,48 @@
     <link href="/template/dist-assets/css/plugins/fontawesome-5.min.css" rel="stylesheet" />
     <link href="/template/dist-assets/js/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
     <link href="/template/dist-assets/css/plugins/datatables.min.css" rel="stylesheet" />
+    <style rel="stylesheet">
+        .dt-buttons{
+            float: left !important;
+            margin-bottom: 1rem !important;
+        }
+        td{
+            vertical-align: middle !important;
+        }
+        * {
+            -webkit-border-radius: 0 !important;
+            -moz-border-radius: 0 !important;
+            border-radius: 0 !important;
+        }
+
+        .select2-container--default .select2-selection--single {
+            border: 1px solid #ced4da !important;
+        }
+        .select2-container .select2-selection--single {
+            height: calc(1.9695rem + 2px) !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: calc(1.9695rem + 2px) !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: calc(1.9695rem + 2px) !important;
+        }
+
+
+        :focus-visible {
+            color: #665c70;
+            background-color: #fff;
+            border-color: #a679d2;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgb(102 51 153 / 25%);
+        }
+
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background-color: #663399;
+            color: white;
+        }
+    </style>
 </head>
 
 <body class="text-left">
@@ -52,10 +94,30 @@
 <script src="/template/dist-assets/js/scripts/datatables.script.js"></script>
 <script src="/template/dist-assets/js/scripts/customizer.script.min.js"></script>
 <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
+<script src="/template/dist-assets/js/scripts/tooltip.script.min.js"></script>
 
 
 <script>
     $( document ).ready(function() {
+
+    });
+
+    $( document ).ajaxComplete(function() {
+        // Required for Bootstrap tooltips in DataTables
+        $('[data-toggle="tooltip"]').tooltip({
+            "html": true
+        });
+
+        let table = $('.dataTable').DataTable();
+        $('.dataTable tbody').on( 'click', 'a.edit', function () {
+            let properties = table.row($(this).parents('tr')).data();
+            document.location.href = properties.urls.edit;
+        } );
+
+        $('.dataTable tbody').on( 'click', 'a.destroy', function () {
+            let properties = table.row($(this).parents('tr')).data();
+            console.log(properties.urls.destroy);
+        } );
 
     });
 </script>

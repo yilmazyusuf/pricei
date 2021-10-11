@@ -5,6 +5,9 @@ namespace App\DataTables;
 use App\Http\Transformers\ProductCategoriesTransformer;
 use App\Models\ProductCategory;
 use App\Repositories\ProductCategoriesRepository;
+use Illuminate\Database\Eloquent\Collection;
+use Yajra\DataTables\DataTableAbstract;
+use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
@@ -15,9 +18,9 @@ class ProductCategoriesDataTable extends DataTable
      * Build DataTable class.
      *
      * @param mixed $query Results from query() method.
-     * @return \Yajra\DataTables\DataTableAbstract
+     * @return DataTableAbstract
      */
-    public function dataTable($query)
+    public function dataTable($query): DataTableAbstract
     {
         return datatables()
             ->of($query)
@@ -26,7 +29,7 @@ class ProductCategoriesDataTable extends DataTable
     }
 
 
-    public function query()
+    public function query(): Collection
     {
         return ProductCategoriesRepository::get();
     }
@@ -34,9 +37,9 @@ class ProductCategoriesDataTable extends DataTable
     /**
      * Optional method if you want to use html builder.
      *
-     * @return \Yajra\DataTables\Html\Builder
+     * @return Builder
      */
-    public function html()
+    public function html(): Builder
     {
         return $this->builder()
             ->setTableId('productcategories-table')
@@ -45,6 +48,7 @@ class ProductCategoriesDataTable extends DataTable
                 'defaultContent' => view('partials.datatable_action_buttons')->render(),
                 'title' => '#',
                 'width' => '10',
+                'className' => 'dsdsad',
             ])
 
             ->minifiedAjax()
@@ -52,7 +56,6 @@ class ProductCategoriesDataTable extends DataTable
             ->buttons(
                 Button::make('create'),
                 Button::make('print'),
-                Button::make('reset'),
                 Button::make('reload'),
                 Button::make('export')
             );
@@ -63,7 +66,7 @@ class ProductCategoriesDataTable extends DataTable
      *
      * @return array
      */
-    protected function getColumns()
+    protected function getColumns(): array
     {
         return [
             Column::make('name')->title('Name'),
@@ -78,7 +81,7 @@ class ProductCategoriesDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename()
+    protected function filename(): string
     {
         return 'ProductCategories_' . date('YmdHis');
     }

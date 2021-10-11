@@ -6,7 +6,7 @@
 @section('content')
 
     <div class="breadcrumb align-items-center">
-        <h1 class="mr-2">Products</h1>
+        <h1 class="mr-2">Product Categories</h1>
         <ul>
             <li><a href="{{route('products.index')}}">Products</a></li>
             <li>Categories</li>
@@ -20,7 +20,7 @@
             <div class="card mb-5">
                 <div class="card-body">
                     <div class="table-responsive">
-                        {{$dataTable->table()}}
+                        {{$dataTable->table(['class' => 'table table-striped table-bordered table-hover w-100'])}}
                     </div>
                 </div>
             </div>
