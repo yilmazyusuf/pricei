@@ -14,10 +14,12 @@
     <link href="/template/dist-assets/css/plugins/fontawesome-5.min.css" rel="stylesheet" />
     <link href="/template/dist-assets/js/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
     <link href="/template/dist-assets/css/plugins/datatables.min.css" rel="stylesheet" />
+
     <style rel="stylesheet">
         .dt-buttons{
             float: left !important;
             margin-bottom: 1rem !important;
+            margin-left: 2px;
         }
         td{
             vertical-align: middle !important;
@@ -33,6 +35,7 @@
         }
         .select2-container .select2-selection--single {
             height: calc(1.9695rem + 2px) !important;
+            background-color: #f8f9fa;
         }
         .select2-container--default .select2-selection--single .select2-selection__rendered {
             line-height: calc(1.9695rem + 2px) !important;
@@ -42,7 +45,16 @@
             height: calc(1.9695rem + 2px) !important;
         }
 
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background-color: #663399;
+            color: white;
+        }
 
+        .dropdown-item:hover {
+            color: #fff;
+            text-decoration: none;
+            background-color: #663399;
+        }
         :focus-visible {
             color: #665c70;
             background-color: #fff;
@@ -51,9 +63,10 @@
             box-shadow: 0 0 0 0.2rem rgb(102 51 153 / 25%);
         }
 
-        .select2-container--default .select2-results__option--highlighted[aria-selected] {
-            background-color: #663399;
-            color: white;
+
+
+        .dataTables_wrapper{
+            padding: 0 !important;
         }
     </style>
 </head>
@@ -95,6 +108,7 @@
 <script src="/template/dist-assets/js/scripts/customizer.script.min.js"></script>
 <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
 <script src="/template/dist-assets/js/scripts/tooltip.script.min.js"></script>
+<script src="/template/dist-assets/js/plugins/jquery-json-form-binding.js"></script>
 
 
 <script>

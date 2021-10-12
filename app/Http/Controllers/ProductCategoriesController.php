@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\DataTables\ProductCategoriesDataTable;
 use App\Http\Requests\StoreProductCategoriesRequest;
+use App\Http\Requests\UpdateProductCategoriesRequest;
 use App\Models\ProductCategories;
 use App\Utils\Ajax;
 use App\View\Components\Alert;
 use App\View\Components\Form\SelectProductCategories;
 use App\View\Composers\FlashMessageViewComposer;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -57,27 +60,25 @@ class ProductCategoriesController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function show(int $id): Response
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return Response
+     * @return Application|Factory|\Illuminate\Contracts\View\View
      */
-    public function edit(int $id)
+    public function edit(int $id): Application|Factory|\Illuminate\Contracts\View\View
     {
-        return view('products_categories.create')->with(
+        $productCategory = ProductCategories::query()->find($id);
+        if (!$productCategory) {
+            abort(404);
+        }
+
+        $categoriesComponent = new SelectProductCategories();
+        $categoriesComponent->except(['id' => [$id]]);
+
+        return view('products_categories.edit')->with(
             [
-                'categoriesComponent' => new SelectProductCategories()
+                'categoriesComponent' => $categoriesComponent,
+                'productCategory' => $productCategory,
             ]
         );
     }
@@ -89,9 +90,17 @@ class ProductCategoriesController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateProductCategoriesRequest $request, Ajax $ajax, $id)
     {
-        //
+        $productCategory = ProductCategories::query()->find($id);
+        if (!$productCategory) {
+            abort(404);
+        }
+
+        $productCategory->fill($request->all())->save();
+
+        Alert::flashAlert(Alert::MESSAGE_SUCCESS, 'Category Updated');
+        return $ajax->redirect(route('products_categories.index'));
     }
 
     /**

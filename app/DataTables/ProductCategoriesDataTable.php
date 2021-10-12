@@ -46,17 +46,17 @@ class ProductCategoriesDataTable extends DataTable
             ->columns($this->getColumns())
             ->addAction([
                 'defaultContent' => view('partials.datatable_action_buttons')->render(),
-                'title' => '#',
+                'title' => ' ',
                 'width' => '10',
-                'className' => 'dsdsad',
+                'printable' => false,
             ])
 
             ->minifiedAjax()
             ->dom('Bfrtip')
             ->buttons(
                 Button::make('create'),
-                Button::make('print'),
                 Button::make('reload'),
+                Button::make('print'),
                 Button::make('export')
             );
     }
@@ -71,7 +71,7 @@ class ProductCategoriesDataTable extends DataTable
         return [
             Column::make('name')->title('Name'),
             Column::make('parent.name','parent.name')
-                ->title('Parent'),
+                ->title('Parent Category'),
 
         ];
     }
