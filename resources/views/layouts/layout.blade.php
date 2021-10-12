@@ -64,7 +64,15 @@
         }
 
 
-
+        .layout-sidebar-large .sidebar-left-secondary .childNav li.nav-item a:hover {
+            background: #663399;
+        }
+        .layout-sidebar-large .sidebar-left-secondary .childNav li.nav-item :hover {
+            color: #fff;
+        }
+        .layout-sidebar-large .sidebar-left-secondary .childNav li.nav-item :hover i.nav-icon {
+            color: #fff;
+        }
         .dataTables_wrapper{
             padding: 0 !important;
         }
