@@ -14,23 +14,21 @@ abstract class Select2Builder
     public string $name;
     public Collection $source;
     public array $sourceMapping;
-    public array $exceptedIds;
 
     public function __construct()
     {
-
         $this->build();
     }
 
     public function except(array $exceptedRows): self
     {
         $source = $this->getSource();
-        foreach ($exceptedRows as $rowName => $exceptedValues){
-            $source = $source->whereNotIn($rowName,$exceptedValues);
+        foreach ($exceptedRows as $rowName => $exceptedValues) {
+            $source = $source->whereNotIn($rowName, $exceptedValues);
         }
         $this->setSource($source);
-        return $this;
 
+        return $this;
     }
 
     abstract public function build();
@@ -107,26 +105,6 @@ abstract class Select2Builder
         $this->sourceMapping = $sourceMapping;
         return $this;
     }
-
-    /**
-     * @return array
-     */
-    public function getExceptedIds(): array
-    {
-        return $this->exceptedIds;
-    }
-
-    /**
-     * @param array $exceptedIds
-     * @return Select2Builder
-     */
-    public function setExceptedIds(array $exceptedIds): Select2Builder
-    {
-        $this->exceptedIds = $exceptedIds;
-        return $this;
-    }
-
-
 
 
 }

@@ -9,11 +9,8 @@ use App\Models\ProductCategories;
 use App\Utils\Ajax;
 use App\View\Components\Alert;
 use App\View\Components\Form\SelectProductCategories;
-use App\View\Composers\FlashMessageViewComposer;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
@@ -55,7 +52,7 @@ class ProductCategoriesController extends Controller
     {
         $productCategories->query()->create($request->all());
 
-        Alert::flashAlert(Alert::MESSAGE_SUCCESS, 'Category Created');
+        Alert::success('Category Created');
         return $ajax->redirect(route('products_categories.index'));
     }
 
@@ -63,9 +60,9 @@ class ProductCategoriesController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return Application|Factory|\Illuminate\Contracts\View\View
+     * @return View
      */
-    public function edit(int $id): Application|Factory|\Illuminate\Contracts\View\View
+    public function edit(int $id): View
     {
         $productCategory = ProductCategories::query()->find($id);
         if (!$productCategory) {
@@ -86,11 +83,12 @@ class ProductCategoriesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param UpdateProductCategoriesRequest $request
+     * @param Ajax $ajax
      * @param int $id
-     * @return Response
+     * @return JsonResponse|RedirectResponse
      */
-    public function update(UpdateProductCategoriesRequest $request, Ajax $ajax, $id)
+    public function update(UpdateProductCategoriesRequest $request, Ajax $ajax, int $id): JsonResponse|RedirectResponse
     {
         $productCategory = ProductCategories::query()->find($id);
         if (!$productCategory) {
@@ -99,7 +97,7 @@ class ProductCategoriesController extends Controller
 
         $productCategory->fill($request->all())->save();
 
-        Alert::flashAlert(Alert::MESSAGE_SUCCESS, 'Category Updated');
+        Alert::success('Category Updated');
         return $ajax->redirect(route('products_categories.index'));
     }
 

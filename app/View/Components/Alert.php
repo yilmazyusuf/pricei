@@ -7,24 +7,20 @@ use Illuminate\View\Component;
 
 class Alert extends Component
 {
-    const MESSAGE_SUCCESS = 'success';
-    const MESSAGE_WARNING = 'warning';
-    const MESSAGE_INFO = 'info';
-    const MESSAGE_DANGER = 'danger';
 
     /**
      * The alert type.
      *
      * @var string
      */
-    public $type;
+    public string $type;
 
     /**
      * The alert message.
      *
      * @var string
      */
-    public $message;
+    public string $message;
 
     /**
      * Create the component instance.
@@ -49,9 +45,29 @@ class Alert extends Component
         return view('components.alert');
     }
 
-    public static function flashAlert(string $type, $message)
+    private static function flashAlert(string $type, $message)
     {
         session()->flash('alertType', $type);
         session()->flash('alert', $message);
+    }
+
+    public static function success(string $message)
+    {
+        self::flashAlert('success', $message);
+    }
+
+    public static function warning(string $message)
+    {
+        self::flashAlert('warning', $message);
+    }
+
+    public static function info(string $message)
+    {
+        self::flashAlert('info', $message);
+    }
+
+    public static function danger(string $message)
+    {
+        self::flashAlert('danger', $message);
     }
 }
