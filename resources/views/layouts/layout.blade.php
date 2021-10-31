@@ -137,8 +137,17 @@
         } );
 
         $('.dataTable tbody').on( 'click', 'a.destroy', function () {
+            $(this).parents('tr').find('button.destroy').removeClass('d-none');
+            $(this).addClass('d-none');
+        } );
+
+        $('.dataTable tbody').on( 'click', 'button.destroy', function () {
             let properties = table.row($(this).parents('tr')).data();
-            console.log(properties.urls.destroy);
+
+            laravel.ajax.send({
+                url: properties.urls.destroy,
+                type: 'DELETE'
+            });
         } );
 
     });

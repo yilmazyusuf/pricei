@@ -3,8 +3,8 @@
 namespace App\DataTables;
 
 use App\Http\Transformers\ProductCategoriesTransformer;
-use App\Models\ProductCategory;
 use App\Repositories\ProductCategoriesRepository;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
@@ -17,10 +17,11 @@ class ProductCategoriesDataTable extends DataTable
     /**
      * Build DataTable class.
      *
-     * @param mixed $query Results from query() method.
+     * @param Collection|null $query Results from query() method.
      * @return DataTableAbstract
+     * @throws Exception
      */
-    public function dataTable($query): DataTableAbstract
+    public function dataTable(?Collection $query): DataTableAbstract
     {
         return datatables()
             ->of($query)
@@ -42,7 +43,7 @@ class ProductCategoriesDataTable extends DataTable
     public function html(): Builder
     {
         return $this->builder()
-            ->setTableId('productcategories-table')
+            ->setTableId('product_categories-table')
             ->columns($this->getColumns())
             ->addAction([
                 'defaultContent' => view('partials.datatable_action_buttons')->render(),

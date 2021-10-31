@@ -9,10 +9,10 @@ use App\Models\ProductCategories;
 use App\Utils\Ajax;
 use App\View\Components\Alert;
 use App\View\Components\Form\SelectProductCategories;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Illuminate\View\View;
 
 class ProductCategoriesController extends Controller
 {
@@ -105,11 +105,20 @@ class ProductCategoriesController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return Response
+     * @param Ajax $ajax
+     * @return JsonResponse|RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(int $id, Ajax $ajax): JsonResponse|RedirectResponse
     {
-        //
+        $productCategory = ProductCategories::query()->find($id);
+        if (!$productCategory) {
+            abort(404);
+        }
+
+        $productCategory->delete();
+
+        Alert::success('Category Deleted');
+        return $ajax->redirect(route('products_categories.index'));
     }
 
 }

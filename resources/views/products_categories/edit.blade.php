@@ -47,6 +47,7 @@
                     </div>
 
                     <div class="card-footer">
+                        <a class="btn btn-light" href="{{route('products_categories.index')}}">Cancel</a>
                         <button class="btn btn-primary ajax_btn " type="submit">Update Category</button>
                     </div>
                 </div>
