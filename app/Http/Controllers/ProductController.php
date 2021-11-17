@@ -2,85 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\View\View;
+use App\DataTables\ProductsDataTable;
+use App\Http\Requests\StoreProductCategoriesRequest;
+use App\Http\Requests\UpdateProductCategoriesRequest;
+use App\Models\Products;
 
-class ProductController extends Controller
+class ProductController extends ResourceController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return View
-     */
-    public function index() : View
-    {
-        return view('products.index');
-    }
+    protected string $indexDataTable = ProductsDataTable::class;
+    protected string $storeRequest = StoreProductCategoriesRequest::class;
+    protected string $updateRequest = UpdateProductCategoriesRequest::class;
+    protected string $resourceName = 'products';
+    protected string $model = Products::class;
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return View
-     */
-    public function create() : View
-    {
-        return view('products.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

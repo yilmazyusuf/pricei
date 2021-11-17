@@ -11,7 +11,7 @@
             allowClear: true
         });
 
-        $("#product_category_update").jsonToForm( @json($productCategory));
+        $("#product_category_update").jsonToForm( @json($collection));
     </script>
 @endpush
 
@@ -28,7 +28,7 @@
     <div class="separator-breadcrumb border-top"></div>
     <div class="row">
         <div class="col-lg-12 col-md-6 col-sm-6">
-            <form class="ajax" id="product_category_update" action="{{route('products_categories.update',$productCategory->id)}}" method="post">
+            <form class="ajax" id="product_category_update" action="{{route('products_categories.update',$collection->id)}}" method="post">
                 @method('put')
                 <div class="card mb-5">
                     <div class="card-body">

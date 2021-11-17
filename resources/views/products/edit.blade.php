@@ -1,18 +1,23 @@
 @extends('layouts.layout')
-@section('meta.title', 'Products ›› Categories ›› Create')
+@section('meta.title', 'Products ›› Categories ›› Update')
 
 @push('scripts')
     <script>
+
+
+
         $('.select2').select2({
             placeholder: "Select parent category",
             allowClear: true
         });
+
+        $("#product_category_update").jsonToForm( @json($productCategory));
     </script>
 @endpush
 
 @section('content')
     <div class="breadcrumb align-items-center">
-        <h1 class="mr-2">Create Category</h1>
+        <h1 class="mr-2">Update Category</h1>
         <ul>
             <li><a href="{{route('products.index')}}">Products</a></li>
             <li><a href="{{route('products_categories.index')}}">Categories</a></li>
@@ -23,7 +28,8 @@
     <div class="separator-breadcrumb border-top"></div>
     <div class="row">
         <div class="col-lg-12 col-md-6 col-sm-6">
-            <form class="ajax" action="{{route('products_categories.store')}}" method="post">
+            <form class="ajax" id="product_category_update" action="{{route('products_categories.update',$productCategory->id)}}" method="post">
+                @method('put')
                 <div class="card mb-5">
                     <div class="card-body">
                         <div class="form-group row">
@@ -42,7 +48,7 @@
 
                     <div class="card-footer">
                         <a class="btn btn-light" href="{{route('products_categories.index')}}">Cancel</a>
-                        <button class="btn btn-primary ajax_btn " type="submit">Create Category</button>
+                        <button class="btn btn-primary ajax_btn " type="submit">Update Category</button>
                     </div>
                 </div>
             </form>
