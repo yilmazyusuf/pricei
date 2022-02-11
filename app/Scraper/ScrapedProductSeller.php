@@ -7,7 +7,7 @@ use Spatie\DataTransferObject\DataTransferObject;
 class ScrapedProductSeller extends DataTransferObject
 {
 
-    public ?int $id;
+    public ?string $id;
     public ?string $name;
     public ?string $shopUrl;
 

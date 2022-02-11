@@ -11,8 +11,8 @@
                 <div class="modal-body p-0">
                     <div class="card card-profile-1 mb-0">
                         <div class="card-body text-center">
-                            <div class="avatar mb-3" style="width: 160px; height: 160px">
-                                <img src="{{$product->imageUrl}}" alt=""></div>
+                            <div class="avatar mb-3" style="width: auto; height: auto">
+                                <img src="{{$product->imageUrl}}" alt="" width="150"></div>
                             @if($product->price->realPrice)
                                 <del class="m-0">{{$product->price->realPrice}} TL</del>
                             @endif
