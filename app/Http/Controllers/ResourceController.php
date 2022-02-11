@@ -91,7 +91,7 @@ abstract class ResourceController extends Controller
         if (!$row) {
             abort(404);
         }
-        $request = App::make($this->storeRequest);
+        $request = App::make($this->updateRequest);
         $row->fill($request->all())->save();
 
         Alert::success('Updated');

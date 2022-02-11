@@ -1,16 +1,12 @@
 @extends('layouts.layout')
-@section('meta.title', 'Products ›› Categories')
+@section('meta.title', 'Fiyat Takibi Yapılan Ürünler')
 @push('scripts')
     {{$dataTable->scripts()}}
 @endpush
 @section('content')
 
     <div class="breadcrumb align-items-center">
-        <h1 class="mr-2">Product Categories</h1>
-        <ul>
-            <li><a href="{{route('products.index')}}">Products</a></li>
-            <li>Categories</li>
-        </ul>
+        <h1 class="mr-2">Fiyat Takibi Yapılan Ürünler</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>
 

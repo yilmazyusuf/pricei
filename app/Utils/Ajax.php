@@ -15,8 +15,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
-class Ajax {
-
+class Ajax
+{
     const VIEW_REDRAW = "redraw";
     const VIEW_APPEND = "append";
     /**
@@ -49,11 +49,10 @@ class Ajax {
      *
      * @return RedirectResponse|JsonResponse
      */
-    function redirect(string $to, int $status = 302, array $headers = [], ?bool $secure = null): JsonResponse|RedirectResponse
+    public function redirect(string $to, int $status = 302, array $headers = [], ?bool $secure = null): JsonResponse|RedirectResponse
     {
         $this->json['redirect'] = $to;
-        if ($this->is())
-        {
+        if ($this->is()) {
             return $this->jsonResponse();
         }
 
@@ -68,7 +67,7 @@ class Ajax {
      *
      * @return JsonResponse|RedirectResponse
      */
-    function redirectBack($status = 302, $headers = [])
+    public function redirectBack($status = 302, $headers = [])
     {
         $url = app('Illuminate\Routing\UrlGenerator')->previous();
 
@@ -88,33 +87,25 @@ class Ajax {
     {
         $viewResponse = \View::make($view, $data, $mergeData);
         //in case of AJAX
-        if ($this->is())
-        {
-            if ($this->viewHtmlID)
-            {
+        if ($this->is()) {
+            if ($this->viewHtmlID) {
                 //render whole view
                 $this->json['sections'][$this->viewHtmlID] = $viewResponse->render();
-            } else
-            {
+            } else {
                 //rendering view sections
                 $sectionsRenderer = $viewResponse->renderSections();
-                if (is_string($sectionsRenderer))
-                {
+                if (is_string($sectionsRenderer)) {
                     $this->alertJs('View has no @sections to be rendered');
-                } else
-                {
+                } else {
                     //sending section snippets
-                    foreach ($this->sections as $section)
-                    {
-                        if ($content = $sectionsRenderer[$section])
-                        {
+                    foreach ($this->sections as $section) {
+                        if ($content = $sectionsRenderer[$section]) {
                             $this->json['sections'][$section] = $content;
                         }
                     }
                 }
             }
-            if ($this->viewRenderingMode != self::VIEW_REDRAW)
-            {
+            if ($this->viewRenderingMode != self::VIEW_REDRAW) {
                 $this->json['drawMode'] = $this->viewRenderingMode;
             }
 
@@ -134,19 +125,16 @@ class Ajax {
      */
     public function redirectWithErrors($url, $provider)
     {
-        if ($this->is())
-        {
+        if ($this->is()) {
             $errors = $provider->getMessageBag();
-            if ($errors->count())
-            {
+            if ($errors->count()) {
                 $this->json = $errors->toArray();
 
                 return $this->jsonResponse(422);
             }
 
             return $this->redirect($url);
-        } else
-        {
+        } else {
             return app('redirect')
                 ->to($url)
                 ->withErrors($provider)
@@ -173,12 +161,10 @@ class Ajax {
      */
     public function redrawSection($name)
     {
-        if (is_null($this->sections))
-        {
+        if (is_null($this->sections)) {
             $this->sections = [];
         }
-        if (!in_array($name, $this->sections))
-        {
+        if (!in_array($name, $this->sections)) {
             $this->sections[] = $name;
         }
 
@@ -193,8 +179,7 @@ class Ajax {
      */
     public function redrawSections(array $names)
     {
-        foreach ($names as $name)
-        {
+        foreach ($names as $name) {
             $this->redrawSection($name);
         }
 
@@ -225,8 +210,7 @@ class Ajax {
     public function runJavascript($code)
     {
         $this->json['runJavascript'] = $code;
-        if ($code === null)
-        {
+        if ($code === null) {
             unset($this->json['runJavascript']);
         }
 

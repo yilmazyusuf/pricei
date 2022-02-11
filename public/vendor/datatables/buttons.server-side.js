@@ -138,7 +138,7 @@
         className: 'buttons-export',
 
         text: function (dt) {
-            return '<i class="fa fa-download"></i> ' + dt.i18n('buttons.export', 'Export') + '&nbsp;<span class="caret"/>';
+            return '<i class="fa fa-download"></i> ' + dt.i18n('buttons.export', 'Aktar') + '&nbsp;<span class="caret"/>';
         },
 
         buttons: ['csv', 'excel', 'pdf']
@@ -219,7 +219,7 @@
         className: 'buttons-print',
 
         text: function (dt) {
-            return  '<i class="fa fa-print"></i> ' + dt.i18n('buttons.print', 'Print');
+            return  '<i class="fa fa-print"></i> ' + dt.i18n('buttons.print', 'Yazdır');
         },
 
         action: function (e, dt, button, config) {
@@ -246,7 +246,7 @@
         className: 'buttons-reload',
 
         text: function (dt) {
-            return '<i class="fas fa-sync"></i> ' + dt.i18n('buttons.reload', 'Reload');
+            return '<i class="fas fa-sync"></i> ' + dt.i18n('buttons.reload', 'Yenile');
         },
 
         action: function (e, dt, button, config) {
@@ -296,7 +296,7 @@
     c.extend(!0, a.Buttons.defaults, {
         dom: {
             container: { className: "dt-buttons btn-group" },
-            button: { className: "btn btn-raised btn-raised-secondary" },
+            button: { className: "btn" },
             collection: { tag: "div", className: "dt-button-collection dropdown-menu", button: { tag: "a", className: "dt-button dropdown-item", active: "active", disabled: "disabled" } }
         }
     });

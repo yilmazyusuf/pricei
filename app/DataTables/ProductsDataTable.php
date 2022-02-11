@@ -2,7 +2,6 @@
 
 namespace App\DataTables;
 
-use App\Http\Transformers\ProductCategoriesTransformer;
 use App\Http\Transformers\ProductsTransformer;
 use App\Repositories\ProductCategoriesRepository;
 use Exception;
@@ -27,7 +26,6 @@ class ProductsDataTable extends DataTable
         return datatables()
             ->of($query)
             ->setTransformer(new ProductsTransformer());
-
     }
 
 
@@ -52,14 +50,15 @@ class ProductsDataTable extends DataTable
                 'width' => '10',
                 'printable' => false,
             ])
-
             ->minifiedAjax()
             ->dom('Bfrtip')
             ->buttons(
-                Button::make('create'),
-                Button::make('reload'),
-                Button::make('print'),
-                Button::make('export')
+                Button::make('create')
+                    ->text('<i class="fa fa-plus"></i> Ürün Ekle')
+                    ->className('btn-primary'),
+                Button::make('reload')->className('btn-outline-primary'),
+                Button::make('print')->className('btn-outline-primary'),
+                Button::make('export')->className('btn-outline-primary')
             );
     }
 
@@ -72,7 +71,7 @@ class ProductsDataTable extends DataTable
     {
         return [
             Column::make('name')->title('Name'),
-            Column::make('parent.name','parent.name')
+            Column::make('parent.name', 'parent.name')
                 ->title('Parent Category'),
 
         ];

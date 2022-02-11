@@ -5,7 +5,8 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
+        "alexusmai/laravel-file-manager": "^2.5",
         "doctrine/dbal": "^3.1",
         "friendsofphp/php-cs-fixer": "^3.2",
         "fruitcake/laravel-cors": "^2.0",
@@ -17,6 +18,8 @@
         "laravel/tinker": "^2.5",
         "league/fractal": "^0.19.2",
         "rennokki/laravel-eloquent-query-cache": "^3.1",
+        "spatie/data-transfer-object": "^3.7",
+        "voku/simple_html_dom": "^4.8",
         "yajra/laravel-datatables": "^1.5",
         "yajra/laravel-datatables-fractal": "^1.6",
         "yajra/laravel-datatables-oracle": "~9.0"

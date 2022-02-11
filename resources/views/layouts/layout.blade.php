@@ -14,6 +14,7 @@
     <link href="/template/dist-assets/css/plugins/fontawesome-5.min.css" rel="stylesheet" />
     <link href="/template/dist-assets/js/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
     <link href="/template/dist-assets/css/plugins/datatables.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('vendor/file-manager/css/file-manager.css') }}">
 
     <style rel="stylesheet">
         .dt-buttons{
@@ -117,11 +118,27 @@
 <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
 <script src="/template/dist-assets/js/scripts/tooltip.script.min.js"></script>
 <script src="/template/dist-assets/js/plugins/jquery-json-form-binding.js"></script>
+<script src="{{ asset('vendor/file-manager/js/file-manager.js') }}"></script>
 
 
 <script>
     $( document ).ready(function() {
 
+        /*
+        $('button#scrape_product').click(function () {
+            let data;
+            data = new FormData();
+            data.append( 'scrape_url', $( '#scrape_url' ).val() );
+            console.log(data);
+            laravel.ajax.send({
+                url: '{{route('products.scrape')}}',
+                data:data,
+                type: 'POST',
+                processData: false,
+                contentType: false,
+            });
+        });
+        */
     });
 
     $( document ).ajaxComplete(function() {
@@ -152,8 +169,11 @@
 
     });
 </script>
-
 @stack('scripts')
+
+<div id='modal_section'>
+    @yield('modal')
+</div>
 
 </body>
 
