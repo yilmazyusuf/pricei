@@ -8,6 +8,7 @@ class ScrapedProductPrice extends DataTransferObject
 {
     public float $price;
     public ?float $realPrice;
+    public ?float $sellingPrice;
 
 
 }

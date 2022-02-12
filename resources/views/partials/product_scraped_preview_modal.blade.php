@@ -13,7 +13,7 @@
                         <div class="card-body text-center">
                             <div class="avatar mb-3" style="width: auto; height: auto">
                                 <img src="{{$product->imageUrl}}" alt="" width="150"></div>
-                            @if($product->price->realPrice)
+                            @if($product->price->realPrice && $product->price->realPrice > $product->price->price)
                                 <del class="m-0">{{$product->price->realPrice}} TL</del>
                             @endif
                             <h2 class="m-0">{{$product->price->price}} TL</h2>
@@ -23,7 +23,7 @@
                             <button class="btn btn-primary btn-rounded">Fiyatını Takip Et</button>
                         </div>
 
-                        @if(count($product->competingVendors) > 0)
+                        @if($product->competingVendors && count($product->competingVendors) > 0)
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center bg-gray-200">
                                     Diğer Mağazalardaki Fiyatlar
@@ -31,7 +31,7 @@
                                 @foreach($product->competingVendors as $vendor)
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         {{$vendor->seller->name}}
-                                        @if($vendor->price->realPrice)
+                                        @if($vendor->price->realPrice && $vendor->price->price < $vendor->price->realPrice)
                                             <del
                                                 style="margin-left: auto;margin-right: 5px;">{{$vendor->price->realPrice}}
                                                 TL

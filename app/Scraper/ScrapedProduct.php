@@ -10,6 +10,7 @@ class ScrapedProduct extends DataTransferObject
     public ?string $name;
     public ?string $url;
     public ?string $productId;
+    public ?string $currency;
 
     public ?ScrapedProductSeller $seller;
     public ?string $imageUrl;

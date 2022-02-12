@@ -25,6 +25,7 @@ class ProductController extends ResourceController
      * @param ScrapeProductRequest $request
      * @param Ajax $ajax
      * @return View|JsonResponse|void
+     * @throws \Spatie\DataTransferObject\Exceptions\UnknownProperties
      */
     protected function scrape(ScrapeProductRequest $request, Ajax $ajax)
     {
@@ -42,6 +43,7 @@ class ProductController extends ResourceController
         //$product = Cache::remember('scraped_' . $decoded, 43200, function () use ($url, $platform) {
         $adapter = Scraper::getPlatformAdapter($platform, $url);
         $product = Scraper::buildProductDto($adapter, $url);
+
 
         //});
 

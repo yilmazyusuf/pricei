@@ -4,6 +4,7 @@ namespace App\Scraper\Adapters;
 
 use App\Scraper\Adapter;
 use App\Scraper\ScrapedProduct;
+use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 use voku\helper\HtmlDomParser;
 
 class N11Adapter extends Adapter implements
@@ -11,19 +12,24 @@ class N11Adapter extends Adapter implements
     HasRealPrice,
     HasCompetingVendors
 {
-    private HtmlDomParser $priceContent;
-    private $json;
 
-    public function __construct(protected HtmlDomParser $html)
+
+    public function __construct(protected string $url)
     {
-        parent::__construct($html);
+        parent::__construct($url);
         $this->readJsonPattern();
+    }
+
+    public function setScrapedContent()
+    {
+        $this->html =  HtmlDomParser::file_get_html($this->url);
+        $this->htmlContent =  $this->html->html();
     }
 
 
     private function readJsonPattern()
     {
-        preg_match('/dataLayer.push\({"pBrand"(.*)}\)/', $this->html->html(), $matches, PREG_OFFSET_CAPTURE);
+        preg_match('/dataLayer.push\({"pBrand"(.*)}\)/', $this->htmlContent, $matches, PREG_OFFSET_CAPTURE);
         $jsonString = '{"pBrand"' . $matches[1][0] . '}';
         $decodedJson = json_decode($jsonString);
         $this->json = $decodedJson;
@@ -44,15 +50,9 @@ class N11Adapter extends Adapter implements
         return $this->json->pId;
     }
 
-    public function getSellerName(): string
-    {
-        return $this->json->sellerNickname;
-    }
-
     public function getPrice(): string
     {
         return $this->json->pDiscountedPrice;
-
     }
 
     public function getRealPrice(): string
@@ -60,9 +60,18 @@ class N11Adapter extends Adapter implements
         return $this->json->pOriginalPrice;
     }
 
+    public function getCurrency(): string
+    {
+        return 'TRY';
+    }
+
+    public function getSellerName(): string
+    {
+        return $this->json->sellerNickname;
+    }
 
     /**
-     * @throws \Spatie\DataTransferObject\Exceptions\UnknownProperties
+     * @throws UnknownProperties
      */
     public function getCompetingVendors(): array
     {
@@ -84,7 +93,7 @@ class N11Adapter extends Adapter implements
                 ],
                 seller: [
                     'name' => $sellerName,
-                    'shopUrl' => $sellerShopUrl,
+                    'link' => $sellerShopUrl,
                 ],
             );
 

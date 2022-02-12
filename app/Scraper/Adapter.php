@@ -6,13 +6,25 @@ use voku\helper\HtmlDomParser;
 
 abstract class Adapter
 {
-    public function __construct(
-        protected HtmlDomParser $html
-    ) {
+    protected object $json;
+    protected HtmlDomParser $html;
+    protected string $htmlContent;
 
+    public function __construct(
+        protected string $url
+    ) {
+        $this->setScrapedContent();
     }
+
     abstract public function getName();
+
     abstract public function getId();
+
     abstract public function getImageUrl();
+
     abstract public function getPrice();
+
+    abstract public function getCurrency();
+
+    abstract public function setScrapedContent();
 }
