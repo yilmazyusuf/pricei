@@ -6,9 +6,12 @@ use App\DataTables\ProductsDataTable;
 use App\Http\Requests\ScrapeProductRequest;
 use App\Http\Requests\StoreProductCategoriesRequest;
 use App\Http\Requests\UpdateProductCategoriesRequest;
+use App\Jobs\ScrapeProductJob;
 use App\Models\Platforms;
 use App\Models\Products;
 use App\Repositories\PlatformsRepository;
+use App\Repositories\ProductsRepository;
+use App\Scraper\AdapterFactory;
 use App\Scraper\ScrapedProduct;
 use App\Scraper\Scraper;
 use App\Utils\Ajax;
@@ -32,7 +35,7 @@ class ProductController extends ResourceController
      * @param Products $productsModel
      * @return View|JsonResponse|void
      */
-    protected function scrape(ScrapeProductRequest $request, Ajax $ajax, Products $productsModel)
+    protected function scrape(ScrapeProductRequest $request, Ajax $ajax)
     {
         $url = $request->get('scrape_url');
         $host = parseUrlHost($url);
@@ -44,33 +47,7 @@ class ProductController extends ResourceController
         }
 
         $product = $this->cacheScrapedProduct($url, $platform);
-
-        $productData = [
-            'user_id' => 1, //@todo user_id
-            'platform_id' => $platform->id,
-            'name' => $product->name,
-            'url' => $product->url,
-            'productId' => $product->productId,
-            'imageUrl' => $product->imageUrl,
-            'price' => $product->price->price,
-            'realPrice' => $product->price->realPrice,
-            'sellingPrice' => $product->price->sellingPrice,
-            'currency' => $product->currency,
-            'sellerId' => $product->seller->id,
-            'sellerName' => $product->seller->name,
-            'sellerShopLink' => $product->seller->link,
-            'isTracked' => false,
-            'status' => false,
-        ];
-
-        $savedProduct = $productsModel::query()->updateOrCreate(
-            [
-                'user_id' => $productData['user_id'],
-                'platform_id' => $platform->id,
-                'productId' => $product->productId
-            ],
-            $productData,
-        );
+        $savedProduct = ProductsRepository::createOrUpdate($platform, $product);
 
         $viewData = ['product' => $product, 'savedProduct' => $savedProduct];
 
@@ -95,6 +72,8 @@ class ProductController extends ResourceController
         $product->status = true;
         $product->save();
 
+        ScrapeProductJob::dispatch($product)->delay(now()->addHours(6));
+
         Alert::success('Ürünün fiyatını takip etmeye başladınız.');
         return $ajax->redirect(route('products.index'));
     }
@@ -104,8 +83,9 @@ class ProductController extends ResourceController
         //12 hour cache (43200)
         $decoded = md5($url);
         return Cache::remember('scraped_' . $decoded, 43200, function () use ($url, $platform) {
-            $adapter = Scraper::getPlatformAdapter($platform, $url);
-            return Scraper::buildProductDto($adapter, $url);
+            $adapter = AdapterFactory::getAdapterInstance($platform->name, $url);
+            $scraper = new Scraper($adapter);
+            return $scraper->scrape()->buildProductDto();
         });
     }
 }

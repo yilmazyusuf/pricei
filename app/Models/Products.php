@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $sellerShopLink
  * @property boolean $isTracked
  * @property boolean $status
+ * @property ?Platforms $platform
  */
 class Products extends Model
 {
@@ -47,6 +48,6 @@ class Products extends Model
 
     public function platform(): BelongsTo
     {
-        return $this->belongsTo(Platforms::class,);
+        return $this->belongsTo(Platforms::class);
     }
 }

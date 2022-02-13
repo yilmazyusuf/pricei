@@ -7,14 +7,6 @@
                     <h5 class="modal-title" id="product_scraped_preview_modal">{!! $product->name !!}</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">×</span></button>
-                    <i class="nav-icon i-Up"></i>
-                    <i class="nav-icon i-Down"></i>
-                    <i class="nav-icon i-Sand-watch"></i>
-                    <i class="nav-icon i-Up-2"></i>
-                    <i class="nav-icon i-Up-3"></i>
-                    <i class="nav-icon i-Up---Down-3"></i>
-                    <i class="nav-icon i-Arrow-Circle"></i>
-
                 </div>
                 <div class="modal-body p-0">
                     <div class="card card-profile-1 mb-0">

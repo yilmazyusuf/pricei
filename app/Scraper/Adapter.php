@@ -13,7 +13,12 @@ abstract class Adapter
     public function __construct(
         protected string $url
     ) {
-        $this->setScrapedContent();
+
+    }
+
+    public function getUrl(): string
+    {
+        return $this->url;
     }
 
     abstract public function getName();
@@ -26,5 +31,5 @@ abstract class Adapter
 
     abstract public function getCurrency();
 
-    abstract public function setScrapedContent();
+    abstract public function scrape();
 }

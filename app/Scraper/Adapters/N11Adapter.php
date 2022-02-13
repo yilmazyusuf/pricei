@@ -14,16 +14,11 @@ class N11Adapter extends Adapter implements
 {
 
 
-    public function __construct(protected string $url)
-    {
-        parent::__construct($url);
-        $this->readJsonPattern();
-    }
-
-    public function setScrapedContent()
+    public function scrape()
     {
         $this->html =  HtmlDomParser::file_get_html($this->url);
         $this->htmlContent =  $this->html->html();
+        $this->readJsonPattern();
     }
 
 

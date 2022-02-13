@@ -16,13 +16,7 @@ class TrendyolAdapter extends Adapter implements
     HasSellerLink,
     HasCompetingVendors
 {
-    public function __construct(protected string $url)
-    {
-        parent::__construct($url);
-        $this->readJsonPattern();
-    }
-
-    public function setScrapedContent()
+    public function scrape()
     {
         $client = new Client();
 
@@ -40,6 +34,7 @@ class TrendyolAdapter extends Adapter implements
         );
 
         $this->htmlContent = $request->getBody()->getContents();
+        $this->readJsonPattern();
     }
 
     private function readJsonPattern()
