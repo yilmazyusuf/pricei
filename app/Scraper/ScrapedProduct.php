@@ -17,6 +17,4 @@ class ScrapedProduct extends DataTransferObject
     public ScrapedProductPrice $price;
     /** @var ScrapedProduct[] */
     public ?array $competingVendors;
-
-
 }

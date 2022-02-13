@@ -2,14 +2,12 @@
 
 namespace App\Repositories;
 
-use App\Models\ProductCategories;
 use App\Models\Products;
 use Illuminate\Database\Eloquent\Collection;
 
-class ProductsRepository
+class ProductsRepository extends Products
 {
-
-    public static function get() : Collection
+    public static function get(): Collection
     {
         return Products::query()
             ->orderBy('name', 'asc')

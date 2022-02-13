@@ -8,10 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
 /**
  * @property int $id
+ * @property int $user_id
+ * @property int $platform_id
  * @property string $name
+ * @property string $url
+ * @property string $productId
+ * @property string $imageUrl
+ * @property float $price
+ * @property float $realPrice
+ * @property float $sellingPrice
+ * @property string $currency
+ * @property string $sellerId
+ * @property string $sellerName
+ * @property string $sellerShopLink
+ * @property boolean $isTracked
+ * @property boolean $status
  */
 class Products extends Model
 {
@@ -19,8 +32,7 @@ class Products extends Model
     use FileQueryCacheable;
     use SoftDeletes;
 
-    protected $fillable = ['name', 'parent_id'];
-
+    protected $guarded = [];
     public int $cacheFor = 31557600;
     public array $cacheTags = ['products'];
     public string $cachePrefix = 'products_';
@@ -33,11 +45,8 @@ class Products extends Model
         ];
     }
 
-
-    public function category(): BelongsTo
+    public function platform(): BelongsTo
     {
-        return $this->belongsTo(ProductCategories::class);
+        return $this->belongsTo(Platforms::class,);
     }
-
-
 }

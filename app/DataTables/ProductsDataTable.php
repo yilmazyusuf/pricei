@@ -3,7 +3,9 @@
 namespace App\DataTables;
 
 use App\Http\Transformers\ProductsTransformer;
+use App\Models\Products;
 use App\Repositories\ProductCategoriesRepository;
+use App\Repositories\ProductsRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Yajra\DataTables\DataTableAbstract;
@@ -31,7 +33,7 @@ class ProductsDataTable extends DataTable
 
     public function query(): Collection
     {
-        return ProductCategoriesRepository::get();
+        return ProductsRepository::get();
     }
 
     /**
@@ -56,9 +58,9 @@ class ProductsDataTable extends DataTable
                 Button::make('create')
                     ->text('<i class="fa fa-plus"></i> Ürün Ekle')
                     ->className('btn-primary'),
-                Button::make('reload')->className('btn-outline-primary'),
-                Button::make('print')->className('btn-outline-primary'),
-                Button::make('export')->className('btn-outline-primary')
+                Button::make('reload')->className('btn-raised btn-raised-secondary'),
+                Button::make('print')->className('btn-raised btn-raised-secondary'),
+                Button::make('export')->className('btn-raised btn-raised-secondary')
             );
     }
 
@@ -70,9 +72,15 @@ class ProductsDataTable extends DataTable
     protected function getColumns(): array
     {
         return [
-            Column::make('name')->title('Name'),
-            Column::make('parent.name', 'parent.name')
-                ->title('Parent Category'),
+            Column::make('imageUrl')->title('Resim')->width(50),
+            Column::make('name')->title('İsim')->width(250),
+            //Column::make('realPrice')->title('Liste Fiyatı'),
+            Column::make('price')->title('Satış Fiyatı'),
+            Column::make('changeRatio')->title('Değişim Oranı'),
+            Column::make('changeDiff')->title('Değişim Farkı'),
+            Column::make('platform.name', 'platform.name')->title('Platform'),
+            Column::make('updated_at', 'updated_at')->title('Son Güncelleme'),
+
 
         ];
     }

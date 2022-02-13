@@ -56,9 +56,9 @@ class PlatformsDataTable extends DataTable
             ->buttons(
                 Button::make('create')->text('<i class="fa fa-plus"></i> Platform Ekle')
                     ->className('btn-primary'),
-                Button::make('reload')->className('btn-outline-primary'),
-                Button::make('print')->className('btn-outline-primary'),
-                Button::make('export')->className('btn-outline-primary')
+                Button::make('reload')->className('btn-raised btn-raised-secondary'),
+                Button::make('print')->className('btn-raised btn-raised-secondary'),
+                Button::make('export')->className('btn-raised btn-raised-secondary')
             );
     }
 

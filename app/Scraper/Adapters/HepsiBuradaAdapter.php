@@ -4,17 +4,14 @@ namespace App\Scraper\Adapters;
 
 use App\Scraper\Adapter;
 use App\Scraper\ScrapedProduct;
-use GuzzleHttp\Client;
-use GuzzleHttp\Cookie\CookieJar;
-use GuzzleHttp\Exception\RequestException;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;
-use voku\helper\HtmlDomParser;
 
 class HepsiBuradaAdapter extends Adapter implements
     HasSellerName,
     HasRealPrice,
     HasSellerId,
-    HasSellerLink
+    HasSellerLink,
+    HasCompetingVendors
 {
     public function __construct(protected string $url)
     {
@@ -48,6 +45,7 @@ class HepsiBuradaAdapter extends Adapter implements
         $decodedJson = json_decode($cleanTags);
 
         $this->json = $decodedJson;
+
     }
 
     public function getName(): string
@@ -95,7 +93,7 @@ class HepsiBuradaAdapter extends Adapter implements
     public function getSellerLink(): ?string
     {
         return $this->json->product->currentListing->merchantPageUrl ?
-            'https://www.hepsiburada.com/'.$this->json->product->currentListing->merchantPageUrl : null;
+            'https://www.hepsiburada.com/' . $this->json->product->currentListing->merchantPageUrl : null;
     }
 
     /**
@@ -104,26 +102,24 @@ class HepsiBuradaAdapter extends Adapter implements
     public function getCompetingVendors(): array
     {
         $vendors = [];
-        $otherShops = $this->json->product->otherMerchants;
-
+        $otherShops = $this->json->product->listings;
+        unset($otherShops[0]);
         foreach ($otherShops as $otherShop) {
 
-            $productUrl = 'https://www.trendyol.com' . $otherShop->url;
+            $productUrl = 'https://www.hepsiburada.com' . $otherShop->merchantVariantUrl;
 
-            $realPrice = getAmount($otherShop->price->originalPrice->value);
-            $sellingPrice = getAmount($otherShop->price->sellingPrice->value);
-            $price = getAmount($otherShop->price->discountedPrice->value);
-            $sellerShopUrl = 'https://www.trendyol.com/sr?mid=' . $otherShop->merchant->id;
-            $sellerId = $otherShop->merchant->id;
-            $sellerName = $otherShop->merchant->name;
+            $realPrice = getAmount($otherShop->originalPriceText);
+            $price = getAmount($otherShop->sortPriceText);
+            $sellerShopUrl = 'https://www.hepsiburada.com' . $otherShop->merchantPageUrl;
+            $sellerId = $otherShop->merchantId;
+            $sellerName = $otherShop->merchantName;
 
             $competingVendor = new ScrapedProduct(
                 url: $productUrl,
                 currency: 'TRY',
                 price: [
                     'price' => getAmount($price),
-                    'realPrice' => getAmount($realPrice),
-                    'sellingPrice' => getAmount($sellingPrice)
+                    'realPrice' => getAmount($realPrice)
                 ],
                 seller: [
                     'id' => $sellerId,
