@@ -68,15 +68,11 @@ class ProductController extends ResourceController
             abort(404);
         }
 
-        if ($product->queueStatus == 0) {
-            $nextJobDate = now()->addSeconds(10);
-            $product->queueStatus = 2;
-            $product->nextJobDate = $nextJobDate;
-            $product->save();
-            ScrapeProductJob::dispatch($product)->delay($nextJobDate);
-        }
+        $nextJobDate = now()->addHours(12);
 
-
+        $product->nextJobDate = $nextJobDate;
+        $product->isJobActive = true;
+        $product->save();
 
         Alert::success('Ürünün fiyatını takip etmeye başladınız.');
         return $ajax->redirect(route('products.index'));

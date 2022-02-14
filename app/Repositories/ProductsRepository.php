@@ -16,7 +16,7 @@ class ProductsRepository extends Products
             ->get();
     }
 
-    public static function createOrUpdate(Platforms $platform, ScrapedProduct $product, ?array $params = null) : Products
+    public static function createOrUpdate(Platforms $platform, ScrapedProduct $product, ?array $params = null): Products
     {
         $productData = [
             'user_id' => 1, //@todo user_id
@@ -33,7 +33,7 @@ class ProductsRepository extends Products
             'sellerName' => $product->seller->name,
             'sellerShopLink' => $product->seller->link
         ];
-        if($params){
+        if ($params) {
             $productData = array_merge($productData, $params);
         }
         return Products::query()->updateOrCreate(
@@ -44,5 +44,19 @@ class ProductsRepository extends Products
             ],
             $productData,
         );
+    }
+
+
+    public static function getForScrape(): Collection|array
+    {
+        //@todo platform job için aktif ise kuralını ekle
+        return Products::query()
+            ->with('platform')
+            ->where('isJobActive', 1)
+            ->where('isJobLocked', 0)
+            ->where('jobTries', '<=', 3)
+            ->where('nextJobDate', '<=', now())
+            ->take(10)
+            ->get();
     }
 }

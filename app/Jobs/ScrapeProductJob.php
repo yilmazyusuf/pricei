@@ -72,52 +72,6 @@ class ScrapeProductJob implements ShouldQueue //, ShouldBeUnique
         $this->product->save();
     }
 
-    /**
-     * Handle a job failure.
-     *
-     * @param Throwable $exception
-     * @return void
-     */
-    public function failed(Throwable $exception)
-    {
-        $this->product->hasQueueError = true;
-        $this->product->queueErrorCount = $this->product->queueErrorCount + 1;
-        $this->product->lastQueueErrorMsg = $exception->getMessage();
-        $this->product->lastQueueErrorDate = now();
-        $this->product->lastJobDate = now();
 
-        if ($this->product->queueErrorCount == 3) {
-            $this->product->isQueueDisabled = true;
-            $this->product->queueDisabledReason = 1;
-        }
-        $this->product->save();
-    }
 
-    public function uniqueId(): int
-    {
-        return $this->product->id;
-    }
-
-    /**
-     * Get the middleware the job should pass through.
-     *
-     * @return array
-     */
-    public function middleware()
-    {
-        return [
-            (new WithoutOverlapping('scraped_product'))->releaseAfter(600),
-            (new ThrottlesExceptions(50, 10))->backoff(10)
-        ];
-    }
-
-    /**
-     * Determine the time at which the job should timeout.
-     *
-     * @return DateTime
-     */
-    public function retryUntil()
-    {
-        return now()->addHours(12);
-    }
 }
