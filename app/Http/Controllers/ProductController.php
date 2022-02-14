@@ -29,6 +29,11 @@ class ProductController extends ResourceController
     protected string $resourceName = 'products';
     protected string $model = Products::class;
 
+    //@todo https://colorlib.com/polygon/gentelella/other_charts.html ürün listesinde fiyat değişimleri grafiği
+    //@todo ürün getir için yeni modal box
+    //@todo diğer mağaza fiyatlarının kaydedilmesi
+    //@todo magazların toplam fiyat ortalaması
+    //@todo mağazalardaki en düşük ve en yüksek fiyatın gösterimi
     /**
      * @param ScrapeProductRequest $request
      * @param Ajax $ajax
