@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->integer('platform_id')->nullable();
             $table->string('name');
             $table->string('url');
-            $table->string('productId');
+            $table->string('shopProductId');
             $table->string('imageUrl');
             $table->float('price');
             $table->float('realPrice')->nullable();
@@ -34,6 +34,7 @@ class CreateProductsTable extends Migration
             $table->boolean('isJobActive')->default(false);
             $table->tinyInteger('jobTries')->default(0);
             $table->boolean('lasJobStatus')->nullable();
+            $table->text('lasJobErrorMessage')->nullable();
 
             $table->dateTime('lastJobDate')->nullable();
             $table->dateTime('nextJobDate')->nullable();
@@ -43,13 +44,13 @@ class CreateProductsTable extends Migration
             $table->softDeletes();
 
             $table->index('platform_id');
-            $table->index('productId');
+            $table->index('shopProductId');
             $table->index('price');
             $table->index('name');
             $table->index('sellerId');
             $table->index('sellerName');
 
-            $table->unique(['user_id', 'platform_id', 'productId']);
+            $table->unique(['user_id', 'platform_id', 'shopProductId']);
         });
     }
 

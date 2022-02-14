@@ -3,8 +3,6 @@
 namespace App\DataTables;
 
 use App\Http\Transformers\ProductsTransformer;
-use App\Models\Products;
-use App\Repositories\ProductCategoriesRepository;
 use App\Repositories\ProductsRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -47,7 +45,7 @@ class ProductsDataTable extends DataTable
             ->setTableId('product_categories-table')
             ->columns($this->getColumns())
             ->addAction([
-                'defaultContent' => view('partials.datatable_action_buttons')->render(),
+                'defaultContent' => '<button class="btn btn-raised btn-raised-secondary" type="button"><span class="ul-btn__icon"><i class="nav-icon i-Line-Chart"></i></span><span class="ul-btn__text"> Detay</span></button>',
                 'title' => ' ',
                 'width' => '10',
                 'printable' => false,
@@ -72,12 +70,15 @@ class ProductsDataTable extends DataTable
     protected function getColumns(): array
     {
         return [
-            Column::make('imageUrl')->title('Resim')->width(50),
-            Column::make('name')->title('İsim')->width(250),
-            //Column::make('realPrice')->title('Liste Fiyatı'),
+            Column::make('imageUrl')
+                ->title('')
+                ->searchable(false)
+                ->orderable(false),
+            Column::make('name')->title('İsim')->width(350),
+            Column::make('realPrice')->title('Liste Fiyatı'),
             Column::make('price')->title('Satış Fiyatı'),
-            Column::make('changeRatio')->title('Değişim Oranı'),
-            Column::make('changeDiff')->title('Değişim Farkı'),
+            //Column::make('changeRatio')->title('Değişim Oranı'),
+            //Column::make('changeDiff')->title('Değişim Farkı'),
             Column::make('platform.name', 'platform.name')->title('Platform'),
             Column::make('updated_at', 'updated_at')->title('Son Güncelleme'),
 

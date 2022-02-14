@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Scraper\Adapters;
+namespace App\Scraper\Adapters\Contracts;
 
 interface HasSellerId
 {

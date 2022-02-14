@@ -3,7 +3,13 @@
 namespace App\Scraper\Adapters;
 
 use App\Scraper\Adapter;
-use App\Scraper\ScrapedProduct;
+use App\Scraper\Adapters\Contracts\HasCompetingVendors;
+use App\Scraper\Adapters\Contracts\HasRealPrice;
+use App\Scraper\Adapters\Contracts\HasSellerId;
+use App\Scraper\Adapters\Contracts\HasSellerLink;
+use App\Scraper\Adapters\Contracts\HasSellerName;
+use App\Scraper\Adapters\Contracts\HasSellingPrice;
+use App\Scraper\Dto\ScrapedProduct;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;

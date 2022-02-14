@@ -12,7 +12,7 @@ use App\Models\Products;
 use App\Repositories\PlatformsRepository;
 use App\Repositories\ProductsRepository;
 use App\Scraper\AdapterFactory;
-use App\Scraper\ScrapedProduct;
+use App\Scraper\Dto\ScrapedProduct;
 use App\Scraper\Scraper;
 use App\Utils\Ajax;
 use App\View\Components\Alert;
@@ -37,7 +37,6 @@ class ProductController extends ResourceController
     /**
      * @param ScrapeProductRequest $request
      * @param Ajax $ajax
-     * @param Products $productsModel
      * @return View|JsonResponse|void
      */
     protected function scrape(ScrapeProductRequest $request, Ajax $ajax)
@@ -54,11 +53,16 @@ class ProductController extends ResourceController
         $product = $this->cacheScrapedProduct($url, $platform);
         $savedProduct = ProductsRepository::createOrUpdate($platform, $product);
 
-        $viewData = ['product' => $product, 'savedProduct' => $savedProduct];
+        $viewData = ['product' => $savedProduct];
+
+        $modal = 'partials.product_scraped_preview_modal';
+        if ($savedProduct->vendors()->count() > 0) {
+            $modal = 'partials.product_scraped_preview_vendors_modal';
+        }
 
         return $ajax->runJavascript("$('#product_scraped_preview_modal').modal('show')")
             ->redrawSection('modal_section')
-            ->view('partials.product_scraped_preview_modal', $viewData);
+            ->view($modal, $viewData);
     }
 
     protected function track($id, Ajax $ajax): JsonResponse|RedirectResponse

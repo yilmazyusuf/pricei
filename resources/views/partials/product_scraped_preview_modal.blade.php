@@ -13,13 +13,13 @@
                         <div class="card-body text-center">
                             <div class="avatar mb-3" style="width: auto; height: auto">
                                 <img src="{{$product->imageUrl}}" alt="" width="150"></div>
-                            @if($product->price->realPrice && $product->price->realPrice > $product->price->price)
-                                <del class="m-0">{{$product->price->realPrice}} TL</del>
+                            @if($product->price && $product->realPrice > $product->price)
+                                <del class="m-0">{{$product->realPrice}} TL</del>
                             @endif
-                            <h2 class="m-0">{{$product->price->price}} TL</h2>
+                            <h2 class="m-0">{{$product->price}} TL</h2>
 
-                            <p class="mt-0">{{$product->seller->name}}</p>
-                            <form class="ajax" action="{{route('products.track',[$savedProduct->id])}}" method="post">
+                            <p class="mt-0">{{$product->sellerName}}</p>
+                            <form class="ajax" action="{{route('products.track',[$product->id])}}" method="post">
 
                                 <button class="btn btn-primary btn-rounded ajax_btn" type="submit">Fiyatını Takip Et
                                 </button>
@@ -27,23 +27,21 @@
 
                         </div>
 
-                        @if($product->competingVendors && count($product->competingVendors) > 0)
+                        @if($product->vendors()->count() > 0)
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center bg-gray-200">
                                     Diğer Mağazalardaki Fiyatlar
                                 </li>
-                                @foreach($product->competingVendors as $vendor)
+                                @foreach($product->vendors as $vendor)
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        {{$vendor->seller->name}}
-                                        @if($vendor->price->realPrice && $vendor->price->price < $vendor->price->realPrice)
-                                            <del
-                                                style="margin-left: auto;margin-right: 5px;">{{$vendor->price->realPrice}}
-                                                TL
+                                        {{$vendor->sellerName}}
+                                        @if($vendor->realPrice && $vendor->price < $vendor->realPrice)
+                                            <del style="margin-left: auto;margin-right: 5px;">{{$vendor->realPrice}} TL
                                             </del>
                                         @endif
                                         <h4>
                                         <span
-                                            class="badge badge-pill badge-light">{{$vendor->price->price}} TL</span>
+                                            class="badge badge-pill badge-light">{{$vendor->price}} TL</span>
                                         </h4>
                                     </li>
                                 @endforeach

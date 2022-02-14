@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Scraper;
+namespace App\Scraper\Dto;
 
 use Spatie\DataTransferObject\DataTransferObject;
 
@@ -9,7 +9,7 @@ class ScrapedProduct extends DataTransferObject
 
     public ?string $name;
     public ?string $url;
-    public ?string $productId;
+    public ?string $shopProductId;
     public ?string $currency;
 
     public ?ScrapedProductSeller $seller;

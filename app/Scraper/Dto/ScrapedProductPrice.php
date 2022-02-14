@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Scraper;
+namespace App\Scraper\Dto;
 
 use Spatie\DataTransferObject\DataTransferObject;
 

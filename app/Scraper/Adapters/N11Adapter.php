@@ -3,7 +3,10 @@
 namespace App\Scraper\Adapters;
 
 use App\Scraper\Adapter;
-use App\Scraper\ScrapedProduct;
+use App\Scraper\Adapters\Contracts\HasCompetingVendors;
+use App\Scraper\Adapters\Contracts\HasRealPrice;
+use App\Scraper\Adapters\Contracts\HasSellerName;
+use App\Scraper\Dto\ScrapedProduct;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 use voku\helper\HtmlDomParser;
 

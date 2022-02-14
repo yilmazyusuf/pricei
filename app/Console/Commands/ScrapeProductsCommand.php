@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Products;
 use App\Repositories\ProductsRepository;
 use App\Scraper\AdapterFactory;
 use App\Scraper\Scraper;
@@ -40,8 +41,9 @@ class ScrapeProductsCommand extends Command
      */
     public function handle()
     {
-        $products = ProductsRepository::getForScrape();
+        $products = ProductsRepository::getForScrapeJob();
 
+        /* @var $product Products */
         foreach ($products as $product) {
 
             try {
@@ -55,6 +57,7 @@ class ScrapeProductsCommand extends Command
                 $productParams['nextJobDate'] = $nextJobDate;
 
                 ProductsRepository::createOrUpdate($product->platform, $scrapedProduct, $productParams);
+
             } catch (\Exception $exception) {
                 $product->lasJobStatus = false;
                 $product->jobTries++;
@@ -63,7 +66,7 @@ class ScrapeProductsCommand extends Command
                 if ($product->jobTries == 3) {
                     $product->isJobLocked = true;
                 }
-                //todo exception mesajı kaydet
+                $product->lasJobErrorMessage = $exception->getMessage();
                 //@todo platforma ait son 10 cron başarısız ize platformu durdur
                 $product->save();
             }

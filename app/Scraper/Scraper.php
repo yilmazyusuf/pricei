@@ -2,12 +2,13 @@
 
 namespace App\Scraper;
 
-use App\Scraper\Adapters\HasCompetingVendors;
-use App\Scraper\Adapters\HasRealPrice;
-use App\Scraper\Adapters\HasSellerId;
-use App\Scraper\Adapters\HasSellerLink;
-use App\Scraper\Adapters\HasSellerName;
-use App\Scraper\Adapters\HasSellingPrice;
+use App\Scraper\Adapters\Contracts\HasCompetingVendors;
+use App\Scraper\Adapters\Contracts\HasRealPrice;
+use App\Scraper\Adapters\Contracts\HasSellerId;
+use App\Scraper\Adapters\Contracts\HasSellerLink;
+use App\Scraper\Adapters\Contracts\HasSellerName;
+use App\Scraper\Adapters\Contracts\HasSellingPrice;
+use App\Scraper\Dto\ScrapedProduct;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 
 class Scraper
@@ -31,7 +32,7 @@ class Scraper
         $dtoParams = [];
         $dtoParams['url'] = $this->adapter->getUrl();
         $dtoParams['name'] = $this->adapter->getName();
-        $dtoParams['productId'] = $this->adapter->getId();
+        $dtoParams['shopProductId'] = $this->adapter->getId();
         $dtoParams['currency'] = $this->adapter->getCurrency();
         $dtoParams['imageUrl'] = $this->adapter->getImageUrl();
         $dtoParams['price']['price'] = getAmount($this->adapter->getPrice());

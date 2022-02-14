@@ -6,6 +6,7 @@ use App\Traits\FileQueryCacheable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -27,6 +28,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property boolean $isJobActive
  * @property integer $jobTries
  * @property boolean $lasJobStatus
+ * @property string $lasJobErrorMessage
  * @property string $lastJobDate
  * @property string $nextJobDate
  *
@@ -54,5 +56,15 @@ class Products extends Model
     public function platform(): BelongsTo
     {
         return $this->belongsTo(Platforms::class);
+    }
+
+    public function vendors(): HasMany
+    {
+        return $this->hasMany(ProductVendors::class);
+    }
+
+    public function priceHistory(): HasMany
+    {
+        return $this->hasMany(PriceHistories::class);
     }
 }
