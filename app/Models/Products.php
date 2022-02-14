@@ -23,8 +23,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $sellerId
  * @property string $sellerName
  * @property string $sellerShopLink
- * @property boolean $isTracked
- * @property boolean $status
+ * @property boolean $isQueueDisabled
+ * @property int $queueDisabledReason
+ * @property int $queueStatus (0 görev yok, 1 kuyrukta, 2 çalışıyor)
+ * @property boolean $hasQueueError
+ * @property int $totalQueueCount
+ * @property int $queueErrorCount
+ * @property string $lastQueueErrorMsg
+ * @property string $lastQueueErrorDate
+ * @property string $lastJobDate
+ * @property string $nextJobDate
+ *
  * @property ?Platforms $platform
  */
 class Products extends Model

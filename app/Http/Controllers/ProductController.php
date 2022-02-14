@@ -68,11 +68,15 @@ class ProductController extends ResourceController
             abort(404);
         }
 
-        $product->isTracked = true;
-        $product->status = true;
-        $product->save();
+        if ($product->queueStatus == 0) {
+            $nextJobDate = now()->addSeconds(10);
+            $product->queueStatus = 2;
+            $product->nextJobDate = $nextJobDate;
+            $product->save();
+            ScrapeProductJob::dispatch($product)->delay($nextJobDate);
+        }
 
-        ScrapeProductJob::dispatch($product)->delay(now()->addHours(6));
+
 
         Alert::success('Ürünün fiyatını takip etmeye başladınız.');
         return $ajax->redirect(route('products.index'));
