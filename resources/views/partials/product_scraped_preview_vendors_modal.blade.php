@@ -83,7 +83,7 @@
 
                         </div>
                         <div class="row mb-4">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="card card-profile-1 mb-0">
                                     <div class="card-body text-center" style="height: 300px">
 
@@ -99,7 +99,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div class="card card-profile-1 mb-0">
                                     <div class="card-body p-0" style="overflow: auto; height: 300px">
                                         <div class="table-responsive">
