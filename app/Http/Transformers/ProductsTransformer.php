@@ -33,6 +33,7 @@ class ProductsTransformer extends TransformerAbstract
             'platform' => [
                 'name' => $products->platform->name ?? null
             ],
+            'actions' => view('partials.datatable_action_buttons_products',['product' => $products])->render()
 
         ];
     }

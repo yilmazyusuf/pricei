@@ -44,12 +44,6 @@ class ProductsDataTable extends DataTable
         return $this->builder()
             ->setTableId('product_categories-table')
             ->columns($this->getColumns())
-            ->addAction([
-                'defaultContent' => '<button class="btn btn-raised btn-raised-secondary" type="button"><span class="ul-btn__icon"><i class="nav-icon i-Line-Chart"></i></span><span class="ul-btn__text"> Detay</span></button>',
-                'title' => ' ',
-                'width' => '10',
-                'printable' => false,
-            ])
             ->minifiedAjax()
             ->dom('Bfrtip')
             ->buttons(
@@ -81,6 +75,10 @@ class ProductsDataTable extends DataTable
             //Column::make('changeDiff')->title('Değişim Farkı'),
             Column::make('platform.name', 'platform.name')->title('Platform'),
             Column::make('updated_at', 'updated_at')->title('Son Güncelleme'),
+            Column::make('actions', 'actions')
+                ->title('#')
+                ->orderable(false)
+                ->searchable(false)
 
 
         ];

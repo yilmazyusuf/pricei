@@ -6,7 +6,6 @@ use App\DataTables\ProductsDataTable;
 use App\Http\Requests\ScrapeProductRequest;
 use App\Http\Requests\StoreProductCategoriesRequest;
 use App\Http\Requests\UpdateProductCategoriesRequest;
-use App\Jobs\ScrapeProductJob;
 use App\Models\Platforms;
 use App\Models\Products;
 use App\Repositories\PlatformsRepository;
@@ -34,6 +33,7 @@ class ProductController extends ResourceController
     //@todo diğer mağaza fiyatlarının kaydedilmesi
     //@todo magazların toplam fiyat ortalaması
     //@todo mağazalardaki en düşük ve en yüksek fiyatın gösterimi
+    //@todo ürün listesi filitreler (Fiyatı artan azalan ürünler, bugün,dün,buhafta bu ay,son 20 gün)
     /**
      * @param ScrapeProductRequest $request
      * @param Ajax $ajax
@@ -63,6 +63,23 @@ class ProductController extends ResourceController
         return $ajax->runJavascript("$('#product_scraped_preview_modal').modal('show')")
             ->redrawSection('modal_section')
             ->view($modal, $viewData);
+    }
+
+    protected function showDetail(int $id)
+    {
+
+        //@todo user_id
+        $product = Products::query()
+            ->where('user_id', 1)
+            ->where('id', $id)
+            ->first();
+
+        if (!$product) {
+            abort(404);
+        }
+        return view('products.detail')->with(
+            ['product' => $product]
+        );
     }
 
     protected function track($id, Ajax $ajax): JsonResponse|RedirectResponse

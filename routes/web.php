@@ -18,11 +18,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [IndexController::class, 'index']);
-Route::resource('products', ProductController::class);
-//Route::resource('products_categories', ProductCategoriesController::class);
 Route::post('products/scrape', [ProductController::class, 'scrape'])->name('products.scrape');
 Route::post('products/track/{id}', [ProductController::class, 'track'])->name('products.track');
+Route::get('products/detail/{id}', [ProductController::class, 'showDetail'])->name('products.detail');
 
+Route::resource('products', ProductController::class);
 Route::resource('platforms', PlatformsController::class);
 
 
