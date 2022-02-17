@@ -31,11 +31,7 @@
             vertical-align: middle !important;
         }
 
-        * {
-            -webkit-border-radius: 0 !important;
-            -moz-border-radius: 0 !important;
-            border-radius: 0 !important;
-        }
+
 
         .select2-container--default .select2-selection--single {
             border: 1px solid #ced4da !important;

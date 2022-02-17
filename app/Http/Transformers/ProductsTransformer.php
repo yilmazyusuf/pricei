@@ -33,7 +33,7 @@ class ProductsTransformer extends TransformerAbstract
             'platform' => [
                 'name' => $products->platform->name ?? null
             ],
-            'status' => ' <input class="switch-size" data-size="xs" data-on="Aktif" data-off="Pasif" '.$isJobActive.' type="checkbox" data-content="'.$products->id.'" id="pr_'.$products->id.'">',
+            'status' => ' <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Aktif" data-off="Pasif" '.$isJobActive.' type="checkbox" data-content="'.$products->id.'" id="pr_'.$products->id.'">',
             'actions' => view('partials.datatable_action_buttons_products',['product' => $products])->render()
 
         ];

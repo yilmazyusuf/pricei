@@ -79,20 +79,22 @@ class ProductsDataTable extends DataTable
                 ->searchable(false)
                 ->orderable(false),
             Column::make('name')->title('İsim')->width(300),
-            Column::make('realPrice')->title('Liste Fiyatı'),
+            //Column::make('realPrice')->title('Liste Fiyatı'),
             Column::make('price')->title('Satış Fiyatı'),
             //Column::make('changeRatio')->title('Değişim Oranı'),
             //Column::make('changeDiff')->title('Değişim Farkı'),
             Column::make('platform.name', 'platform.name')->title('Platform'),
-            Column::make('updated_at', 'updated_at')->title('Güncelleme'),
+            //Column::make('updated_at', 'updated_at')->title('Güncelleme'),
             Column::make('status', 'status')
                 ->title('Fiyat Takip')
                 ->orderable(false)
-                ->searchable(false),
+                ->searchable(false)
+            ->printable(false),
             Column::make('actions', 'actions')
                 ->title('#')
                 ->orderable(false)
                 ->searchable(false)
+            ->printable(false)
 
 
         ];
