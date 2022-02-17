@@ -2,10 +2,12 @@
 
 namespace App\DataTables;
 
+use App\Http\Filters\ProductsFilter;
 use App\Http\Transformers\ProductsTransformer;
 use App\Repositories\ProductsRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Button;
@@ -31,7 +33,12 @@ class ProductsDataTable extends DataTable
 
     public function query(): Collection
     {
-        return ProductsRepository::get();
+        //dd(request('platform_id'));
+        $products = ProductsRepository::list();
+        $filter = new ProductsFilter($products);
+        $filtered = $filter->filter()->get();
+
+        return $filtered;
     }
 
     /**
@@ -44,8 +51,11 @@ class ProductsDataTable extends DataTable
         return $this->builder()
             ->setTableId('product_categories-table')
             ->columns($this->getColumns())
-            ->minifiedAjax()
-            ->dom('Bfrtip')
+            ->minifiedAjax('',null,[
+                'isJobActive' => "$('#isJobActive').val()",
+                'platform_id' => "$('#platform_id').val()"
+            ])
+            ->dom('Bfr<"data_table_toolbar">tip')
             ->buttons(
                 Button::make('create')
                     ->text('<i class="fa fa-plus"></i> Ürün Ekle')
@@ -68,13 +78,17 @@ class ProductsDataTable extends DataTable
                 ->title('')
                 ->searchable(false)
                 ->orderable(false),
-            Column::make('name')->title('İsim')->width(350),
+            Column::make('name')->title('İsim')->width(300),
             Column::make('realPrice')->title('Liste Fiyatı'),
             Column::make('price')->title('Satış Fiyatı'),
             //Column::make('changeRatio')->title('Değişim Oranı'),
             //Column::make('changeDiff')->title('Değişim Farkı'),
             Column::make('platform.name', 'platform.name')->title('Platform'),
-            Column::make('updated_at', 'updated_at')->title('Son Güncelleme'),
+            Column::make('updated_at', 'updated_at')->title('Güncelleme'),
+            Column::make('status', 'status')
+                ->title('Fiyat Takip')
+                ->orderable(false)
+                ->searchable(false),
             Column::make('actions', 'actions')
                 ->title('#')
                 ->orderable(false)

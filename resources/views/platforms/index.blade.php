@@ -16,6 +16,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
+
+
                         {{$dataTable->table(['class' => 'table table-bordered table-hover w-100'])}}
                     </div>
 

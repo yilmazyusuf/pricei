@@ -110,6 +110,10 @@ abstract class ResourceController extends Controller
         /* @var $model Model */
         $model = App::make($this->model);
         $row = $model::query()->find($id);
+        //@todo user_id
+        if($row->user_id && $row->user_id !== 1){
+            abort(404);
+        }
         if (!$row) {
             abort(404);
         }

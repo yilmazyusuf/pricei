@@ -1,30 +1,36 @@
 <!DOCTYPE html>
 <html lang="en" dir="">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('meta.title')</title>
-    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700,800,900" rel="stylesheet" />
-    <link href="/template/dist-assets/css/themes/lite-purple.min.css" rel="stylesheet" />
-    <link href="/template/dist-assets/css/plugins/perfect-scrollbar.min.css" rel="stylesheet" />
-    <link href="/template/dist-assets/css/plugins/fontawesome-5.min.css" rel="stylesheet" />
-    <link href="/template/dist-assets/js/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="/template/dist-assets/css/plugins/datatables.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700,800,900" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ asset('storage/template/dist-assets/css/themes/lite-purple.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('storage/template/dist-assets/css/plugins/perfect-scrollbar.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('storage/template/dist-assets/css/plugins/fontawesome-5.min.css') }}">
+    <link rel="stylesheet"
+          href="{{ asset('storage/template/dist-assets/js/plugins/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('storage/template/dist-assets/css/plugins/datatables.min.css') }}">
+    <link rel="stylesheet"
+          href="{{ asset('storage/template/dist-assets/js/plugins/switch/css/bootstrap4-toggle.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('storage/template/dist-assets/css/plugins/toastr.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/file-manager/css/file-manager.css') }}">
 
     <style rel="stylesheet">
-        .dt-buttons{
+        .dt-buttons {
             float: left !important;
             margin-bottom: 1rem !important;
             margin-left: 2px;
         }
-        td{
+
+        td {
             vertical-align: middle !important;
         }
+
         * {
             -webkit-border-radius: 0 !important;
             -moz-border-radius: 0 !important;
@@ -34,10 +40,12 @@
         .select2-container--default .select2-selection--single {
             border: 1px solid #ced4da !important;
         }
+
         .select2-container .select2-selection--single {
             height: calc(1.9695rem + 2px) !important;
             background-color: #f8f9fa;
         }
+
         .select2-container--default .select2-selection--single .select2-selection__rendered {
             line-height: calc(1.9695rem + 2px) !important;
         }
@@ -50,12 +58,26 @@
             background-color: #663399;
             color: white;
         }
+        .select2-container--default.select2-container--focus .select2-selection--multiple{
+            color: #665c70;
+            background-color: #fff;
+            border-color: #a679d2;
+            box-shadow: 0 0 0 0.2rem rgb(102 51 153 / 25%);
+        }
+        .select2-container--default .select2-selection--multiple{
+            outline: initial !important;
+            background: #f8f9fa;
+            border: 1px solid #ced4da;
+            color: #47404f;
+        }
+
 
         .dropdown-item:hover {
             color: #fff;
             text-decoration: none;
             background-color: #663399;
         }
+
         :focus-visible {
             color: #665c70;
             background-color: #fff;
@@ -68,14 +90,28 @@
         .layout-sidebar-large .sidebar-left-secondary .childNav li.nav-item a:hover {
             background: #663399;
         }
+
         .layout-sidebar-large .sidebar-left-secondary .childNav li.nav-item :hover {
             color: #fff;
         }
+
         .layout-sidebar-large .sidebar-left-secondary .childNav li.nav-item :hover i.nav-icon {
             color: #fff;
         }
-        .dataTables_wrapper{
+
+        .dataTables_wrapper {
             padding: 0 !important;
+        }
+
+
+        table.dataTable {
+            border-collapse: collapse !important;
+        }
+        .data_table_toolbar{
+            clear: both;
+        }
+        select.form-control {
+            -webkit-appearance: button !important;
         }
     </style>
 </head>
@@ -104,25 +140,39 @@
     </div>
 
 </div>
-<script src="/template/dist-assets/js/plugins/jquery-3.3.1.min.js"></script>
-<script src="/template/dist-assets/js/plugins/bootstrap.bundle.min.js"></script>
-<script src="/template/dist-assets/js/plugins/perfect-scrollbar.min.js"></script>
-<script src="/template/dist-assets/js/scripts/script.min.js"></script>
-<script src="/template/dist-assets/js/scripts/sidebar.large.script.min.js"></script>
-<script src="/template/dist-assets/js/scripts/customizer.script.min.js"></script>
-<script src="/template/dist-assets/js/plugins/laravel_ajax.js"></script>
-<script src="/template/dist-assets/js/plugins/select2/dist/js/select2.full.min.js"></script>
-<script src="/template/dist-assets/js/plugins/datatables.min.js"></script>
-<script src="/template/dist-assets/js/scripts/datatables.script.js"></script>
-<script src="/template/dist-assets/js/scripts/customizer.script.min.js"></script>
+
+<script src="{{asset('storage/template/dist-assets/js/plugins/jquery-3.3.1.min.js')}}"></script>
+<script src="{{asset('storage/template/dist-assets/js/plugins/bootstrap.min.js')}}"></script>
+<script src="{{asset('storage/template/dist-assets/js/plugins/bootstrap.bundle.min.js')}}"></script>
+<script src="{{asset('storage/template/dist-assets/js/plugins/perfect-scrollbar.min.js')}}"></script>
+<script src="{{asset('storage/template/dist-assets/js/scripts/script.min.js')}}"></script>
+<script src="{{asset('storage/template/dist-assets/js/scripts/sidebar.large.script.min.js')}}"></script>
+<script src="{{asset('storage/template/dist-assets/js/scripts/customizer.script.min.js')}}"></script>
+<script src="{{asset('storage/template/dist-assets/js/plugins/laravel_ajax.js')}}"></script>
+<script src="{{asset('storage/template/dist-assets/js/plugins/select2/dist/js/select2.full.min.js')}}"></script>
+<script src="{{asset('storage/template/dist-assets/js/plugins/datatables.min.js')}}"></script>
+<script src="{{asset('storage/template/dist-assets/js/scripts/datatables.script.js')}}"></script>
+<script src="{{asset('storage/template/dist-assets/js/scripts/customizer.script.min.js')}}"></script>
+<script src="{{asset('storage/template/dist-assets/js/scripts/tooltip.script.min.js')}}"></script>
+<script src="{{asset('storage/template/dist-assets/js/plugins/jquery-json-form-binding.js')}}"></script>
+<script src="{{asset('storage/template/dist-assets/js/plugins/switch/js/bootstrap4-toggle.min.js')}}"></script>
+<script src="{{asset('storage/template/dist-assets/js/plugins/toastr.min.js')}}"></script>
+
 <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
-<script src="/template/dist-assets/js/scripts/tooltip.script.min.js"></script>
-<script src="/template/dist-assets/js/plugins/jquery-json-form-binding.js"></script>
 <script src="{{ asset('vendor/file-manager/js/file-manager.js') }}"></script>
 
 
 <script>
-    $( document ).ready(function() {
+
+    function toaster(type, message) {
+        toastr.success(message, {
+            showMethod: "slideDown",
+            hideMethod: "slideUp",
+            timeOut: 2e3
+        });
+    }
+
+    $(document).ready(function () {
 
         /*
         $('button#scrape_product').click(function () {
@@ -139,33 +189,69 @@
             });
         });
         */
+
+
     });
 
-    $( document ).ajaxComplete(function() {
+    $(document).ajaxComplete(function () {
         // Required for Bootstrap tooltips in DataTables
         $('[data-toggle="tooltip"]').tooltip({
             "html": true
         });
 
         let table = $('.dataTable').DataTable();
-        $('.dataTable tbody').on( 'click', 'a.edit', function () {
+        $('.dataTable tbody').on('click', 'a.edit', function (event) {
+            event.stopImmediatePropagation();
             let properties = table.row($(this).parents('tr')).data();
             document.location.href = properties.urls.edit;
-        } );
+        });
 
-        $('.dataTable tbody').on( 'click', 'a.destroy', function () {
+        $('.dataTable tbody').on('click', 'a.destroy', function (event) {
+            event.stopImmediatePropagation();
             $(this).parents('tr').find('button.destroy').removeClass('d-none');
             $(this).addClass('d-none');
-        } );
+        });
 
-        $('.dataTable tbody').on( 'click', 'button.destroy', function () {
+        $('.dataTable tbody').on('click', 'button.destroy', function (event) {
+            event.stopImmediatePropagation();
             let properties = table.row($(this).parents('tr')).data();
-
             laravel.ajax.send({
                 url: properties.urls.destroy,
-                type: 'DELETE'
+                type: 'DELETE',
+                success: function (payload) {
+                    var tb = $('#product_categories-table').DataTable();
+                    tb.draw();
+                    toaster('success', 'Ürün Silindi.');
+                }
+
             });
-        } );
+        });
+
+
+        $('.switch-size').bootstrapToggle();
+        $( ".switch-size" ).on( "change", function(event) {
+            event.stopImmediatePropagation();
+            let state = $(this).prop('checked');
+            let product_id = $(this).data('content');
+            let data;
+            data = new FormData();
+            data.append('productId', product_id);
+            data.append('status', state);
+            laravel.ajax.send({
+                url: '{{route('products.updateStatus')}}',
+                data: data,
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                async: true,
+                success: function (payload) {
+                    let stateMsg = state === true ? 'aktif' : 'pasif';
+                    toaster('success', 'Fiyat takibi <strong>' + stateMsg + '</strong> hale getirildi.');
+                }
+
+            });
+        });
+
 
     });
 </script>

@@ -19,6 +19,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cache;
+use Psr\Container\NotFoundExceptionInterface;
 
 class ProductController extends ResourceController
 {
@@ -80,6 +81,29 @@ class ProductController extends ResourceController
         return view('products.detail')->with(
             ['product' => $product]
         );
+    }
+
+    /**
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function updateStatus(Ajax $ajax)
+    {
+        $productId = request()->get('productId');
+        $productStatus = request()->get('status');
+        //@todo user_id
+        $product = Products::query()
+            ->where('user_id', 1)
+            ->where('id', $productId)
+            ->first();
+
+        if (!$product) {
+            abort(404);
+        }
+
+        $product->isJobActive = (boolean)json_decode(strtolower($productStatus));
+        $product->save();
+        return $ajax->jsonResponse();
     }
 
     protected function track($id, Ajax $ajax): JsonResponse|RedirectResponse

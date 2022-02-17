@@ -17,6 +17,7 @@ class ProductsTransformer extends TransformerAbstract
      */
     public function transform(Products $products): array
     {
+        $isJobActive = $products->isJobActive ? 'checked' :'';
         return [
             'id' => $products->id,
             'name' => $products->name,
@@ -27,14 +28,15 @@ class ProductsTransformer extends TransformerAbstract
             'changeDiff' => '',
             'updated_at' => date('d.m.Y  H:i', strtotime($products->updated_at)),
             'urls' => [
-                'edit' => '',
-                'destroy' => ''
+                'destroy' => route('products.destroy', $products->id)
             ],
             'platform' => [
                 'name' => $products->platform->name ?? null
             ],
+            'status' => ' <input class="switch-size" data-size="xs" data-on="Aktif" data-off="Pasif" '.$isJobActive.' type="checkbox" data-content="'.$products->id.'" id="pr_'.$products->id.'">',
             'actions' => view('partials.datatable_action_buttons_products',['product' => $products])->render()
 
         ];
+
     }
 }

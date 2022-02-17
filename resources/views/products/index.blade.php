@@ -2,6 +2,28 @@
 @section('meta.title', 'Fiyat Takibi Yapılan Ürünler')
 @push('scripts')
     {{$dataTable->scripts()}}
+    <script>
+        $(document).ready(function () {
+
+            var tb = $('#product_categories-table').DataTable();
+
+            $("div.data_table_toolbar").html('{!! preg_replace( "/\r|\n/", "", trim(view('filters.products_index')) ); !!}');
+
+            $('#isJobActive').change(function () {
+                tb.draw();
+            });
+
+            $('.select2').select2({
+                placeholder: "Platform",
+                allowClear: true
+            });
+
+            $(document.body).on("change","#platform_id",function(){
+                tb.draw();
+            });
+
+        });
+    </script>
 @endpush
 @section('content')
 

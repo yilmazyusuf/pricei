@@ -12,11 +12,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductsRepository extends Products
 {
-    public static function get(): Collection
+    public static function list(): Builder
     {
         return Products::query()
-            ->orderBy('id', 'desc')
-            ->get();
+            ->orderBy('isJobActive', 'desc')
+            ->orderBy('id', 'desc');
     }
 
     public static function createOrUpdate(Platforms $platform, ScrapedProduct $product, ?array $params = null): Builder|Model
@@ -35,7 +35,8 @@ class ProductsRepository extends Products
             'currency' => $product->currency,
             'sellerId' => $product->seller->id,
             'sellerName' => $product->seller->name,
-            'sellerShopLink' => $product->seller->link
+            'sellerShopLink' => $product->seller->link,
+            'deleted_at' => null,
         ];
 
         if ($params && is_array($params) && count($params) > 0) {
@@ -43,7 +44,7 @@ class ProductsRepository extends Products
         }
 
         /* @var $savedProduct Products */
-        $savedProduct = Products::query()->updateOrCreate(
+        $savedProduct = Products::query()->withTrashed()->updateOrCreate(
             [
                 'user_id' => $productData['user_id'],
                 'platform_id' => $platform->id,

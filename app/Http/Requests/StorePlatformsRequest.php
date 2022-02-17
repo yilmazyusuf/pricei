@@ -24,7 +24,7 @@ class StorePlatformsRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:platforms,name',
+            'name' => "required|unique:platforms,name,NULL,id,deleted_at,NULL",
             'url' => 'required|url',
             'logo_url' => 'required',
         ];
