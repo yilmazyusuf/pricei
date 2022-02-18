@@ -18,6 +18,7 @@ use App\View\Components\Alert;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -68,19 +69,40 @@ class ProductController extends ResourceController
 
     protected function showDetail(int $id)
     {
+        $start = request('productPriceChartStart') ?? now()->subDays(30)->format('d.m.Y');
+        $end = request('productPriceChartEnd') ?? now()->format('d.m.Y');
 
         //@todo user_id
         $product = Products::query()
             ->where('user_id', 1)
             ->where('id', $id)
-            ->first();
+            ->with(['priceHistory' => function ($query) use ($start, $end) {
+                $startDateFormatted = Carbon::createFromFormat('d.m.Y', $start)->format('Y-m-d');
+                $endDateFormatted = Carbon::createFromFormat('d.m.Y', $end)->format('Y-m-d');
+                $query->where('trackedDate', '>=', $startDateFormatted)
+                    ->where('trackedDate', '<=', $endDateFormatted);
+            }])->first();
+
 
         if (!$product) {
             abort(404);
         }
+
         return view('products.detail')->with(
-            ['product' => $product]
+            [
+                'product' => $product,
+                'productPriceChart' => $this->getProductPriceHistoryChartData($product)
+            ]
         );
+    }
+
+    private function getProductPriceHistoryChartData($product)
+    {
+        $productChart = $product->priceHistory->sortDesc();
+
+        $xAxisData = $productChart->pluck('trackedDate')->reverse()->values();
+        $yAxisData = $productChart->pluck('price')->reverse()->values();
+        return ['xAxis' => $xAxisData, 'yAxis' => $yAxisData];
     }
 
     /**

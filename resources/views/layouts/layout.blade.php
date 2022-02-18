@@ -19,6 +19,7 @@
           href="{{ asset('storage/template/dist-assets/js/plugins/switch/css/bootstrap4-toggle.min.css') }}">
     <link rel="stylesheet" href="{{ asset('storage/template/dist-assets/css/plugins/toastr.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/file-manager/css/file-manager.css') }}">
+    <link rel="stylesheet" href="{{ asset('storage/template/dist-assets/js/plugins/datepicker/dist/css/bootstrap-datepicker.min.css') }}">
 
     <style rel="stylesheet">
         .dt-buttons {
@@ -109,6 +110,8 @@
         select.form-control {
             -webkit-appearance: button !important;
         }
+
+        .tab-content{padding-left: 0!important; padding-right: 0!important;}
     </style>
 </head>
 
@@ -138,6 +141,7 @@
 </div>
 
 <script src="{{asset('storage/template/dist-assets/js/plugins/jquery-3.3.1.min.js')}}"></script>
+<script src="{{ asset('storage/template/dist-assets/js/plugins/popper.min.js') }}"></script>
 <script src="{{asset('storage/template/dist-assets/js/plugins/bootstrap.min.js')}}"></script>
 <script src="{{asset('storage/template/dist-assets/js/plugins/bootstrap.bundle.min.js')}}"></script>
 <script src="{{asset('storage/template/dist-assets/js/plugins/perfect-scrollbar.min.js')}}"></script>
@@ -156,6 +160,11 @@
 
 <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
 <script src="{{ asset('vendor/file-manager/js/file-manager.js') }}"></script>
+<script src="{{ asset('storage/template/dist-assets/js/plugins/echarts.min.js') }}"></script>
+
+<script src="{{ asset('storage/template/dist-assets/js/plugins/datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ asset('storage/template/dist-assets/js/plugins/datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ asset('storage/template/dist-assets/js/plugins/datepicker/dist/locales/bootstrap-datepicker.tr.min.js') }}"></script>
 
 
 <script>

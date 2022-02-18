@@ -1,118 +1,19 @@
 @extends('layouts.layout')
 @section('meta.title', 'Fiyat Takibi Yapılan Ürünler')
 @push('scripts')
-    <script src="{{ asset('template/dist-assets/js/plugins/echarts.min.js') }}"></script>
-    <script src="{{ asset('template/dist-assets/js/plugins/calendar/moment.min.js') }}"></script>
 
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="{{ asset('template/dist-assets/js/plugins/calendar/tempus-dominus.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('template/dist-assets/js/plugins/calendar/tempus-dominus.css') }}">
-
+    <script src="{{ asset('storage/template/dist-assets/js/charts.js') }}"></script>
     <script>
-        const linkedPicker1Element = document.getElementById('linkedPickers1');
-        const linked1 = new tempusDominus.TempusDominus(linkedPicker1Element);
-        const linked2 = new tempusDominus.TempusDominus(document.getElementById('linkedPickers2'), {
-            useCurrent: false
+
+        $('#datepicker').datepicker({
+            format: "dd.mm.yyyy",
+            todayBtn: "linked",
+            language: "tr"
         });
 
-        //using event listeners
-        linkedPicker1Element.addEventListener(tempusDominus.Namespace.events.change, (e) => {
-            linked2.updateOptions({
-                restrictions: {
-                    minDate: e.detail.date
-                }
-            });
-        });
-
-        //using subscribe method
-        const subscription = linked2.subscribe(tempusDominus.Namespace.events.change, (e) => {
-            linked1.updateOptions({
-                restrictions: {
-                    maxDate: e.date
-                }
-            });
-        });
-
-        // event listener can be unsubscribed to:
-        // subscription.unsubscribe();
+        charts.productPriceChange({!! $productPriceChart['xAxis'] !!}, {!! $productPriceChart['yAxis'] !!})
 
 
-
-        var basicLineElem = document.getElementById('basicLine');
-
-        if (basicLineElem) {
-            var basicLine = echarts.init(basicLineElem);
-            basicLine.setOption({
-                tooltip: {
-                    show: true,
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'line',
-                        animation: true
-                    }
-                },
-                grid: {
-                    top: '10%',
-                    left: '40',
-                    right: '40',
-                    bottom: '40'
-                },
-                xAxis: {
-                    type: 'category',
-                    data: ['1/11/2018', '2/11/2018', '3/11/2018', '4/11/2018', '5/11/2018', '6/11/2018', '7/11/2018', '8/11/2018', '9/11/2018', '10/11/2018', '11/11/2018', '12/11/2018', '13/11/2018', '14/11/2018', '15/11/2018', '16/11/2018', '17/11/2018', '18/11/2018', '19/11/2018', '20/11/2018', '21/11/2018', '22/11/2018', '23/11/2018', '24/11/2018', '25/11/2018', '26/11/2018', '27/11/2018', '28/11/2018', '29/11/2018', '30/11/2018'],
-                    axisLine: {
-                        show: false
-                    },
-                    axisLabel: {
-                        show: true
-                    },
-                    axisTick: {
-                        show: false
-                    }
-                },
-                yAxis: {
-                    type: 'value',
-                    axisLine: {
-                        show: false
-                    },
-                    axisLabel: {
-                        show: true
-                    },
-                    axisTick: {
-                        show: false
-                    },
-                    splitLine: {
-                        show: true
-                    }
-                },
-                series: [{
-                    data: [400, 800, 325, 900, 700, 800, 400, 900, 800, 800, 300, 405, 500, 1100, 900, 1450, 1200, 1350, 1200, 1400, 1000, 800, 950, 705, 690, 921, 1020, 903, 852, 630],
-                    type: 'line',
-                    showSymbol: true,
-                    smooth: true,
-                    color: '#639',
-                    lineStyle: {
-                        opacity: 1,
-                        width: 2
-                    }
-                } // {
-                    //     data: [100, 400, 225, 800, 550, 860, 300, 400, 1200, 200, 1300, 1405, 900, 500, 1100, 850, 1200, 1150, 1200, 500, 800, 400, 750, 905, 690, 921, 1020, 903, 852, 630],
-                    //     type: 'line',
-                    //     showSymbol: true,
-                    //     smooth: true,
-                    //     lineStyle: {
-                    //         opacity: 1,
-                    //         width: 2,
-                    //     },
-                    // }
-                ]
-            });
-            $(window).on('resize', function () {
-                setTimeout(function () {
-                    basicLine.resize();
-                }, 500);
-            });
-        }
     </script>
 @endpush
 @section('content')
@@ -187,57 +88,23 @@
                                         <div class="col-md-12">
                                             <div class="card mb-4 o-hidden">
                                                 <div class="card-body">
-                                                    <div class="card-title">Son 30 Fiyat Değişimi</div>
+                                                    <form>
+                                                    <div class='col-sm-7 d-flex'>
+                                                        <div class="input-daterange input-group" id="datepicker">
+                                                            <input type="text" class="input-sm form-control"
+                                                                   name="productPriceChartStart" value="{{request('productPriceChartStart')??$productPriceChart['xAxis']->first()}}"/>
+                                                            <input type="text" class="input-sm form-control"
+                                                                   name="productPriceChartEnd" value="{{request('productPriceChartEnd')??$productPriceChart['xAxis']->last()}}"/>
+                                                            <div class="input-group-append"><span
+                                                                    class="input-group-text"><i
+                                                                        class="fa fa-calendar"></i></span></div>
 
-                                                    <div class='row'>
-                                                        <div class='col-sm-6'>
-                                                            <label for='linkedPickers1Input' class='form-label'>From</label>
-                                                            <div
-                                                                class='input-group log-event'
-                                                                id='linkedPickers1'
-                                                                data-td-target-input='nearest'
-                                                                data-td-target-toggle='nearest'
-                                                            >
-                                                                <input
-                                                                    id='linkedPickers1Input'
-                                                                    type='text'
-                                                                    class='form-control'
-                                                                    data-td-target='#linkedPickers1'
-                                                                />
-                                                                <span
-                                                                    class='input-group-text'
-                                                                    data-td-target='#linkedPickers1'
-                                                                    data-td-toggle='datetimepicker'
-                                                                >
-		   <span class='fas fa-calendar'></span>
-		 </span>
-                                                            </div>
                                                         </div>
-                                                        <div class='col-sm-6'>
-                                                            <label for='linkedPickers2Input' class='form-label'>To</label>
-                                                            <div
-                                                                class='input-group log-event'
-                                                                id='linkedPickers2'
-                                                                data-td-target-input='nearest'
-                                                                data-td-target-toggle='nearest'
-                                                            >
-                                                                <input
-                                                                    id='linkedPickers2Input'
-                                                                    type='text'
-                                                                    class='form-control'
-                                                                    data-td-target='#linkedPickers2'
-                                                                />
-                                                                <span
-                                                                    class='input-group-text'
-                                                                    data-td-target='#linkedPickers2'
-                                                                    data-td-toggle='datetimepicker'
-                                                                >
-		   <span class='fas fa-calendar'></span>
-		 </span>
-                                                            </div>
-                                                        </div>
+                                                        <button class="btn btn-outline-primary ml-2">Filitrele</button>
                                                     </div>
-                                                    <div id="basicLine" style="height: 300px;"></div>
+                                                    </form>
+
+                                                    <div id="products_chart" style="height: 300px;"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -337,12 +204,16 @@
                                                 <tr>
                                                     <td>10.01.2022</td>
                                                     <td>550 TL</td>
-                                                    <td>10% <i class="i-Turn-Down-2 text-14 text-danger font-weight-700"></i></td>
+                                                    <td>10% <i
+                                                            class="i-Turn-Down-2 text-14 text-danger font-weight-700"></i>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td>10.01.2022</td>
                                                     <td>550 TL</td>
-                                                    <td>10% <i class="i-Turn-Up-2 text-14 text-success font-weight-700"></i></td>
+                                                    <td>10% <i
+                                                            class="i-Turn-Up-2 text-14 text-success font-weight-700"></i>
+                                                    </td>
                                                 </tr>
                                                 </tbody>
                                             </table>

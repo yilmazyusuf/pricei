@@ -1,6 +1,6 @@
 <div class="main-header">
     <div class="logo">
-        <img src="/template/dist-assets/images/logo.png" alt="">
+        <img src="{{ asset('storage/template/dist-assets/images/logo.png') }}" alt="">
     </div>
     <div class="menu-toggle">
         <div></div>

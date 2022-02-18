@@ -81,7 +81,7 @@ class ProductsDataTable extends DataTable
             Column::make('name')->title('İsim')->width(300),
             //Column::make('realPrice')->title('Liste Fiyatı'),
             Column::make('price')->title('Satış Fiyatı'),
-            //Column::make('changeRatio')->title('Değişim Oranı'),
+            //Column::make('changeRatio')-a>title('Değişim Oranı'),
             //Column::make('changeDiff')->title('Değişim Farkı'),
             Column::make('platform.name', 'platform.name')->title('Platform'),
             //Column::make('updated_at', 'updated_at')->title('Güncelleme'),

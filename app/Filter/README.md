@@ -128,3 +128,8 @@ Benzer paket : https://github.com/Kyslik/laravel-filterable
 https://github.com/spatie/laravel-query-builder
 https://spatie.be/docs/laravel-query-builder/v5/introduction
 ```
+query builder da birden fazla aynı relation var ise sonuncu güncel olanı alıyor.
+return $query->with(['priceHistory' => function ($query) use ($historyStartDate) {
+$startDateFormatted = Carbon::createFromFormat('d.m.Y', $historyStartDate)->format('Y-m-d');
+$query->where('trackedDate', '>=', $startDateFormatted);
+}]);
