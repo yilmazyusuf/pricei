@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Platforms;
-use App\Models\PriceHistories;
 use App\Models\Products;
 use App\Scraper\Dto\ScrapedProduct;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,9 +18,13 @@ class ProductsRepository extends Products
             ->orderBy('id', 'desc');
     }
 
-    public static function createOrUpdate(Platforms $platform, ScrapedProduct $product, ?array $params = null): Builder|Model
+    public static function createOrUpdate(
+        Platforms      $platform,
+        ScrapedProduct $product,
+        ?array         $params,
+        string         $trackedDate
+    ): Builder|Model
     {
-        $trackedDate = date('Y-m-d');
         $productData = [
             'user_id' => 1, //@todo user_id
             'platform_id' => $platform->id,
@@ -33,15 +36,16 @@ class ProductsRepository extends Products
             'realPrice' => $product->price->realPrice,
             'sellingPrice' => $product->price->sellingPrice,
             'currency' => $product->currency,
-            'sellerId' => $product->seller->id,
-            'sellerName' => $product->seller->name,
-            'sellerShopLink' => $product->seller->link,
+            'sellerId' => $product->seller->id ?? null,
+            'sellerName' => $product->seller->name ?? null,
+            'sellerShopLink' => $product->seller->link ?? null,
             'deleted_at' => null,
         ];
 
         if ($params && is_array($params) && count($params) > 0) {
             $productData = array_merge($productData, $params);
         }
+
 
         /* @var $savedProduct Products */
         $savedProduct = Products::query()->withTrashed()->updateOrCreate(
@@ -54,60 +58,93 @@ class ProductsRepository extends Products
         );
 
         //Price History for Product
+        $productPriceData = [
+            'price' => $productData['price'],
+            'realPrice' => $productData['realPrice'],
+            'trackedDate' => $trackedDate,
+        ];
+
+        //Check Price Changed
+        /* @var $lastProductHistory Products */
+        $lastProductHistory = $savedProduct->priceHistory()
+            ->latest('trackedDate')
+            ->first();
+        if ($lastProductHistory) {
+            if ($lastProductHistory->price != $productData['price']) {
+                $productPriceData['pricePreviousDiff'] = ($productData['price'] - $lastProductHistory->price);
+                $productPriceData['pricePreviousPercentDiff'] = priceDiffPercent($lastProductHistory->price, $productData['price']);
+            }
+        }
+
         $savedProduct->priceHistory()->updateOrCreate(
             [
                 'products_id' => $savedProduct->id,
                 'trackedDate' => $trackedDate,
             ],
-            [
-                'price' => $productData['price'],
-                'realPrice' => $productData['realPrice'],
-                'trackedDate' => $trackedDate,
-            ]
+            $productPriceData
         );
 
         /* @var $vendor ScrapedProduct */
         //@todo silinmiş satıcıları bulup işaretle
-        foreach ($product->competingVendors as $vendor) {
-            $vendorParams = [
-                'url' => $vendor->url,
-                'shopProductId' => $vendor->shopProductId,
-                'price' => $vendor->price->price,
-                'realPrice' => $vendor->price->realPrice,
-                'sellerId' => $vendor->seller->id,
-                'sellerName' => $vendor->seller->name,
-                'sellerShopLink' => $vendor->seller->link,
-            ];
+        if ($product->competingVendors && count($product->competingVendors) > 0) {
+            foreach ($product->competingVendors as $vendor) {
+                $vendorParams = [
+                    'url' => $vendor->url ?? null,
+                    'shopProductId' => $vendor->shopProductId ?? null,
+                    'price' => $vendor->price->price,
+                    'realPrice' => $vendor->price->realPrice ?? null,
+                    'sellerId' => $vendor->seller->id ?? null,
+                    'sellerName' => $vendor->seller->name ?? null,
+                    'sellerShopLink' => $vendor->seller->link ?? null,
+                ];
 
-            $updateConditions = [];
-            if ($vendor->seller->id) {
-                $updateConditions['sellerId'] = $vendor->seller->id;
-            }
+                $updateConditions = [];
+                if ($vendor->seller->id) {
+                    $updateConditions['sellerId'] = $vendor->seller->id;
+                }
 
-            if ($vendor->seller->name) {
-                $updateConditions['sellerName'] = $vendor->seller->name;
-            }
+                if ($vendor->seller->name) {
+                    $updateConditions['sellerName'] = $vendor->seller->name;
+                }
 
-            if (count($updateConditions) > 0) {
-                $savedVendor = $savedProduct->vendors()->updateOrCreate(
-                    $updateConditions,
-                    $vendorParams
-                );
+                if (count($updateConditions) > 0) {
+                    /* @var $savedVendor Products */
+                    $savedVendor = $savedProduct->vendors()->updateOrCreate(
+                        $updateConditions,
+                        $vendorParams
+                    );
 
-                //Price History for Vendor
-                $savedVendor->priceHistory()->updateOrCreate(
-                    [
-                        'product_vendors_id' => $savedVendor->id,
-                        'trackedDate' => $trackedDate,
-                    ],
-                    [
+                    $vendorPriceData = [
                         'price' => $vendorParams['price'],
                         'realPrice' => $vendorParams['realPrice'],
                         'trackedDate' => $trackedDate,
-                    ]
-                );
+                    ];
+
+                    //Check Price Changed
+                    /* @var $lastVendorHistory Products */
+                    $lastVendorHistory = $savedVendor->priceHistory()
+                        ->latest('trackedDate')
+                        ->first();
+
+                    if ($lastVendorHistory) {
+                        if ($lastVendorHistory->price != $productData['price']) {
+                            $vendorPriceData['pricePreviousDiff'] = ($vendorParams['price'] - $lastVendorHistory->price);
+                            $vendorPriceData['pricePreviousPercentDiff'] = priceDiffPercent($lastVendorHistory->price, $vendorParams['price']);
+                        }
+                    }
+
+                    //Price History for Vendor
+                    $savedVendor->priceHistory()->updateOrCreate(
+                        [
+                            'product_vendors_id' => $savedVendor->id,
+                            'trackedDate' => $trackedDate,
+                        ],
+                        $vendorPriceData
+                    );
+                }
             }
         }
+
 
         return $savedProduct;
     }

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\FileQueryCacheable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -12,12 +11,15 @@ use Illuminate\Support\Carbon;
  * @property integer $product_vendors_id
  * @property float $price
  * @property float $realPrice
+ * @property float $pricePreviousDiff
+ * @property float $pricePreviousPercentDiff
  * @property string $trackedDate
  */
 class PriceHistories extends Model
 {
     use HasFactory;
-    use FileQueryCacheable;
+
+    //use FileQueryCacheable;
     public $timestamps = false;
     protected $casts = [
         'trackedDate' => 'datetime:Y-m-d',
@@ -32,6 +34,27 @@ class PriceHistories extends Model
     public function getTrackedDateAttribute($value): string
     {
         return Carbon::parse($value)->format('d.m.Y');
+    }
+
+    public function getPriceDiffWithIconAttribute()
+    {
+        if (!$this->pricePreviousDiff) {
+            return;
+        }
+        return upDownIcon($this->pricePreviousDiff) .
+            ' '. priceWithCurrency($this->pricePreviousDiff);
+
+    }
+
+    public function getPriceDiffPercentWithIconAttribute()
+    {
+        if (!$this->pricePreviousPercentDiff) {
+            return;
+        }
+
+        return upDownIcon($this->pricePreviousPercentDiff).
+            ' '. $this->pricePreviousPercentDiff . ' %';
+
     }
 
     protected function getCacheBaseTags(): array

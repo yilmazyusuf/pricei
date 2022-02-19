@@ -18,10 +18,14 @@ class CreatePriceHistoriesTable extends Migration
             $table->integer('products_id')->nullable();
             $table->integer('product_vendors_id')->nullable();
             $table->float('price');
+            $table->float('pricePreviousDiff')->nullable();
+            $table->float('pricePreviousPercentDiff')->nullable();
             $table->float('realPrice')->nullable();
             $table->date('trackedDate');
 
             $table->index('products_id');
+            $table->index('pricePreviousDiff');
+            $table->index('pricePreviousPercentDiff');
             $table->index('product_vendors_id');
             $table->index('trackedDate');
         });

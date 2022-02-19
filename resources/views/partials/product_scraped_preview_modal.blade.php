@@ -14,9 +14,9 @@
                             <div class="avatar mb-3" style="width: auto; height: auto">
                                 <img src="{{$product->imageUrl}}" alt="" width="150"></div>
                             @if($product->price && $product->realPrice > $product->price)
-                                <del class="m-0">{{$product->realPrice}} TL</del>
+                                <del class="m-0">{{priceWithCurrency($product->realPrice)}}</del>
                             @endif
-                            <h2 class="m-0">{{$product->price}} TL</h2>
+                            <h2 class="m-0">{{priceWithCurrency($product->price)}}</h2>
 
                             <p class="mt-0">{{$product->sellerName}}</p>
                             <form class="ajax" action="{{route('products.track',[$product->id])}}" method="post">
@@ -36,12 +36,15 @@
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         {{$vendor->sellerName}}
                                         @if($vendor->realPrice && $vendor->price < $vendor->realPrice)
-                                            <del style="margin-left: auto;margin-right: 5px;">{{$vendor->realPrice}} TL
+                                            <del style="margin-left: auto;margin-right: 5px;">
+                                                {{priceWithCurrency($vendor->realPrice)}}
                                             </del>
                                         @endif
                                         <h4>
                                         <span
-                                            class="badge badge-pill badge-light">{{$vendor->price}} TL</span>
+                                            class="badge badge-pill badge-light">
+                                            {{priceWithCurrency($vendor->price)}}
+                                        </span>
                                         </h4>
                                     </li>
                                 @endforeach

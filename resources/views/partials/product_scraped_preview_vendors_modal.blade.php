@@ -31,8 +31,8 @@
                                             <p class="text-muted mt-0 mb-1 text-10">{{$minPriceVendor->sellerName}}</p>
                                             <p class="lead text-primary text-24 mb-0">
 
-                                                {{(int)$minPriceVendor->price}}
-                                                TL</p>
+                                                {{priceWithCurrency((int)$minPriceVendor->price)}}
+                                                </p>
                                         </div>
                                     </div>
                                 </div>
@@ -44,8 +44,8 @@
                                             <p class="text-muted mt-0 mb-0">En Yüksek Fiyat</p>
                                             <p class="text-muted mt-0 mb-1 text-10">{{$maxPriceVendor->sellerName}}</p>
                                             <p class="lead text-primary text-24 mb-0">
-                                                {{(int)$maxPriceVendor->price}}
-                                                TL</p>
+                                                {{priceWithCurrency((int)$maxPriceVendor->price)}}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -56,8 +56,8 @@
                                         <div class="content">
                                             <p class="text-muted mt-2 mb-0">Ortalama Fiyat</p>
                                             <p class="lead text-primary text-24 mb-2">
-                                                {{(int)$product->vendors->median('price')}}
-                                                TL</p>
+                                                {{priceWithCurrency((int)$product->vendors->median('price'))}}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -90,9 +90,9 @@
                                         <div class="avatar mb-3" style="width: auto; height: auto">
                                             <img src="{{$product->imageUrl}}" alt="" height="175"></div>
                                         @if($product->price && $product->realPrice > $product->price)
-                                            <del class="m-0">{{$product->realPrice}} TL</del>
+                                            <del class="m-0">{{priceWithCurrency($product->realPrice)}}</del>
                                         @endif
-                                        <h2 class="m-0">{{$product->price}} TL</h2>
+                                        <h2 class="m-0">{{priceWithCurrency($product->price)}}</h2>
 
                                         <p class="mt-0">{{$product->sellerName}}</p>
 
@@ -117,13 +117,12 @@
                                                         <td>{{$vendor->sellerName}}</td>
                                                         <td>
                                                             @if($vendor->realPrice && $vendor->price < $vendor->realPrice)
-                                                                <del
-                                                                    style="margin-left: auto;margin-right: 5px;">{{$vendor->realPrice}}
-                                                                    TL
+                                                                <del style="margin-left: auto;margin-right: 5px;">
+                                                                    {{priceWithCurrency($vendor->realPrice)}}
                                                                 </del>
                                                             @endif
                                                         </td>
-                                                        <td>{{$vendor->price}} TL</td>
+                                                        <td>{{priceWithCurrency($vendor->price)}}</td>
                                                     </tr>
                                                 @endforeach
                                                 </tbody>

@@ -56,7 +56,7 @@ class ScrapeProductsCommand extends Command
                 $productParams['lastJobDate'] = now();
                 $productParams['nextJobDate'] = $nextJobDate;
 
-                ProductsRepository::createOrUpdate($product->platform, $scrapedProduct, $productParams);
+                ProductsRepository::createOrUpdate($product->platform, $scrapedProduct, $productParams, date('Y-m-d'));
 
             } catch (\Exception $exception) {
                 $product->lasJobStatus = false;

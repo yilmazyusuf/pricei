@@ -33,7 +33,7 @@
         }
 
 
-
+        .nav-tabs .nav-item .nav-link{padding: .5rem !important;}
         .select2-container--default .select2-selection--single {
             border: 1px solid #ced4da !important;
         }
@@ -176,6 +176,13 @@
             timeOut: 2e3
         });
     }
+    function toasterError(message) {
+        toastr.error(message, {
+            showMethod: "slideDown",
+            hideMethod: "slideUp",
+            timeOut: 2e3
+        });
+    }
 
     $(document).ready(function () {
 
@@ -232,6 +239,11 @@
             });
         });
 
+        $('#datepicker_product_price_list').datepicker({
+            format: "dd.mm.yyyy",
+            todayBtn: "linked",
+            language: "tr"
+        });
 
         $('.switch-size').bootstrapToggle();
         $( ".switch-size" ).on( "change", function(event) {

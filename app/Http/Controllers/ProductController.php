@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\ProductsDataTable;
+use App\DataTables\ProductsPriceHistoryDataTable;
+use App\Http\Filters\PriceHistoryFilter;
+use App\Http\Filters\ProductsPriceHistoryChartFilter;
 use App\Http\Requests\ScrapeProductRequest;
 use App\Http\Requests\StoreProductCategoriesRequest;
 use App\Http\Requests\UpdateProductCategoriesRequest;
 use App\Models\Platforms;
+use App\Models\PriceHistories;
 use App\Models\Products;
 use App\Repositories\PlatformsRepository;
 use App\Repositories\ProductsRepository;
@@ -18,7 +22,6 @@ use App\View\Components\Alert;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -52,8 +55,20 @@ class ProductController extends ResourceController
             return;
         }
 
-        $product = $this->cacheScrapedProduct($url, $platform);
-        $savedProduct = ProductsRepository::createOrUpdate($platform, $product);
+        try {
+            $product = $this->cacheScrapedProduct($url, $platform);
+        } catch (\Exception $exception) {
+            //@todo log exception
+            return $ajax->runJavascript("toasterError('Ürün bilgileri okunamadı.');")
+                ->jsonResponse();
+        }
+
+        $savedProduct = ProductsRepository::createOrUpdate(
+            $platform,
+            $product,
+            null,
+            date('Y-m-d')
+        );
 
         $viewData = ['product' => $savedProduct];
 
@@ -69,36 +84,44 @@ class ProductController extends ResourceController
 
     protected function showDetail(int $id)
     {
-        $start = request('productPriceChartStart') ?? now()->subDays(30)->format('d.m.Y');
-        $end = request('productPriceChartEnd') ?? now()->format('d.m.Y');
-
         //@todo user_id
         $product = Products::query()
             ->where('user_id', 1)
             ->where('id', $id)
-            ->with(['priceHistory' => function ($query) use ($start, $end) {
-                $startDateFormatted = Carbon::createFromFormat('d.m.Y', $start)->format('Y-m-d');
-                $endDateFormatted = Carbon::createFromFormat('d.m.Y', $end)->format('Y-m-d');
-                $query->where('trackedDate', '>=', $startDateFormatted)
-                    ->where('trackedDate', '<=', $endDateFormatted);
-            }])->first();
-
+            ->first();
 
         if (!$product) {
             abort(404);
         }
 
+
+        $priceHistory = PriceHistories::query()
+            ->where('products_id', $product->id)
+            ->orderBy('id', 'desc');
+
+        $chartFilter = new PriceHistoryFilter($priceHistory);
+        $filteredHistory = $chartFilter->filter()->get();
+
+        $productHistoryDataTable = new ProductsPriceHistoryDataTable($filteredHistory);
+
+
+        if (request()->has('priceHistoryDataTable')) {
+            return $productHistoryDataTable->render('');
+        }
+
         return view('products.detail')->with(
             [
                 'product' => $product,
-                'productPriceChart' => $this->getProductPriceHistoryChartData($product)
+                'productPriceChart' => $this->getProductPriceHistoryChartData($filteredHistory),
+                'lastPriceUpdate' => $product->lastPriceUpdate,
+                'productHistoryDataTable' => $productHistoryDataTable
             ]
         );
     }
 
-    private function getProductPriceHistoryChartData($product)
+    private function getProductPriceHistoryChartData($priceHistory)
     {
-        $productChart = $product->priceHistory->sortDesc();
+        $productChart = $priceHistory->sortDesc();
 
         $xAxisData = $productChart->pluck('trackedDate')->reverse()->values();
         $yAxisData = $productChart->pluck('price')->reverse()->values();

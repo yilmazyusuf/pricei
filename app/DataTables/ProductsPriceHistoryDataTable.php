@@ -3,6 +3,8 @@
 namespace App\DataTables;
 
 use App\Http\Filters\ProductsFilter;
+use App\Http\Filters\ProductsPriceHistoryChartFilter;
+use App\Http\Transformers\ProductsPriceHistoryTransformer;
 use App\Http\Transformers\ProductsTransformer;
 use App\Repositories\ProductsRepository;
 use Exception;
@@ -13,8 +15,14 @@ use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class ProductsDataTable extends DataTable
+class ProductsPriceHistoryDataTable extends DataTable
 {
+
+    public function __construct(private Collection $collection)
+    {
+    }
+
+    protected $dataTableVariable = 'priceHistoryDataTable';
     /**
      * Build DataTable class.
      *
@@ -26,17 +34,13 @@ class ProductsDataTable extends DataTable
     {
         return datatables()
             ->of($query)
-            ->setTransformer(new ProductsTransformer());
+            ->setTransformer(new ProductsPriceHistoryTransformer());
     }
 
 
     public function query(): Collection
     {
-        $products = ProductsRepository::list();
-        $filter = new ProductsFilter($products);
-        $filtered = $filter->filter()->get();
-
-        return $filtered;
+        return $this->collection;
     }
 
     /**
@@ -47,18 +51,14 @@ class ProductsDataTable extends DataTable
     public function html(): Builder
     {
         return $this->builder()
-            ->setTableId('product_categories-table')
+            ->setTableId('product_price_history-table')
             ->orders([])
             ->columns($this->getColumns())
             ->minifiedAjax('', null, [
-                'isJobActive' => "$('#isJobActive').val()",
-                'platform_id' => "$('#platform_id').val()"
+                'priceHistoryDataTable' => 1
             ])
-            ->dom('Bfr<"data_table_toolbar">tip')
+            ->dom('Bfrtip')
             ->buttons(
-                Button::make('create')
-                    ->text('<i class="fa fa-plus"></i> Ürün Ekle')
-                    ->className('btn-primary'),
                 Button::make('reload')->className('btn-raised btn-raised-secondary'),
                 Button::make('print')->className('btn-raised btn-raised-secondary'),
                 Button::make('export')->className('btn-raised btn-raised-secondary')
@@ -73,29 +73,11 @@ class ProductsDataTable extends DataTable
     protected function getColumns(): array
     {
         return [
-            Column::make('imageUrl')
-                ->title('')
-                ->searchable(false)
-                ->orderable(false),
-            Column::make('name')->title('İsim')->width(300),
-            //Column::make('realPrice')->title('Liste Fiyatı'),
+            Column::make('trackedDate')->title('Tarih'),
+            Column::make('realPrice')->title('Liste Fiyatı'),
             Column::make('price')->title('Satış Fiyatı'),
-            //Column::make('changeRatio')-a>title('Değişim Oranı'),
-            //Column::make('changeDiff')->title('Değişim Farkı'),
-            Column::make('platform.name', 'platform.name')->title('Platform'),
-            //Column::make('updated_at', 'updated_at')->title('Güncelleme'),
-            Column::make('status', 'status')
-                ->title('Fiyat Takip')
-                ->orderable(false)
-                ->searchable(false)
-                ->printable(false),
-            Column::make('actions', 'actions')
-                ->title('#')
-                ->orderable(false)
-                ->searchable(false)
-                ->printable(false)
-
-
+            Column::make('changePercent')->title('Değişim Oranı'),
+            Column::make('changeDiff')->title('Değişim Farkı'),
         ];
     }
 
@@ -106,6 +88,6 @@ class ProductsDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'ProductCategories_' . date('YmdHis');
+        return 'ProductPriceHistories_' . date('YmdHis');
     }
 }

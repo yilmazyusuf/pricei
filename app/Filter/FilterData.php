@@ -90,7 +90,6 @@ class FilterData
             return;
         }
 
-dd($attributeName);
         if ($this->isClosure($method) === true) {
             $source = call_user_func_array($method, [$filterSource->getSource(), $attributeValue]);
         } else {

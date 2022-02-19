@@ -71,5 +71,17 @@ class Products extends Model
         return $this->hasMany(PriceHistories::class);
     }
 
-
+    /**
+     * Get the user's first name.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getLastPriceUpdateAttribute()
+    {
+        return $this->priceHistory()
+            ->whereNotNull('pricePreviousDiff')
+            ->orderBy('id', 'desc')
+            ->first();
+    }
 }
