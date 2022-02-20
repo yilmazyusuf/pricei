@@ -86,6 +86,7 @@ class ProductController extends ResourceController
     {
         //@todo user_id
         $product = Products::query()
+            ->with('vendors', )
             ->where('user_id', 1)
             ->where('id', $id)
             ->first();

@@ -73,7 +73,7 @@ if (!function_exists('settings')) {
             if (!$price) {
                 return '';
             }
-            return priceWithCurrency($price);
+            return $price. ' TL';
 
         }
 
