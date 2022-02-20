@@ -52,6 +52,13 @@
                 <li class="nav-item">
                     <a class="nav-link" id="vendors-icon-tab" data-toggle="tab" href="#tab_vendors" role="tab"
                        aria-controls="tab_vendors" aria-selected="false">
+                        <i class="nav-icon i-Clothing-Store mr-1"></i> Güncel Fiyat(Mağaza,platform, ortalama)
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" id="vendors-icon-tab" data-toggle="tab" href="#tab_vendors" role="tab"
+                       aria-controls="tab_vendors" aria-selected="false">
                         <i class="nav-icon i-Clothing-Store mr-1"></i> Diğer Mağazalar
                     </a>
                 </li>

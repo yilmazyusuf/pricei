@@ -79,6 +79,7 @@
                 </div>
                 <div class="col-md-8">
 
+                    En Düşük, En Yüksek Ortalama Mağaza fiyatlarını göster
                     <ul class="nav nav-tabs" id="priceHistoryTab" role="tablist">
                         <li class="nav-item"><a class="nav-link active" id="vendors-chart-pill" data-toggle="tab"
                                                 href="#chart_tab_vendors" role="tab" aria-controls="chart_tab_vendors"
