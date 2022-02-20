@@ -88,7 +88,7 @@
         <div class="col-md-8">
             <div class="card mb-4 o-hidden">
                 <div class="card-body">
-                    <h5 class="card-title mb-3">Ürün Fiyat Değişimleri</h5>
+                    <h5 class="card-title mb-3">Ürün Fiyat Değişimleri (Buraya Güncel Fiyatlar gelsin, ortalama en düşük en yüksek, günlükler birleşsin)</h5>
                     <form>
                         <div class="form-group row">
 
