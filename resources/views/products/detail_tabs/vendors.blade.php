@@ -25,10 +25,10 @@
                                      id="datepicker_product_price_chart">
                                     <input type="text" readonly class="input-sm form-control"
                                            name="productPriceChartStart"
-                                           value="{{request('productPriceChartStart')??$productPriceChart['xAxis']->first()}}"/>
+                                           value="{{request('productPriceChartStart')}}"/>
                                     <input type="text" readonly class="input-sm form-control"
                                            name="productPriceChartEnd"
-                                           value="{{request('productPriceChartEnd')??$productPriceChart['xAxis']->last()}}"/>
+                                           value="{{request('productPriceChartEnd')}}"/>
                                     <div class="input-group-append"><span
                                             class="input-group-text"><i
                                                 class="fa fa-calendar"></i></span></div>
@@ -78,8 +78,6 @@
                     </ul>
                 </div>
                 <div class="col-md-8">
-
-                    En Düşük, En Yüksek Ortalama Mağaza fiyatlarını göster
                     <ul class="nav nav-tabs" id="priceHistoryTab" role="tablist">
                         <li class="nav-item"><a class="nav-link active" id="vendors-chart-pill" data-toggle="tab"
                                                 href="#chart_tab_vendors" role="tab" aria-controls="chart_tab_vendors"

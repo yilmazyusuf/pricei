@@ -36,13 +36,23 @@ class PriceHistories extends Model
         return Carbon::parse($value)->format('d.m.Y');
     }
 
+    public function vendor()
+    {
+        return $this->belongsTo(ProductVendors::class, 'product_vendors_id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Products::class, 'products_id');
+    }
+
     public function getPriceDiffWithIconAttribute()
     {
         if (!$this->pricePreviousDiff) {
             return;
         }
         return upDownIcon($this->pricePreviousDiff) .
-            ' '. priceWithCurrency($this->pricePreviousDiff);
+            ' ' . priceWithCurrency($this->pricePreviousDiff);
 
     }
 
@@ -52,8 +62,8 @@ class PriceHistories extends Model
             return;
         }
 
-        return upDownIcon($this->pricePreviousPercentDiff).
-            ' '. $this->pricePreviousPercentDiff . ' %';
+        return upDownIcon($this->pricePreviousPercentDiff) .
+            ' ' . $this->pricePreviousPercentDiff . ' %';
 
     }
 

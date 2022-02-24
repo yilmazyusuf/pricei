@@ -86,7 +86,7 @@ class ProductController extends ResourceController
     {
         //@todo user_id
         $product = Products::query()
-            ->with('vendors', )
+            ->with('vendors',)
             ->where('user_id', 1)
             ->where('id', $id)
             ->first();
@@ -95,9 +95,11 @@ class ProductController extends ResourceController
             abort(404);
         }
 
-
+        $productVendorIds = $product->vendors->pluck('id')->toArray();
         $priceHistory = PriceHistories::query()
+            ->with(['vendor', 'product'])
             ->where('products_id', $product->id)
+            ->orWhereIn('product_vendors_id', $productVendorIds)
             ->orderBy('id', 'desc');
 
         $chartFilter = new PriceHistoryFilter($priceHistory);
@@ -105,7 +107,7 @@ class ProductController extends ResourceController
 
         $productHistoryDataTable = new ProductsPriceHistoryDataTable($filteredHistory);
 
-
+        //dd($this->getProductPriceHistoryChartData($filteredHistory));
         if (request()->has('priceHistoryDataTable')) {
             return $productHistoryDataTable->render('');
         }
@@ -120,13 +122,38 @@ class ProductController extends ResourceController
         );
     }
 
-    private function getProductPriceHistoryChartData($priceHistory)
+    private function getProductPriceHistoryChartData($productChart)
     {
-        $productChart = $priceHistory->sortDesc();
 
-        $xAxisData = $productChart->pluck('trackedDate')->reverse()->values();
-        $yAxisData = $productChart->pluck('price')->reverse()->values();
-        return ['xAxis' => $xAxisData, 'yAxis' => $yAxisData];
+        $grouped = $productChart->sortBy('trackedDate')->groupBy('trackedDate');
+        $vendors = [];
+        $dimensions = ['date'];
+        $series = [];
+        foreach ($grouped as $date => $histories) {
+            $vendor = [];
+            $vendor['date'] = $date;
+            foreach ($histories as $history) {
+                if ($history->product_vendors_id) {
+                    $vendor[$history->vendor->sellerName] = $history->price;
+                    array_push($dimensions, $history->vendor->sellerName);
+                }
+
+                if ($history->products_id) {
+                    $vendor[$history->product->sellerName] = $history->price;
+                    array_push($dimensions, $history->product->sellerName);
+                }
+
+                array_push($series, ['type' => 'line','smooth' => true]);
+            }
+            $vendors[] = $vendor;
+        }
+
+
+        return [
+            'source' => collect($vendors)->toJson(),
+            'dimensions' => collect($dimensions)->unique()->toJson(),
+            'series' => collect($series)->toJson(),
+        ];
     }
 
     /**

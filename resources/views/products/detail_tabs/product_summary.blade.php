@@ -1,3 +1,7 @@
+@php
+    $minPriceVendor = $product->vendors->sortBy('price')->first();
+    $maxPriceVendor = $product->vendors->sortByDesc('price')->first();
+@endphp
 @push('scripts')
     {{$productHistoryDataTable->html()->scripts()}};
     <script>
@@ -23,6 +27,11 @@
 
     </script>
 @endpush
+<style>
+    .card-icon-bg .card-body .content{
+        max-width: none;!important;
+    }
+</style>
 <div class="tab-pane fade show active" id="tab_home" role="tabpanel"
      aria-labelledby="home-icon-tab">
     <div class="row">
@@ -86,86 +95,86 @@
             </div>
         </div>
         <div class="col-md-8">
-            <div class="card mb-4 o-hidden">
-                <div class="card-body">
-                    <h5 class="card-title mb-3">Ürün Fiyat Değişimleri (Buraya Güncel Fiyatlar gelsin, ortalama en düşük en yüksek, günlükler birleşsin)</h5>
-                    <form>
-                        <div class="form-group row">
 
-                            <div class='col-sm-6'>
-                                <div class="input-daterange input-group"
-                                     id="datepicker_product_price_chart">
-                                    <input type="text"  readonly class="input-sm form-control"
-                                           name="productPriceChartStart"
-                                           value="{{request('productPriceChartStart')??$productPriceChart['xAxis']->first()}}"/>
-                                    <input type="text"  readonly class="input-sm form-control"
-                                           name="productPriceChartEnd"
-                                           value="{{request('productPriceChartEnd')??$productPriceChart['xAxis']->last()}}"/>
-                                    <div class="input-group-append"><span
-                                            class="input-group-text"><i
-                                                class="fa fa-calendar"></i></span></div>
-                                    <button class="btn btn-outline-primary ml-2">Filitrele
-                                    </button>
+            @if($minPriceVendor)
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card card-icon-bg card-icon-bg-primary o-hidden">
+                        <div class="card-body text-center"><i class="i-Down"></i>
+                            <div class="content">
+                                <p class="text-muted mt-0 mb-0">En Düşük Fiyat</p>
+                                <p class="text-muted mt-0 mb-1 text-10">{{$minPriceVendor->sellerName}}</p>
+                                <p class="lead text-primary text-24 mb-0">
 
-                                </div>
+                                    {{priceWithCurrency((int)$minPriceVendor->price)}}
+                                </p>
                             </div>
                         </div>
-                        <fieldset class="form-group row mb-4">
-
-
-                            <div class="col-sm-12">
-                                <div class="form-check pl-0">
-                                    <label class="checkbox checkbox-primary">
-                                        <input type="checkbox" checked="checked"/><span>Fiyat artışı olan günleri göster</span><span
-                                            class="checkmark"></span>
-                                    </label>
-
-                                </div>
-                                <div class="form-check pl-0">
-                                    <label class="checkbox checkbox-primary">
-                                        <input type="checkbox" checked="checked"/><span>Fiyat düşüşü olan  günleri göster</span><span
-                                            class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="form-check pl-0">
-                                    <label class="checkbox checkbox-primary">
-                                        <input type="checkbox"
-                                               checked="checked"/><span>Tüm günleri göster</span><span
-                                            class="checkmark"></span>
-                                    </label>
-                                </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-icon-bg card-icon-bg-primary o-hidden">
+                        <div class="card-body text-center"><i class="i-Up"></i>
+                            <div class="content">
+                                <p class="text-muted mt-0 mb-0">En Yüksek Fiyat</p>
+                                <p class="text-muted mt-0 mb-1 text-10">{{$maxPriceVendor->sellerName}}</p>
+                                <p class="lead text-primary text-24 mb-0">
+                                    {{priceWithCurrency((int)$maxPriceVendor->price)}}
+                                </p>
                             </div>
-
-                        </fieldset>
-                    </form>
-
-
-                    <ul class="nav nav-tabs" id="priceHistoryTab" role="tablist">
-                        <li class="nav-item"><a class="nav-link active" id="home-icon-pill" data-toggle="tab"
-                                                href="#chart_tab" role="tab" aria-controls="chart_tab"
-                                                aria-selected="true"><i class="nav-icon i-Line-Chart mr-1"></i>Grafik</a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" id="profile-icon-pill" data-toggle="tab"
-                                                href="#list_tab" role="tab" aria-controls="list_tab"
-                                                aria-selected="false"><i class="nav-icon i-Receipt mr-1"></i>
-                                Liste</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content" id="myPillTabContent">
-                        <div class="tab-pane fade show active" id="chart_tab" role="tabpanel"
-                             aria-labelledby="home-icon-pill">
-                            <div id="products_chart" style="height: 400px;"></div>
-
                         </div>
-                        <div class="tab-pane fade" id="list_tab" role="tabpanel"
-                             aria-labelledby="profile-icon-pill">
-                            <div class="table-responsive">
-                                {{$productHistoryDataTable->html()->table(['class' => 'table table-bordered table-hover w-100'])}}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-icon-bg card-icon-bg-primary o-hidden">
+                        <div class="card-body text-center"><i class="i-Money-2"></i>
+                            <div class="content">
+                                <p class="text-muted mt-2 mb-0">Ortalama Fiyat</p>
+                                <p class="lead text-primary text-24 mb-2">
+                                    {{priceWithCurrency((int)$product->vendors->median('price'))}}
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="row mb-4">
+
+                <div class="col-md-12">
+                    <div class="card card-profile-1 mb-0">
+                        <div class="card-body p-0">
+                            <div class="tabl
+                            e-responsive">
+                                <table class="table table-hover w-100">
+                                    <thead>
+                                    <tr>
+                                        <th>Mağaza</th>
+                                        <th>Liste Fiyatı</th>
+                                        <th>Satış Fiyatı</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($product->vendors->sortBy('price') as $vendor)
+                                        <tr>
+                                            <td>{{$vendor->sellerName}}</td>
+                                            <td>
+                                                @if($vendor->realPrice && $vendor->price < $vendor->realPrice)
+                                                    <del style="margin-left: auto;margin-right: 5px;">
+                                                        {{priceWithCurrency($vendor->realPrice)}}
+                                                    </del>
+                                                @endif
+                                            </td>
+                                            <td>{{priceWithCurrency($vendor->price)}}</td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    @endif
         </div>
     </div>
 </div>

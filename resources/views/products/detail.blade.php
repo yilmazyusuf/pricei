@@ -13,7 +13,7 @@
                 $('#product_detail_tab a[href="' + activeTabPr + '"]').tab('show');
             }
             $('#vendors-icon-tab').on('shown.bs.tab', function (e) {
-                charts.vendorPriceChange();
+                charts.vendorPriceChange({!! $productPriceChart['source'] !!},{!! $productPriceChart['dimensions'] !!},{!! $productPriceChart['series'] !!});
             })
 
             $('#product_tab').on('shown.bs.tab', function (e) {
@@ -25,7 +25,7 @@
         });
 
         function showProductPriceChangeChart(){
-            charts.productPriceChange({!! $productPriceChart['xAxis'] !!}, {!! $productPriceChart['yAxis'] !!});
+
         }
 
 
@@ -52,16 +52,11 @@
                 <li class="nav-item">
                     <a class="nav-link" id="vendors-icon-tab" data-toggle="tab" href="#tab_vendors" role="tab"
                        aria-controls="tab_vendors" aria-selected="false">
-                        <i class="nav-icon i-Clothing-Store mr-1"></i> Güncel Fiyat(Mağaza,platform, ortalama)
+                        <i class="nav-icon i-Clothing-Store mr-1"></i> Günlük Değişim
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" id="vendors-icon-tab" data-toggle="tab" href="#tab_vendors" role="tab"
-                       aria-controls="tab_vendors" aria-selected="false">
-                        <i class="nav-icon i-Clothing-Store mr-1"></i> Diğer Mağazalar
-                    </a>
-                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" id="contact-icon-tab" data-toggle="tab" href="#contactIcon" role="tab"
                        aria-controls="contactIcon" aria-selected="false">
