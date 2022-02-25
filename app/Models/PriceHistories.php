@@ -84,6 +84,10 @@ class PriceHistories extends Model
 
     }
 
+    public function getRealPriceComparedAttribute(){
+        return $this->realPrice > 0 && $this->price != $this->realPrice ? $this->realPrice : null;
+    }
+
     public function getPriceDiffWithIconAttribute()
     {
         if (!$this->pricePreviousDiff) {

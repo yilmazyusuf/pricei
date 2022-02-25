@@ -1,6 +1,7 @@
 @extends('layouts.layout')
 @section('meta.title', 'Fiyat Takibi Yapılan Ürünler')
 @push('scripts')
+    <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
     {{$dataTable->scripts()}}
     <script>
         $(document).ready(function () {

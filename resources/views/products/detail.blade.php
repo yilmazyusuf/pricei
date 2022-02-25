@@ -3,6 +3,7 @@
 @push('scripts')
     <script src="{{ asset('storage/template/dist-assets/js/charts.js') }}"></script>
 
+
     <script>
         $(document).ready(function () {
             $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
@@ -42,14 +43,14 @@
                 <li class="nav-item">
                     <a class="nav-link active" id="product_tab" data-toggle="tab" href="#tab_home" role="tab"
                        aria-controls="tab_home" aria-selected="true">
-                        <i class="nav-icon i-Money-Bag mr-1"></i>Güncel Fiyatlar
+                        <i class="nav-icon i-Money-2 mr-1"></i>Güncel Fiyatlar
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link" id="vendors-icon-tab" data-toggle="tab" href="#tab_vendors" role="tab"
                        aria-controls="tab_vendors" aria-selected="false">
-                        <i class="nav-icon i-Clothing-Store mr-1"></i> Günlük Fiyatlar
+                        <i class="nav-icon i-Calendar-4 mr-1"></i> Günlük Fiyatlar
                     </a>
                 </li>
 
