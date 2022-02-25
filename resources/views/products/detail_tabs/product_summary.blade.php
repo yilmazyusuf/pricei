@@ -1,20 +1,6 @@
-@php
-    $minPriceVendor = $product->vendors->sortBy('price')->first();
-    $maxPriceVendor = $product->vendors->sortByDesc('price')->first();
-@endphp
 @push('scripts')
     {{$productHistoryDataTable->html()->scripts()}};
     <script>
-        $(document).ready(function () {
-            $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
-                localStorage.setItem('activeTab', $(e.target).attr('href'));
-            });
-            var activeTab = localStorage.getItem('activeTab');
-            if (activeTab) {
-                $('#priceHistoryTab a[href="' + activeTab + '"]').tab('show');
-
-            }
-        });
     </script>
 
     <script>
@@ -48,123 +34,204 @@
                     </p>
                     <h5 class="card-title">{{priceWithCurrency($product->price)}}</h5>
                     <p class="card-text">{{$product->sellerName}}</p>
+                    <p class="card-text"><img src="{{$product->platform->logo_url}}" height="36"> </p>
                 </div>
-                <ul class="list-group list-group-flush">
-                    @if($lastPriceUpdate)
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Önceki Fiyat
-                            <h5 class="m-0 ml-auto">
-                     <span
-                         class="badge badge-pill badge-outline-primary ">{{priceWithCurrency($lastPriceUpdate->price - $lastPriceUpdate->pricePreviousDiff)}}</span>
-                            </h5>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Fiyat Değişim Oranı
-                            <h5 class="m-0 ml-auto">
-                     <span class="badge badge-pill badge-outline-primary ">
-                     {!! $lastPriceUpdate->priceDiffPercentWithIcon !!}
-                     </span>
-                            </h5>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Fiyat Değişim Miktarı
-                            <h5 class="m-0 ml-auto">
-                     <span class="badge badge-pill badge-outline-primary ">
-                     {!! $lastPriceUpdate->priceDiffWithIcon !!}
-                     </span>
-                            </h5>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Fiyat Değişim Tarihi
-                            <h5 class="m-0 ml-auto">
-                     <span class="badge badge-pill badge-outline-primary ">
-                     {{$lastPriceUpdate->trackedDate}}
-                     </span>
-                            </h5>
-                        </li>
-                    @endif
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Son Güncellenme Tarihi
-                        <h5 class="m-0 ml-auto">
-                     <span class="badge badge-pill badge-outline-primary">
-                     {{$product->updated_at->format('d.m.Y')}}
-                     </span>
-                        </h5>
-                    </li>
-                </ul>
+
             </div>
         </div>
         <div class="col-md-8">
+            <h1>Ürün</h1>
 
-            @if($minPriceVendor)
             <div class="row mb-4">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="card card-icon-bg card-icon-bg-primary o-hidden">
-                        <div class="card-body text-center"><i class="i-Down"></i>
+                        <div class="card-body text-center"><i class="i-Money-2"></i>
                             <div class="content">
-                                <p class="text-muted mt-0 mb-0">En Düşük Fiyat</p>
-                                <p class="text-muted mt-0 mb-1 text-10">{{$minPriceVendor->sellerName}}</p>
+                                <p class="text-muted mt-0 mb-1">Güncel Fiyat</p>
+                                <p class="text-muted mt-0 mb-1 text-10">
+                                    {{$product->updated_at->format('d.m.Y')}}
+                                </p>
+                                <p class="lead text-primary text-24 mb-0">
+                                    {{priceWithCurrency($product->price)}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-icon-bg card-icon-bg-primary o-hidden">
+                        <div class="card-body text-center"><i class="i-Previous"></i>
+                            <div class="content">
+                                <p class="text-muted mt-0 mb-1">Önceki Fiyat</p>
+                                <p class="text-muted mt-0 mb-1 text-10">
+                                    {{$lastPriceUpdate->trackedDate ?? '-'}}
+                                </p>
                                 <p class="lead text-primary text-24 mb-0">
 
-                                    {{priceWithCurrency((int)$minPriceVendor->price)}}
+                                    {{$lastPriceUpdate ? priceWithCurrency($lastPriceUpdate->price - $lastPriceUpdate->pricePreviousDiff) :'-'}}
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-6">
                     <div class="card card-icon-bg card-icon-bg-primary o-hidden">
-                        <div class="card-body text-center"><i class="i-Up"></i>
+                        <div class="card-body text-center"><i class="i-Pie-Chart-2"></i>
                             <div class="content">
-                                <p class="text-muted mt-0 mb-0">En Yüksek Fiyat</p>
-                                <p class="text-muted mt-0 mb-1 text-10">{{$maxPriceVendor->sellerName}}</p>
+                                <p class="text-muted mt-0 mb-1">Fiyat Değişim Oranı</p>
                                 <p class="lead text-primary text-24 mb-0">
-                                    {{priceWithCurrency((int)$maxPriceVendor->price)}}
+                                    {!! $lastPriceUpdate->priceDiffPercentWithIcon ?? '-' !!}
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="card card-icon-bg card-icon-bg-primary o-hidden">
+                        <div class="card-body text-center"><i class="i-Line-Chart"></i>
+                            <div class="content">
+                                <p class="text-muted mt-0 mb-1">Fiyat Değişim Miktarı</p>
+                                <p class="lead text-primary text-24 mb-0">
+                                    {!! $lastPriceUpdate->priceDiffWithIcon ?? '-' !!}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div id="products_chart" style="height: 400px;"></div>
+                </div>
+            </div>
+
+
+
+                <h1>Mağazalar</h1>
+
+
+            <div class="row mb-4">
                 <div class="col-md-4">
                     <div class="card card-icon-bg card-icon-bg-primary o-hidden">
                         <div class="card-body text-center"><i class="i-Money-2"></i>
                             <div class="content">
                                 <p class="text-muted mt-2 mb-0">Ortalama Fiyat</p>
                                 <p class="lead text-primary text-24 mb-2">
-                                    {{priceWithCurrency((int)$product->vendors->median('price'))}}
+                                    {{priceWithCurrency((int)$actualPriceHistory->median('price'))}}
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="card card-icon-bg card-icon-bg-primary o-hidden">
+                        <div class="card-body text-center"><i class="i-Down"></i>
+                            <div class="content">
+                                <p class="text-muted mt-0 mb-0">En Düşük Fiyat</p>
+                                @php
+                                $minPrice = $actualPriceHistory->sortBy('price')->first();
+                                @endphp
+                                <p class="text-muted mt-0 mb-1 text-10">
+                                    {{$minPrice->sellerName }}
+                                </p>
+                                <p class="lead text-primary text-24 mb-0">
+                                    {{priceWithCurrency((int)$minPrice->price)}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card card-icon-bg card-icon-bg-primary o-hidden">
+                        <div class="card-body text-center"><i class="i-Up"></i>
+                            <div class="content">
+                                <p class="text-muted mt-0 mb-0">En Yüksek Fiyat</p>
+                                @php
+                                    $maxPrice = $actualPriceHistory->sortByDesc('price')->first();
+                                @endphp
+                                <p class="text-muted mt-0 mb-1 text-10">
+                                    {{$maxPrice->sellerName }}
+                                </p>
+                                <p class="lead text-primary text-24 mb-0">
+                                    {{priceWithCurrency((int)$maxPrice->price)}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+            <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card card-icon-bg card-icon-bg-primary o-hidden">
+                            <div class="card-body text-center"><i class="i-Line-Chart"></i>
+                                <div class="content">
+                                    <p class="text-muted mt-0 mb-0">Ortalama Fiyat Değişim Miktarı</p>
+                                    <p class="lead text-primary text-24 mb-0">
+
+                                        {!! \App\Models\PriceHistories::collectedPriceDiff($actualPriceHistory) !!}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-icon-bg card-icon-bg-primary o-hidden">
+                            <div class="card-body text-center"><i class="i-Pie-Chart-2"></i>
+                                <div class="content">
+                                    <p class="text-muted mt-0 mb-0">Ortalama Fiyat Değişim Oranı</p>
+                                    <p class="lead text-primary text-24 mb-0">
+                                        {!! \App\Models\PriceHistories::collectedPriceDiffPercent($actualPriceHistory) !!}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="col-md-4">
+                    <div class="card card-icon-bg card-icon-bg-primary o-hidden">
+                        <div class="card-body text-center"><i class="i-Calendar-3"></i>
+                            <div class="content">
+                                <p class="text-muted mt-0 mb-0">Son Güncelleme</p>
+                                <p class="lead text-primary text-24 mb-0">
+                                    {{$maxPrice->trackedDate}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+
             <div class="row mb-4">
 
                 <div class="col-md-12">
                     <div class="card card-profile-1 mb-0">
-                        <div class="card-body p-0">
+                        <div class="card-body p-0" style="overflow: auto; max-height: 450px">
                             <div class="tabl
                             e-responsive">
                                 <table class="table table-hover w-100">
                                     <thead>
                                     <tr>
                                         <th>Mağaza</th>
-                                        <th>Liste Fiyatı</th>
-                                        <th>Satış Fiyatı</th>
+                                        <th>Önceki Fiyat</th>
+                                        <th>Güncel Fiyat</th>
+                                        <th>Değişim Oranı</th>
+                                        <th>Değişim Miktarı</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($product->vendors->sortBy('price') as $vendor)
+                                    @foreach($actualPriceHistory->sortBy('price') as $history)
                                         <tr>
-                                            <td>{{$vendor->sellerName}}</td>
-                                            <td>
-                                                @if($vendor->realPrice && $vendor->price < $vendor->realPrice)
-                                                    <del style="margin-left: auto;margin-right: 5px;">
-                                                        {{priceWithCurrency($vendor->realPrice)}}
-                                                    </del>
-                                                @endif
-                                            </td>
-                                            <td>{{priceWithCurrency($vendor->price)}}</td>
+                                            <td>{{$history->sellerName}}</td>
+                                            <td>{!! priceWithCurrency($history->price - $history->pricePreviousDiff) !!}</td>
+                                            <td>{!! priceWithCurrency($history->price) !!}</td>
+                                            <td>{!! $history->priceDiffPercentWithIcon !!}</td>
+                                            <td>{!! $history->priceDiffWithIcon !!}</td>
                                         </tr>
                                     @endforeach
                                     </tbody>
@@ -174,7 +241,7 @@
                     </div>
                 </div>
             </div>
-    @endif
+
         </div>
     </div>
 </div>

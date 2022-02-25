@@ -141,14 +141,14 @@
 </div>
 
 <script src="{{asset('storage/template/dist-assets/js/plugins/jquery-3.3.1.min.js')}}"></script>
-<script src="{{ asset('storage/template/dist-assets/js/plugins/popper.min.js') }}"></script>
-<script src="{{asset('storage/template/dist-assets/js/plugins/bootstrap.min.js')}}"></script>
 <script src="{{asset('storage/template/dist-assets/js/plugins/bootstrap.bundle.min.js')}}"></script>
 <script src="{{asset('storage/template/dist-assets/js/plugins/perfect-scrollbar.min.js')}}"></script>
 <script src="{{asset('storage/template/dist-assets/js/scripts/script.min.js')}}"></script>
 <script src="{{asset('storage/template/dist-assets/js/scripts/sidebar.large.script.min.js')}}"></script>
-<script src="{{asset('storage/template/dist-assets/js/scripts/customizer.script.min.js')}}"></script>
+<script src="{{asset('storage/template/dist-assets/js/scripts/sidebar.script.min.js')}}"></script>
 <script src="{{asset('storage/template/dist-assets/js/plugins/laravel_ajax.js')}}"></script>
+
+
 <script src="{{asset('storage/template/dist-assets/js/plugins/select2/dist/js/select2.full.min.js')}}"></script>
 <script src="{{asset('storage/template/dist-assets/js/plugins/datatables.min.js')}}"></script>
 <script src="{{asset('storage/template/dist-assets/js/scripts/datatables.script.js')}}"></script>
@@ -231,9 +231,8 @@
                 url: properties.urls.destroy,
                 type: 'DELETE',
                 success: function (payload) {
-                    var tb = $('#product_categories-table').DataTable();
-                    tb.draw();
-                    toaster('success', 'Ürün Silindi.');
+                    table.draw();
+                    toaster('success', 'Silindi.');
                 }
 
             });

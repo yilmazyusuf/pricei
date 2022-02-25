@@ -46,14 +46,31 @@ class PriceHistories extends Model
         return $this->belongsTo(Products::class, 'products_id');
     }
 
-    public function getPriceDiffWithIconAttribute()
-    {
-        if (!$this->pricePreviousDiff) {
-            return;
-        }
-        return upDownIcon($this->pricePreviousDiff) .
-            ' ' . priceWithCurrency($this->pricePreviousDiff);
 
+    public function getSellerNameAttribute()
+    {
+
+        if ($this->vendor) {
+            return $this->vendor->sellerName;
+        }
+        if ($this->product) {
+            return $this->product->sellerName ?? 'Ana Ürün';
+        }
+    }
+
+
+
+    public static function collectedPriceDiff($collection)
+    {
+        $diffTotal = number_format($collection->sum('pricePreviousDiff') / $collection->count(),2);
+
+        return $diffTotal  > 0 ? upDownIcon($diffTotal).' '.priceWithCurrency($diffTotal) :'-';
+    }
+
+    public static function collectedPriceDiffPercent($collection)
+    {
+        $diffTotal = number_format($collection->sum('pricePreviousPercentDiff') / $collection->count(),2);
+        return $diffTotal > 0 ? upDownIcon($diffTotal).' '.$diffTotal.' % ' :'-';
     }
 
     public function getPriceDiffPercentWithIconAttribute()
@@ -64,6 +81,16 @@ class PriceHistories extends Model
 
         return upDownIcon($this->pricePreviousPercentDiff) .
             ' ' . $this->pricePreviousPercentDiff . ' %';
+
+    }
+
+    public function getPriceDiffWithIconAttribute()
+    {
+        if (!$this->pricePreviousDiff) {
+            return;
+        }
+        return upDownIcon($this->pricePreviousDiff) .
+            ' ' . priceWithCurrency($this->pricePreviousDiff);
 
     }
 

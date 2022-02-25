@@ -13,21 +13,18 @@
                 $('#product_detail_tab a[href="' + activeTabPr + '"]').tab('show');
             }
             $('#vendors-icon-tab').on('shown.bs.tab', function (e) {
-                charts.vendorPriceChange({!! $productPriceChart['source'] !!},{!! $productPriceChart['dimensions'] !!},{!! $productPriceChart['series'] !!});
+                charts.vendorPriceChange({!! $productWithVendorsPriceChart['source'] !!},{!! $productWithVendorsPriceChart['dimensions'] !!},{!! $productWithVendorsPriceChart['series'] !!});
             })
 
-            $('#product_tab').on('shown.bs.tab', function (e) {
-                showProductPriceChangeChart();
+            $('#product_detail_tab').on('shown.bs.tab', function (e) {
+                //charts.productPriceChange({!! $productPriceChart['xAxis'] !!},{!! $productPriceChart['yAxis'] !!})
             })
 
-            showProductPriceChangeChart();
+
 
         });
 
-        function showProductPriceChangeChart(){
-
-        }
-
+        charts.productPriceChange({!! $productPriceChart['xAxis'] !!},{!! $productPriceChart['yAxis'] !!})
 
     </script>
 @endpush
@@ -45,14 +42,14 @@
                 <li class="nav-item">
                     <a class="nav-link active" id="product_tab" data-toggle="tab" href="#tab_home" role="tab"
                        aria-controls="tab_home" aria-selected="true">
-                        <i class="nav-icon i-Box-Full mr-1"></i>Ürün
+                        <i class="nav-icon i-Money-Bag mr-1"></i>Güncel Fiyatlar
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link" id="vendors-icon-tab" data-toggle="tab" href="#tab_vendors" role="tab"
                        aria-controls="tab_vendors" aria-selected="false">
-                        <i class="nav-icon i-Clothing-Store mr-1"></i> Günlük Değişim
+                        <i class="nav-icon i-Clothing-Store mr-1"></i> Günlük Fiyatlar
                     </a>
                 </li>
 

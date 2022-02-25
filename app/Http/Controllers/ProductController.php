@@ -23,6 +23,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Psr\Container\NotFoundExceptionInterface;
 
 class ProductController extends ResourceController
@@ -86,7 +87,7 @@ class ProductController extends ResourceController
     {
         //@todo user_id
         $product = Products::query()
-            ->with('vendors',)
+            ->with('vendors')
             ->where('user_id', 1)
             ->where('id', $id)
             ->first();
@@ -96,6 +97,7 @@ class ProductController extends ResourceController
         }
 
         $productVendorIds = $product->vendors->pluck('id')->toArray();
+
         $priceHistory = PriceHistories::query()
             ->with(['vendor', 'product'])
             ->where('products_id', $product->id)
@@ -112,17 +114,44 @@ class ProductController extends ResourceController
             return $productHistoryDataTable->render('');
         }
 
+
+        $lastTrackedRow = $product->priceHistory()->orderBy('trackedDate', 'desc')->first();
+        $lastTrackedDate = $lastTrackedRow->getRawOriginal('trackedDate');
+
+        $actualPriceHistory = PriceHistories::query()
+            ->with(['vendor', 'product'])
+            ->where('trackedDate', $lastTrackedDate)
+            ->where(function ($query) use ($product, $productVendorIds) {
+                return $query->where('products_id', $product->id)
+                    ->orWhereIn('product_vendors_id', $productVendorIds);
+            })
+            ->get();
+
+
         return view('products.detail')->with(
             [
                 'product' => $product,
-                'productPriceChart' => $this->getProductPriceHistoryChartData($filteredHistory),
+                'productWithVendorsPriceChart' => $this->getProductWithVendorsPriceHistoryChartData($filteredHistory),
+                'productPriceChart' => $this->getProductPriceHistoryChartData($product),
                 'lastPriceUpdate' => $product->lastPriceUpdate,
-                'productHistoryDataTable' => $productHistoryDataTable
+                'productHistoryDataTable' => $productHistoryDataTable,
+                'actualPriceHistory' => $actualPriceHistory
             ]
         );
     }
 
-    private function getProductPriceHistoryChartData($productChart)
+    private function getProductPriceHistoryChartData($product)
+
+    {
+        $productChart = $product->priceHistory->sortDesc()->take(30);
+
+        $xAxisData = $productChart->pluck('trackedDate')->reverse()->values();
+        $yAxisData = $productChart->pluck('price')->reverse()->values();
+
+        return ['xAxis' => $xAxisData, 'yAxis' => $yAxisData];
+    }
+
+    private function getProductWithVendorsPriceHistoryChartData($productChart)
     {
 
         $grouped = $productChart->sortBy('trackedDate')->groupBy('trackedDate');
@@ -134,8 +163,8 @@ class ProductController extends ResourceController
             $vendor['date'] = $date;
             foreach ($histories as $history) {
                 if ($history->product_vendors_id) {
-                    $vendor[$history->vendor->sellerName] = $history->price;
-                    array_push($dimensions, $history->vendor->sellerName);
+                    //$vendor[$history->vendor->sellerName] = $history->price;
+                    //array_push($dimensions, $history->vendor->sellerName);
                 }
 
                 if ($history->products_id) {
@@ -143,7 +172,7 @@ class ProductController extends ResourceController
                     array_push($dimensions, $history->product->sellerName);
                 }
 
-                array_push($series, ['type' => 'line','smooth' => true]);
+                array_push($series, ['type' => 'line', 'smooth' => true]);
             }
             $vendors[] = $vendor;
         }

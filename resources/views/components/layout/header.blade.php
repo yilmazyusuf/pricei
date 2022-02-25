@@ -83,7 +83,15 @@
                 <i class="i-Lock-User header-icon" id="userDropdown" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown" x-placement="bottom-end" style="position: absolute; transform: translate3d(-109px, 36px, 0px); top: 0px; left: 0px; will-change: transform;">
                     <a class="dropdown-item" href="signin.html"><i class="i-Gear"></i> Hesap Ayarları</a>
-                    <a class="dropdown-item" href="signin.html"> <i class="i-Lock-User mr-1"></i>Çıkış Yap</a>
+                    <a class="dropdown-item" href="{{ route('logout') }}"
+                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                        <i class="i-Lock-User mr-1"></i>Çıkış Yap
+                    </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
                 </div>
             </div>
         </div>

@@ -56,10 +56,10 @@ if (!function_exists('settings')) {
         function upDownIcon(float $value): string
         {
             if ($value > 0) {
-                return '<i class="i-Up1 text-14 text-danger font-weight-700"></i>';
+                return '<i class="i-Up1 text-14 text-danger font-weight-700" style="font-size: initial"></i>';
             }
             if ($value < 0) {
-                return '<i class="i-Down1 text-14 text-success font-weight-700"></i>';
+                return '<i class="i-Down1 text-14 text-success font-weight-700" style="font-size: initial"></i>';
             }
             return '';
 

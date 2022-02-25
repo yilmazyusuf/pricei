@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\PlatformsController;
-use App\Http\Controllers\ProductCategoriesController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,13 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [IndexController::class, 'index']);
-Route::post('products/scrape', [ProductController::class, 'scrape'])->name('products.scrape');
-Route::post('products/track/{id}', [ProductController::class, 'track'])->name('products.track');
-Route::post('products/updateStatus', [ProductController::class, 'updateStatus'])->name('products.updateStatus');
-Route::get('products/detail/{id}', [ProductController::class, 'showDetail'])->name('products.detail');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/', [IndexController::class, 'index']);
+    Route::post('products/scrape', [ProductController::class, 'scrape'])->name('products.scrape');
+    Route::post('products/track/{id}', [ProductController::class, 'track'])->name('products.track');
+    Route::post('products/updateStatus', [ProductController::class, 'updateStatus'])->name('products.updateStatus');
+    Route::get('products/detail/{id}', [ProductController::class, 'showDetail'])->name('products.detail');
 
-Route::resource('products', ProductController::class);
-Route::resource('platforms', PlatformsController::class);
+    Route::resource('products', ProductController::class);
+    Route::resource('platforms', PlatformsController::class);
+});
 
 
+Auth::routes();
