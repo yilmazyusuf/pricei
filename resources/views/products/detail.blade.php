@@ -1,8 +1,6 @@
 @extends('layouts.layout')
 @section('meta.title', 'Fiyat Takibi Yapılan Ürünler')
 @push('scripts')
-    <script src="{{ asset('storage/template/dist-assets/js/charts.js') }}"></script>
-
 
     <script>
         $(document).ready(function () {
@@ -13,19 +11,18 @@
             if (activeTabPr) {
                 $('#product_detail_tab a[href="' + activeTabPr + '"]').tab('show');
             }
+
+
+            let vendors_chart = charts.vendorPriceChange({!! $productWithVendorsPriceChart['source'] !!},{!! $productWithVendorsPriceChart['dimensions'] !!},{!! $productWithVendorsPriceChart['series'] !!});
+            let product_chart = charts.productPriceChange({!! $productPriceChart['xAxis'] !!}, {!! $productPriceChart['yAxis'] !!})
+
+            $('#product_tab').on('shown.bs.tab', function (e) {
+                product_chart.resize();
+            })
             $('#vendors-icon-tab').on('shown.bs.tab', function (e) {
-                charts.vendorPriceChange({!! $productWithVendorsPriceChart['source'] !!},{!! $productWithVendorsPriceChart['dimensions'] !!},{!! $productWithVendorsPriceChart['series'] !!});
+                vendors_chart.resize();
             })
-
-            $('#product_detail_tab').on('shown.bs.tab', function (e) {
-                //charts.productPriceChange({!! $productPriceChart['xAxis'] !!},{!! $productPriceChart['yAxis'] !!})
-            })
-
-
-
         });
-
-        charts.productPriceChange({!! $productPriceChart['xAxis'] !!},{!! $productPriceChart['yAxis'] !!})
 
     </script>
 @endpush
@@ -41,24 +38,16 @@
         <div class="col-sm-12">
             <ul class="nav nav-tabs" id="product_detail_tab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="product_tab" data-toggle="tab" href="#tab_home" role="tab"
+                    <a class="nav-link " id="product_tab" data-toggle="tab" href="#tab_home" role="tab"
                        aria-controls="tab_home" aria-selected="true">
                         <i class="nav-icon i-Money-2 mr-1"></i>Güncel Fiyatlar
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" id="vendors-icon-tab" data-toggle="tab" href="#tab_vendors" role="tab"
+                    <a class="nav-link active" id="vendors-icon-tab" data-toggle="tab" href="#tab_vendors" role="tab"
                        aria-controls="tab_vendors" aria-selected="false">
                         <i class="nav-icon i-Calendar-4 mr-1"></i> Günlük Fiyatlar
-                    </a>
-                </li>
-
-
-                <li class="nav-item">
-                    <a class="nav-link" id="contact-icon-tab" data-toggle="tab" href="#contactIcon" role="tab"
-                       aria-controls="contactIcon" aria-selected="false">
-                        <i class="nav-icon i-Clock mr-1"></i> Diğer Platformlar
                     </a>
                 </li>
                 <li class="nav-item">

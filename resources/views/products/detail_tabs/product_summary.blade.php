@@ -1,42 +1,34 @@
 @push('scripts')
-    {{$productHistoryDataTable->html()->scripts()}};
-    <script>
-    </script>
 
     <script>
-        $('#datepicker_product_price_chart').datepicker({
-            format: "dd.mm.yyyy",
-            todayBtn: "linked",
-            language: "tr"
-        });
-        jQuery.extend( jQuery.fn.dataTableExt.oSort, {
-            "currency-pre": function ( a ) {
-                a = (a==="-") ? 0 : a.replace( /[^\d\-\.]/g, "" );
-                return parseFloat( a );
+
+        jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+            "currency-pre": function (a) {
+                a = (a === "-") ? 0 : a.replace(/[^\d\-\.]/g, "");
+                return parseFloat(a);
             },
 
-            "currency-asc": function ( a, b ) {
+            "currency-asc": function (a, b) {
                 return a - b;
             },
 
-            "currency-desc": function ( a, b ) {
+            "currency-desc": function (a, b) {
                 return b - a;
             }
-        } );
+        });
 
-        $(function() {
+        $(function () {
             $('.current_price_history_DataTable').DataTable({
                 processing: true,
-                "order": [[ 4, "asc" ]],
+                "order": [[4, "asc"]],
                 "pageLength": 25,
                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Tümü"]],
                 columnDefs: [
-                    { type: 'currency', targets: 3 },
+                    {type: 'currency', targets: 3},
                 ],
 
             });
         });
-
 
     </script>
 @endpush
@@ -46,7 +38,7 @@
     !important;
     }
 </style>
-<div class="tab-pane fade show active" id="tab_home" role="tabpanel"
+<div class="tab-pane fade" id="tab_home" role="tabpanel"
      aria-labelledby="home-icon-tab">
     <div class="row">
         <div class="col-md-4">
@@ -70,14 +62,16 @@
         <div class="col-md-8">
             <ul class="nav nav-tabs" id="actual_price_tabs" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="price_product_tab_id" data-toggle="tab" href="#price_product_tab_href"
+                    <a class="nav-link active" id="price_product_tab_id" data-toggle="tab"
+                       href="#price_product_tab_href"
                        role="tab"
                        aria-controls="price_product_tab_href" aria-selected="true">
                         <i class="nav-icon i-Box-Full mr-1"></i>Ürün
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="price_vendor_tab_id" data-toggle="tab" href="#price_vendor_tab_href" role="tab"
+                    <a class="nav-link" id="price_vendor_tab_id" data-toggle="tab" href="#price_vendor_tab_href"
+                       role="tab"
                        aria-controls="price_vendor_tab_href" aria-selected="true">
                         <i class="nav-icon i-Shop-4 mr-1"></i>Mağazalar
                     </a>
@@ -278,7 +272,7 @@
                                                     <td>{{$history->sellerName}}</td>
                                                     <td>{!! priceWithCurrency($history->price - $history->pricePreviousDiff) !!}</td>
                                                     <td>
-                                                      {!! priceWithCurrency($history->realPriceCompared) !!}
+                                                        <del>{!! priceWithCurrency($history->realPriceCompared) !!}</del>
                                                     </td>
                                                     <td>{!! priceWithCurrency($history->price) !!}</td>
                                                     <td>{!! $history->priceDiffPercentWithIcon !!}</td>
@@ -296,9 +290,6 @@
             </div>
 
 
-
-
-
-            </div>
         </div>
     </div>
+</div>

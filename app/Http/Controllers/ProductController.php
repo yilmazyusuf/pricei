@@ -23,7 +23,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Psr\Container\NotFoundExceptionInterface;
 
 class ProductController extends ResourceController
@@ -105,11 +104,30 @@ class ProductController extends ResourceController
             ->orderBy('id', 'desc');
 
         $chartFilter = new PriceHistoryFilter($priceHistory);
-        $filteredHistory = $chartFilter->filter()->get();
+        $filteredDailyHistory = $chartFilter->filter()->get();
 
-        $productHistoryDataTable = new ProductsPriceHistoryDataTable($filteredHistory);
+        $historyVendorsAndProduct = $chartFilter->filter()->groupBy('product_vendors_id')->get();
+        $historyVendors = [];
+        $productHistoryVendor = null;
+        foreach ($historyVendorsAndProduct as $history) {
+            $priceVendor = [
+                'sellerName' => $history->sellerName,
+                'id' => $history->id
+            ];
+            if ($history->products_id) {
+                $productHistoryVendor = $priceVendor;
 
-        //dd($this->getProductPriceHistoryChartData($filteredHistory));
+            } else {
+                $historyVendors[] = $priceVendor;
+            }
+
+        }
+        $sortedHistoryByName = collect($historyVendors)->sortBy('sellerName');
+        $sortedHistoryByName->prepend($productHistoryVendor);
+
+        $productHistoryDataTable = new ProductsPriceHistoryDataTable($filteredDailyHistory);
+
+
         if (request()->has('priceHistoryDataTable')) {
             return $productHistoryDataTable->render('');
         }
@@ -117,7 +135,6 @@ class ProductController extends ResourceController
 
         $lastTrackedRow = $product->priceHistory()->orderBy('trackedDate', 'desc')->first();
         $lastTrackedDate = $lastTrackedRow->getRawOriginal('trackedDate');
-
         $actualPriceHistory = PriceHistories::query()
             ->with(['vendor', 'product'])
             ->where('trackedDate', $lastTrackedDate)
@@ -131,11 +148,13 @@ class ProductController extends ResourceController
         return view('products.detail')->with(
             [
                 'product' => $product,
-                'productWithVendorsPriceChart' => $this->getProductWithVendorsPriceHistoryChartData($filteredHistory),
+                'productWithVendorsPriceChart' => $this->getProductWithVendorsPriceHistoryChartData($filteredDailyHistory),
                 'productPriceChart' => $this->getProductPriceHistoryChartData($product),
                 'lastPriceUpdate' => $product->lastPriceUpdate,
                 'productHistoryDataTable' => $productHistoryDataTable,
-                'actualPriceHistory' => $actualPriceHistory
+                'actualPriceHistory' => $actualPriceHistory,
+                'filteredDailyHistory' => $filteredDailyHistory,
+                'sortedHistoryByName' => $sortedHistoryByName
             ]
         );
     }
@@ -163,8 +182,8 @@ class ProductController extends ResourceController
             $vendor['date'] = $date;
             foreach ($histories as $history) {
                 if ($history->product_vendors_id) {
-                    //$vendor[$history->vendor->sellerName] = $history->price;
-                    //array_push($dimensions, $history->vendor->sellerName);
+                    $vendor[$history->vendor->sellerName] = $history->price;
+                    array_push($dimensions, $history->vendor->sellerName);
                 }
 
                 if ($history->products_id) {

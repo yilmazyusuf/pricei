@@ -54,7 +54,7 @@ class PriceHistories extends Model
             return $this->vendor->sellerName;
         }
         if ($this->product) {
-            return $this->product->sellerName ?? 'Ana Ürün';
+            return $this->product->sellerName ? $this->product->sellerName. ' (Ana Ürün)' : 'Ana Ürün';
         }
     }
 

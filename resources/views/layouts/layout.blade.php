@@ -161,6 +161,7 @@
 <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
 <script src="{{ asset('vendor/file-manager/js/file-manager.js') }}"></script>
 <script src="{{ asset('storage/template/dist-assets/js/plugins/echarts.min.js') }}"></script>
+<script src="{{ asset('storage/template/dist-assets/js/charts.js') }}"></script>
 
 <script src="{{ asset('storage/template/dist-assets/js/plugins/datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
 <script src="{{ asset('storage/template/dist-assets/js/plugins/datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>

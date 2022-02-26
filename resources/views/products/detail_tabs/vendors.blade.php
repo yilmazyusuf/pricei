@@ -1,6 +1,9 @@
 @push('scripts')
+    {{$productHistoryDataTable->html()->scripts()}};
+
     <script>
         $(document).ready(function () {
+
             $('.form-check-input').on('click', function (e) {
                 if ($(this).is(':checked')) {
                     $(this).closest('li').addClass('active');
@@ -8,12 +11,44 @@
                     $(this).closest('li').removeClass('active');
                 }
             })
+
+            $('#datepicker_product_price_chart').datepicker({
+                format: "dd.mm.yyyy",
+                todayBtn: "linked",
+                language: "tr"
+            });
+
         });
+        $('.price_history_detail').on('change',function () {
+
+            reloadVendorsPriceHistory();
+        });
+        //productPriceChartEnd
+
+        function reloadVendorsPriceHistory(){
+            var data;
+            data = new FormData();
+            data.append( 'productPriceChartStart', $('input#productPriceChartStart').val() );
+            data.append( 'updateDailyPage', true );
+            laravel.ajax.send({
+                url: '{{route('products.detail',$product->id)}}',
+                data: data,
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                async: true,
+                success: function (payload) {
+
+                }
+
+            });
+        }
+
 
     </script>
 @endpush
 
-<div class="tab-pane fade" id="tab_vendors" role="tabpanel" aria-labelledby="product_tab">
+<div class="tab-pane fade show active" id="tab_vendors" role="tabpanel" aria-labelledby="product_tab">
     <div class="card mb-4 o-hidden">
         <div class="card-body">
             <div class="row">
@@ -23,12 +58,12 @@
                             <div class='col-sm-12'>
                                 <div class="input-daterange input-group"
                                      id="datepicker_product_price_chart">
-                                    <input type="text" readonly class="input-sm form-control"
-                                           name="productPriceChartStart"
+                                    <input type="text" readonly class="input-sm form-control price_history_detail"
+                                           name="productPriceChartStart" id="productPriceChartStart"
                                            value="{{request('productPriceChartStart')}}"/>
-                                    <input type="text" readonly class="input-sm form-control"
+                                    <input type="text" readonly class="input-sm form-control price_history_detail"
                                            name="productPriceChartEnd"
-                                           value="{{request('productPriceChartEnd')}}"/>
+                                           value="{{request('productPriceChartEnd')}}" id="productPriceChartEnd"/>
                                     <div class="input-group-append"><span
                                             class="input-group-text"><i
                                                 class="fa fa-calendar"></i></span></div>
@@ -40,7 +75,7 @@
 
                             <div class="col-sm-12">
                                 <div class="form-check pl-0">
-                                    <label class="checkbox checkbox-primary">
+                                    <label class="checkbox checkbox-primary price_history_detail">
                                         <input type="checkbox"
                                                checked="checked"/><span>Fiyat artışı olan günleri göster</span><span
                                             class="checkmark"></span>
@@ -48,13 +83,13 @@
 
                                 </div>
                                 <div class="form-check pl-0">
-                                    <label class="checkbox checkbox-primary">
+                                    <label class="checkbox checkbox-primary price_history_detail">
                                         <input type="checkbox" checked="checked"/><span>Fiyat düşüşü olan  günleri göster</span><span
-                                            class="checkmark"></span>
+                                            class="checkmark "></span>
                                     </label>
                                 </div>
                                 <div class="form-check pl-0">
-                                    <label class="checkbox checkbox-primary">
+                                    <label class="checkbox checkbox-primary price_history_detail">
                                         <input type="checkbox"
                                                checked="checked"/><span>Tüm günleri göster</span><span
                                             class="checkmark"></span>
@@ -65,12 +100,13 @@
                         </fieldset>
                     </form>
                     <ul class="list-group">
-                        @foreach($product->vendors->sortBy('sellerName') as $vendor)
+                        @foreach($sortedHistoryByName as $history)
+
                             <li class="list-group-item">
                                 <label class="checkbox checkbox-outline-primary mb-0">
 
-                                    <input type="checkbox" class="form-check-input"
-                                           name="vendorPrice[{{$vendor->id}}]"><span>{{$vendor->sellerName}}</span><span
+                                    <input type="checkbox" class="form-check-input price_history_detail"
+                                           name="vendorPrice[{{$history['id']}}]"><span>{{$history['sellerName']}}</span><span
                                         class="checkmark"></span>
                                 </label>
                             </li>
