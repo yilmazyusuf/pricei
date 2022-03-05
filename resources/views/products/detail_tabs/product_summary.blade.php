@@ -117,6 +117,9 @@
                                 <div class="card-body text-center"><i class="i-Pie-Chart-2"></i>
                                     <div class="content">
                                         <p class="text-muted mt-0 mb-1">Fiyat Değişim Oranı</p>
+                                        <p class="text-muted mt-0 mb-1 text-10">
+                                            {{$lastPriceUpdate->trackedDate ?? '-'}}
+                                        </p>
                                         <p class="lead text-primary text-24 mb-0">
                                             {!! $lastPriceUpdate->priceDiffPercentWithIcon ?? '-' !!}
                                         </p>
@@ -129,6 +132,9 @@
                                 <div class="card-body text-center"><i class="i-Line-Chart"></i>
                                     <div class="content">
                                         <p class="text-muted mt-0 mb-1">Fiyat Değişim Miktarı</p>
+                                        <p class="text-muted mt-0 mb-1 text-10">
+                                            {{$lastPriceUpdate->trackedDate ?? '-'}}
+                                        </p>
                                         <p class="lead text-primary text-24 mb-0">
                                             {!! $lastPriceUpdate->priceDiffWithIcon ?? '-' !!}
                                         </p>

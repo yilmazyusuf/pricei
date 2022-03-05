@@ -112,6 +112,10 @@
         }
 
         .tab-content{padding-left: 0!important; padding-right: 0!important;}
+
+        .btn-group-xs>.btn, .btn-xs{
+            padding: .4rem .4rem .25rem .4rem !important;
+        }
     </style>
 </head>
 

@@ -64,13 +64,15 @@ class PriceHistories extends Model
     {
         $diffTotal = number_format($collection->sum('pricePreviousDiff') / $collection->count(),2);
 
-        return $diffTotal  > 0 ? upDownIcon($diffTotal).' '.priceWithCurrency($diffTotal) :'-';
+        return abs($diffTotal)  > 0 ? upDownIcon($diffTotal).' '.priceWithCurrency($diffTotal) :'-';
     }
 
     public static function collectedPriceDiffPercent($collection)
     {
+
         $diffTotal = number_format($collection->sum('pricePreviousPercentDiff') / $collection->count(),2);
-        return $diffTotal > 0 ? upDownIcon($diffTotal).' '.$diffTotal.' % ' :'-';
+
+        return abs($diffTotal) > 0 ? upDownIcon($diffTotal).' '.$diffTotal.' % ' :'-';
     }
 
     public function getPriceDiffPercentWithIconAttribute()
