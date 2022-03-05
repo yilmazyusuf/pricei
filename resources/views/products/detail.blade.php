@@ -30,6 +30,9 @@
 
     <div class="breadcrumb align-items-center">
         <h1 class="mr-2">Ürün Detay</h1>
+        <ul>
+            <li>{{$product->name}}</li>
+        </ul>
     </div>
     <div class="separator-breadcrumb border-top"></div>
 
