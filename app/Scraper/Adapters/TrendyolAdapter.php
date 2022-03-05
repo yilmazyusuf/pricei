@@ -43,11 +43,13 @@ class TrendyolAdapter extends Adapter implements
         $this->readJsonPattern();
     }
 
+
     private function readJsonPattern()
     {
-        preg_match('/{"product":{(.*?)"}}/', $this->htmlContent, $matches);
-
-        $decodedJson = json_decode($matches[0]);
+        preg_match('/{"product":{(.*?)};/', $this->htmlContent, $matches);
+        $cleanTags = strip_tags($matches[0]);
+        $cleanTags = rtrim($cleanTags, ';');
+        $decodedJson = json_decode($cleanTags);
         $this->json = $decodedJson;
     }
 
@@ -101,7 +103,7 @@ class TrendyolAdapter extends Adapter implements
 
     public function getSellerLink(): string
     {
-        return 'https://www.trendyol.com'.$this->json->product->merchant->sellerLink;
+        return 'https://www.trendyol.com' . $this->json->product->merchant->sellerLink;
     }
 
     /**
@@ -114,13 +116,13 @@ class TrendyolAdapter extends Adapter implements
 
         foreach ($otherShops as $otherShop) {
 
-            $productUrl = 'https://www.trendyol.com'.$otherShop->url;
+            $productUrl = 'https://www.trendyol.com' . $otherShop->url;
 
             $realPrice = getAmount($otherShop->price->originalPrice->value);
             $sellingPrice = getAmount($otherShop->price->sellingPrice->value);
             $price = getAmount($otherShop->price->discountedPrice->value);
-            $sellerShopUrl = 'https://www.trendyol.com/sr?mid='.$otherShop->merchant->id;
-            $sellerId= $otherShop->merchant->id;
+            $sellerShopUrl = 'https://www.trendyol.com/sr?mid=' . $otherShop->merchant->id;
+            $sellerId = $otherShop->merchant->id;
             $sellerName = $otherShop->merchant->name;
 
             $competingVendor = new ScrapedProduct(

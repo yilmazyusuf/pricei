@@ -45,7 +45,6 @@ class ScrapeProductsCommand extends Command
 
         /* @var $product Products */
         foreach ($products as $product) {
-
             try {
 
                 $adapter = AdapterFactory::getAdapterInstance($product->platform->name, $product->url);

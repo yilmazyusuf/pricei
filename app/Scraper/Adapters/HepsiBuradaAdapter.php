@@ -40,10 +40,10 @@ class HepsiBuradaAdapter extends Adapter implements
 
     private function readJsonPattern()
     {
-        preg_match('/{"product":(.*)}/', $this->htmlContent, $matches);
+        preg_match('/{"product":(.*?)};/', $this->htmlContent, $matches);
         $cleanTags = strip_tags($matches[0]);
+        $cleanTags = rtrim($cleanTags, ';');
         $decodedJson = json_decode($cleanTags);
-
         $this->json = $decodedJson;
 
     }
