@@ -23,8 +23,7 @@ class ProductsRepository extends Products
         ScrapedProduct $product,
         ?array         $params,
         string         $trackedDate
-    ): Builder|Model
-    {
+    ): Builder|Model {
         $productData = [
             'user_id' => 1, //@todo user_id
             'platform_id' => $platform->id,

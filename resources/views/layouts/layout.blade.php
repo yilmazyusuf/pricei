@@ -116,6 +116,9 @@
         .btn-group-xs>.btn, .btn-xs{
             padding: .4rem .4rem .25rem .4rem !important;
         }
+        .toggle.btn-xs{
+            min-width: 4.5rem !important;
+        }
     </style>
 </head>
 

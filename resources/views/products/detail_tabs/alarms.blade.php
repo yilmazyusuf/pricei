@@ -1,140 +1,83 @@
 <style>
-    .w-10{
+    .w-10 {
         width: 10% !important;
     }
 </style>
 <div class="tab-pane fade" id="contactIcon" role="tabpanel" aria-labelledby="contact-icon-tab">
 
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th colspan="3">Alarm</th>
-            <th>Tekrarlansın</th>
-            <th>Durumu</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td colspan="3">Fiyat <strong>artışı</strong> olduğunda bildir</td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Evet" data-off="Hayır" type="checkbox">
-            </td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Aktif" data-off="Pasif" type="checkbox">
-            </td>
+    <div class="row">
+        <div class="col-md-6 mb-16">
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Tüm fiyat değişimlerini bildir.
+                    <input type="checkbox"  checked data-size="xs" data-toggle="toggle" data-on="AÇIK" data-off="KAPALI"
+                                  data-onstyle="success" data-offstyle="danger">
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">Fiyat artışı olduğunda
+                    bildir.<input type="checkbox" data-size="xs" data-toggle="toggle" data-on="AÇIK" data-off="KAPALI"
+                                  data-onstyle="success" data-offstyle="danger"></li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">Fiyat düşüşü olduğunda
+                    bildir.<input type="checkbox" data-size="xs" data-toggle="toggle" data-on="AÇIK" data-off="KAPALI"
+                                  data-onstyle="success" data-offstyle="danger"></li>
 
-        </tr>
-        <tr>
-            <td colspan="3">Fiyat <strong>düşüşü</strong> olduğunda bildir</td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Evet" data-off="Hayır" type="checkbox">
-            </td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Aktif" data-off="Pasif" type="checkbox">
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3">Tüm fiyat değişimlerini bildir</td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Evet" data-off="Hayır" type="checkbox">
-            </td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Aktif" data-off="Pasif" type="checkbox">
-            </td>
-        </tr>
-        <tr>
-            <td>Ürünün fiyatı</td>
-            <td><input type="text" class="form-control"></td>
-            <td>TL yi geçince bildir</td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Evet" data-off="Hayır" type="checkbox">
-            </td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Aktif" data-off="Pasif" type="checkbox">
-            </td>
-        </tr>
-        <tr>
-            <td>Ürünün fiyatı</td>
-            <td><input type="text" class="form-control"></td>
-            <td>TL nin altına düşerse bildir</td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Evet" data-off="Hayır" type="checkbox">
-            </td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Aktif" data-off="Pasif" type="checkbox">
-            </td>
-        </tr>
-        <tr>
-            <td>Ürünün fiyatı % </td>
-            <td><input type="text" class="form-control"></td>
-            <td>oranından fazla artarsa bildir</td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Evet" data-off="Hayır" type="checkbox">
-            </td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Aktif" data-off="Pasif" type="checkbox">
-            </td>
-        </tr>
-        <tr>
-            <td>Ürünün fiyatı  %</td>
-            <td><input type="text" class="form-control"></td>
-            <td>oranından fazla düşerse bildir</td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Evet" data-off="Hayır" type="checkbox">
-            </td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Aktif" data-off="Pasif" type="checkbox">
-            </td>
-        </tr>
-
-        <tr>
-            <td>Ortalama Mağaza Fiyatları</td>
-            <td><input type="text" class="form-control"></td>
-            <td>TL yi geçince bildir</td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Evet" data-off="Hayır" type="checkbox">
-            </td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Aktif" data-off="Pasif" type="checkbox">
-            </td>
-        </tr>
-        <tr>
-            <td>Ortalama Mağaza Fiyatları</td>
-            <td><input type="text" class="form-control"></td>
-            <td>TL nin altına düşerse bildir</td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Evet" data-off="Hayır" type="checkbox">
-            </td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Aktif" data-off="Pasif" type="checkbox">
-            </td>
-        </tr>
-
-        <tr>
-            <td>Ortalama Mağaza Fiyatları %</td>
-            <td><input type="text" class="form-control"></td>
-            <td>oranından fazla artarsa bildir</td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Evet" data-off="Hayır" type="checkbox">
-            </td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Aktif" data-off="Pasif" type="checkbox">
-            </td>
-        </tr>
-        <tr>
-            <td>Ortalama Mağaza Fiyatları % </td>
-            <td><input type="text" class="form-control"></td>
-            <td>oranından fazla düşerse bildir</td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Evet" data-off="Hayır" type="checkbox">
-            </td>
-            <td>
-                <input data-onstyle="success" class="switch-size" data-size="xs" data-on="Aktif" data-off="Pasif" type="checkbox">
-            </td>
-        </tr>
-
-        </tbody>
-    </table>
-
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Ürünün Fiyatı
+                    <input type="text" style="width: 100px" class="form-control text-center" placeholder="75">
+                    TL yi geçince bildir
+                    <input type="checkbox" data-size="xs" data-toggle="toggle" data-on="AÇIK" data-off="KAPALI"
+                           data-onstyle="success" data-offstyle="danger">
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Ürünün Fiyatı
+                    <input type="text" style="width: 100px" class="form-control text-center" placeholder="75">
+                    TL nin altına düşerse bildir.
+                    <input type="checkbox" data-size="xs" data-toggle="toggle" data-on="AÇIK" data-off="KAPALI"
+                           data-onstyle="success" data-offstyle="danger">
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Ürünün Fiyatı %
+                    <input type="text" style="width: 100px" class="form-control text-center" placeholder="75">
+                    oranından fazla artarsa bildir
+                    <input type="checkbox" data-size="xs" data-toggle="toggle" data-on="AÇIK" data-off="KAPALI"
+                           data-onstyle="success" data-offstyle="danger">
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Ürünün Fiyatı %
+                    <input type="text" style="width: 100px" class="form-control text-center" placeholder="75">
+                    oranından fazla düşerse bildir.
+                    <input type="checkbox" data-size="xs" data-toggle="toggle" data-on="AÇIK" data-off="KAPALI"
+                           data-onstyle="success" data-offstyle="danger">
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Ortalama Mağaza Fiyatı
+                    <input type="text" style="width: 100px" class="form-control text-center" placeholder="75">
+                    TL yi geçince bildir
+                    <input type="checkbox" data-size="xs" data-toggle="toggle" data-on="AÇIK" data-off="KAPALI"
+                           data-onstyle="success" data-offstyle="danger">
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Ortalama Mağaza Fiyatı
+                    <input type="text" style="width: 100px" class="form-control text-center" placeholder="75">
+                    TL nin altına düşerse bildir
+                    <input type="checkbox" data-size="xs" data-toggle="toggle" data-on="AÇIK" data-off="KAPALI"
+                           data-onstyle="success" data-offstyle="danger">
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Ortalama Mağaza Fiyatı %
+                    <input type="text" style="width: 100px" class="form-control text-center" placeholder="75">
+                    oranından fazla artarsa bildir
+                    <input type="checkbox" data-size="xs" data-toggle="toggle" data-on="AÇIK" data-off="KAPALI"
+                           data-onstyle="success" data-offstyle="danger">
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Ortalama Mağaza Fiyatı %
+                    <input type="text" style="width: 100px" class="form-control text-center" placeholder="75">
+                    oranından fazla düşerse bildir
+                    <input type="checkbox" data-size="xs" data-toggle="toggle" data-on="AÇIK" data-off="KAPALI"
+                           data-onstyle="success" data-offstyle="danger">
+                </li>
+            </ul>
+        </div>
+    </div>
 
 </div>

@@ -59,6 +59,12 @@
                         <i class="nav-icon i-Clock mr-1"></i> Alarmlar
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="contact-icon-tab" data-toggle="tab" href="#contactIcon" role="tab"
+                       aria-controls="contactIcon" aria-selected="false">
+                        <i class="nav-icon i-Clock mr-1"></i> Bildirimler
+                    </a>
+                </li>
             </ul>
             <div class="tab-content" id="myIconTabContent">
                 @include('products.detail_tabs.product_summary')

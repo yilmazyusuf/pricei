@@ -144,7 +144,6 @@ class ProductController extends ResourceController
             })
             ->get();
 
-
         return view('products.detail')->with(
             [
                 'product' => $product,
