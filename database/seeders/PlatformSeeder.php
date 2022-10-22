@@ -35,6 +35,12 @@ class PlatformSeeder extends Seeder
                     'domains' => 'n11.com,urun.n11.com',
                     'logo_url' => '/storage/images/platforms/n11.png',
                 ],
+                [
+                    'name' => 'AMAZON',
+                    'url' => 'https://www.amazon.com.tr',
+                    'domains' => 'amazon.com.tr',
+                    'logo_url' => '/storage/images/platforms/Amazon.com_.tr_Logo.jpg',
+                ],
             ]
         );
     }
