@@ -23,9 +23,10 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cache;
+use JetBrains\PhpStorm\ArrayShape;
 use Psr\Container\NotFoundExceptionInterface;
 
-class ProductController extends ResourceController
+class ProductController extends ResourceController implements iResourceCreateHasViewData
 {
     protected string $indexDataTable = ProductsDataTable::class;
     protected string $storeRequest = StoreProductCategoriesRequest::class;
@@ -52,7 +53,8 @@ class ProductController extends ResourceController
         $platform = PlatformsRepository::platformByHost($host);
 
         if (is_null($platform)) {
-            return;
+            return $ajax->runJavascript("toasterError('Ürün linki desteklenen platformlara ait değil.');")
+                ->jsonResponse();
         }
 
         try {
@@ -80,6 +82,15 @@ class ProductController extends ResourceController
         return $ajax->runJavascript("$('#product_scraped_preview_modal').modal('show')")
             ->redrawSection('modal_section')
             ->view($modal, $viewData);
+    }
+
+
+    #[ArrayShape(['platforms' => "\Illuminate\Database\Eloquent\Collection"])]
+    public function viewDataCreate(): array
+    {
+        return [
+            'platforms' => PlatformsRepository::get()
+        ];
     }
 
     protected function showDetail(int $id)

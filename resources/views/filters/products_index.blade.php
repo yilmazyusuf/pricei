@@ -18,7 +18,7 @@
             <option value="">Fiyat Takip
             <option value=1>Aktif
             <option value=0>Pasif
-            <option value=>Hepsi
+            <option value=>Tümü
         </select>
     </div>
     <div class="col-md-2 pl-0 mb-2">

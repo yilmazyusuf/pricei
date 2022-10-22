@@ -2,9 +2,7 @@
 @section('meta.title', 'Ürünler ›› Yeni Ürün')
 
 @push('scripts')
-    <script>
-              $('#exampleModalCenter').modal('show');
-    </script>
+
 @endpush
 
 @section('content')
@@ -16,6 +14,29 @@
     </div>
 
     <div class="separator-breadcrumb border-top"></div>
+    <div class="row mb-4">
+        <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title text-center">Desteklenen Platformlar</h3>
+                <div class="row align-items-center justify-content-center">
+                    @foreach($platforms as $platform)
+                        @php /* @var $platform \App\Models\Platforms */ @endphp
+
+                        <div class="col-md-2">
+                            <img class="" src="{{$platform->logo_url}}" alt="">
+                        </div>
+
+                    @endforeach
+                </div>
+
+            </div>
+
+            </div>
+
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-12 col-md-6 col-sm-6">
             <form class="ajax" action="{{route('products.scrape')}}" method="post">
@@ -38,8 +59,6 @@
 
             </div>
             </form>
-
-
         </div>
 
     </div>

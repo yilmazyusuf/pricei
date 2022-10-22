@@ -1,0 +1,116 @@
+<?php
+
+namespace App\Scraper\Adapters;
+
+use App\Scraper\Adapter;
+use App\Scraper\Adapters\Contracts\HasCompetingVendors;
+use App\Scraper\Adapters\Contracts\HasSellerLink;
+use App\Scraper\Adapters\Contracts\HasSellerName;
+use App\Scraper\Dto\ScrapedProduct;
+use Spatie\DataTransferObject\Exceptions\UnknownProperties;
+use voku\helper\HtmlDomParser;
+
+class AmazonAdapter extends Adapter implements
+    HasSellerName,
+    HasSellerLink,
+    HasCompetingVendors
+{
+    private string $id;
+
+    public function scrape()
+    {
+        $re = '/\/dp\/([^\/]*)\//m';
+        preg_match_all($re, $this->url, $matches, PREG_SET_ORDER, 0);
+        $this->id = $matches[0][1];
+        $modalUrl = 'https://www.amazon.com.tr/gp/product/ajax/ref=auto_load_aod?asin=' . $this->getId() . '&pc=dp&experienceId=aodAjaxMain';
+        $this->html = HtmlDomParser::file_get_html($modalUrl);
+        $this->htmlContent = $this->html->html();
+    }
+
+    public function getName(): string
+    {
+        return $this->html->findOne('h5#aod-asin-title-text')->innerText();
+    }
+
+    public function getImageUrl(): string
+    {
+        return $this->html->findOne('img#aod-asin-image-id')->getAttribute('src');
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getPrice(): string
+    {
+        $price = $this->html->findOne('div#aod-pinned-offer')->findOne('span.a-offscreen')->innerText();
+        if ($price == '') {
+            $price = $this->html->findOne('div#aod-offer')->findOne('span.a-offscreen')->innerText();
+        }
+        return $price;
+    }
+
+    public function getCurrency(): string
+    {
+        return 'TRY';
+    }
+
+
+    public function getSellerName(): string
+    {
+        $soldBy = $this->html->findOne('div#aod-offer-soldBy');
+        $hasSellerLink = $soldBy->findOneOrFalse('a');
+        if ($hasSellerLink) {
+            $sellerName = $hasSellerLink->innerText();
+        } else {
+            $sellerName = $soldBy->find('span')[1]->innerText();
+        }
+
+        return $sellerName;
+    }
+
+    public function getSellerLink(): string
+    {
+        return $this->html->findOne('div#aod-offer-soldBy')->findOne('a')->getAttribute('href');
+    }
+
+    /**
+     * @throws UnknownProperties
+     */
+    public function getCompetingVendors(): array
+    {
+        $vendors = [];
+        $otherShops = $this->html->findOne('div#aod-offer-list')->find('div#aod-offer');
+
+
+        //Fiyatı olmayan ana ürün kabul ediliyor, fiyat yok ise birinciyi ekleme
+        foreach ($otherShops as $otherShop) {
+            $price = getAmount($otherShop->findOne('span.a-offscreen'));
+
+            $sellerShopUrl = $otherShop->findOne('div#aod-offer-soldBy')->findOne('a')->getAttribute('href');
+            $soldBy = $otherShop->findOne('div#aod-offer-soldBy');
+            $hasSellerLink = $soldBy->findOneOrFalse('a');
+            if ($hasSellerLink) {
+                $sellerName = $hasSellerLink->innerText();
+            } else {
+                $sellerName = $soldBy->find('span')[1]->innerText();
+            }
+
+            $competingVendor = new ScrapedProduct(
+                url: null,
+                currency: 'TRY',
+                price: [
+                    'price' => getAmount($price),
+                ],
+                seller: [
+                    'name' => $sellerName,
+                    'link' => $sellerShopUrl,
+                ],
+            );
+
+            $vendors[] = $competingVendor;
+        }
+        return $vendors;
+    }
+}

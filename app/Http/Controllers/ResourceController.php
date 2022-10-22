@@ -36,7 +36,11 @@ abstract class ResourceController extends Controller
      */
     public function create(): View
     {
-        return view($this->resourceName . '.create');
+        $viewData = [];
+        if ($this instanceof iResourceCreateHasViewData) {
+            $viewData = $this->viewDataCreate();
+        }
+        return view($this->resourceName . '.create', $viewData);
     }
 
     /**
@@ -111,7 +115,7 @@ abstract class ResourceController extends Controller
         $model = App::make($this->model);
         $row = $model::query()->find($id);
         //@todo user_id
-        if($row->user_id && $row->user_id !== 1){
+        if ($row->user_id && $row->user_id !== 1) {
             abort(404);
         }
         if (!$row) {
