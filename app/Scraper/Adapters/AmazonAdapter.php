@@ -9,6 +9,7 @@ use App\Scraper\Adapters\Contracts\HasSellerName;
 use App\Scraper\Dto\ScrapedProduct;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 use voku\helper\HtmlDomParser;
+use voku\helper\SimpleHtmlDom;
 
 class AmazonAdapter extends Adapter implements
     HasSellerName,
@@ -16,15 +17,20 @@ class AmazonAdapter extends Adapter implements
     HasCompetingVendors
 {
     private string $id;
+    private bool|SimpleHtmlDom $pinnedHasPrice;
 
     public function scrape()
     {
-        $re = '/\/dp\/([^\/]*)\//m';
+        $re = '/\/dp\/([^\/]*)[\/|?]/m';
         preg_match_all($re, $this->url, $matches, PREG_SET_ORDER, 0);
+
         $this->id = $matches[0][1];
         $modalUrl = 'https://www.amazon.com.tr/gp/product/ajax/ref=auto_load_aod?asin=' . $this->getId() . '&pc=dp&experienceId=aodAjaxMain';
         $this->html = HtmlDomParser::file_get_html($modalUrl);
         $this->htmlContent = $this->html->html();
+
+        $this->pinnedHasPrice = $this->pinnedHasPrice();
+
     }
 
     public function getName(): string
@@ -42,13 +48,18 @@ class AmazonAdapter extends Adapter implements
         return $this->id;
     }
 
+    private function pinnedHasPrice(): bool|SimpleHtmlDom
+    {
+
+        return $this->html->findOne('div#aod-pinned-offer')->findOneOrFalse('span.a-offscreen');
+    }
+
     public function getPrice(): string
     {
-        $price = $this->html->findOne('div#aod-pinned-offer')->findOne('span.a-offscreen')->innerText();
-        if ($price == '') {
-            $price = $this->html->findOne('div#aod-offer')->findOne('span.a-offscreen')->innerText();
+        if ($this->pinnedHasPrice === false) {
+            return $this->html->findOne('div#aod-offer')->findOne('span.a-offscreen')->innerText();
         }
-        return $price;
+        return $this->pinnedHasPrice->innerText();
     }
 
     public function getCurrency(): string
@@ -82,10 +93,14 @@ class AmazonAdapter extends Adapter implements
     {
         $vendors = [];
         $otherShops = $this->html->findOne('div#aod-offer-list')->find('div#aod-offer');
-
-
         //Fiyatı olmayan ana ürün kabul ediliyor, fiyat yok ise birinciyi ekleme
+
+
+
         foreach ($otherShops as $otherShop) {
+            if ($this->pinnedHasPrice === false && count($vendors) == 0) {
+                continue;
+            }
             $price = getAmount($otherShop->findOne('span.a-offscreen'));
 
             $sellerShopUrl = $otherShop->findOne('div#aod-offer-soldBy')->findOne('a')->getAttribute('href');
