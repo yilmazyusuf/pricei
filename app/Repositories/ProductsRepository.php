@@ -69,7 +69,7 @@ class ProductsRepository extends Products
             ->latest('trackedDate')
             ->first();
         if ($lastProductHistory) {
-            if ($lastProductHistory->price != $productData['price']) {
+            if ($lastProductHistory->price != $productData['price'] && $lastProductHistory->price > 0) {
                 $productPriceData['pricePreviousDiff'] = ($productData['price'] - $lastProductHistory->price);
                 $productPriceData['pricePreviousPercentDiff'] = priceDiffPercent($lastProductHistory->price, $productData['price']);
             }
@@ -148,13 +148,16 @@ class ProductsRepository extends Products
         return $savedProduct;
     }
 
+    /**
+     * @return Collection|static[]
+     */
     public static function getForScrapeJob(): Collection|array
     {
         //@todo platform job için aktif ise kuralını ekle
         return Products::query()
             ->with('platform')
-            ->where('isJobActive', 1)
-            ->where('isJobLocked', 0)
+            ->where('isJobActive', true)
+            ->where('isJobLocked', false)
             ->where('jobTries', '<=', 3)
             ->where('nextJobDate', '<=', now())
             ->take(10)

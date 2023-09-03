@@ -39,17 +39,18 @@ class ScrapeProductsCommand extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $products = ProductsRepository::getForScrapeJob();
 
         /* @var $product Products */
         foreach ($products as $product) {
             try {
-
                 $adapter = AdapterFactory::getAdapterInstance($product->platform->name, $product->url);
                 $scraper = new Scraper($adapter);
+
                 $scrapedProduct = $scraper->scrape()->buildProductDto();
+
                 $nextJobDate = now()->addHours(12);
                 $productParams['lasJobStatus'] = true;
                 $productParams['lastJobDate'] = now();

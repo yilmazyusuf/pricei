@@ -258,7 +258,8 @@ class ProductController extends ResourceController implements iResourceCreateHas
         Alert::success('Ürünün fiyatını takip etmeye başladınız.');
         return $ajax->redirect(route('products.index'));
     }
-
+    //@TODO  ürünün fiyatı okunamıyorsa ekleme
+    //@TODO mağazalar interface i yoksa ürün detayda mağazaları gösterme
     private function cacheScrapedProduct(string $url, Platforms $platform): ScrapedProduct
     {
         //12 hour cache (43200)

@@ -41,6 +41,12 @@ class PlatformSeeder extends Seeder
                     'domains' => 'amazon.com.tr',
                     'logo_url' => '/storage/images/platforms/Amazon.com_.tr_Logo.jpg',
                 ],
+                [
+                    'name' => 'A101',
+                    'url' => 'https://www.a101.com.tr/',
+                    'domains' => 'a101.com.tr',
+                    'logo_url' => '/storage/images/platforms/Amazon.com_.tr_Logo.jpg',
+                ],
             ]
         );
     }
