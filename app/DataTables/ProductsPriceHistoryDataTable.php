@@ -22,7 +22,7 @@ class ProductsPriceHistoryDataTable extends DataTable
     {
     }
 
-    protected $dataTableVariable = 'priceHistoryDataTable';
+    protected string $dataTableVariable = 'priceHistoryDataTable';
     /**
      * Build DataTable class.
      *

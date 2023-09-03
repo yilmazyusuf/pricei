@@ -8,7 +8,7 @@
             document.getElementById('button-image').addEventListener('click', (event) => {
                 event.preventDefault();
 
-                window.open('/file-manager/fm-button?leftDisk=platform_images&rightDisk=platform_images', 'fm', 'width=966,height=600');
+                window.open('/file-manager/fm-button?leftDisk=platform_images&rightDisk=platform_images', 'fm', 'width=966,height=500');
             });
         });
 

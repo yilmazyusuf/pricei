@@ -6,6 +6,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "alexusmai/laravel-file-manager": "^3.0",
+        "barryvdh/laravel-snappy": "^1.0",
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^2.7",
         "laravel/framework": "^10.10",
@@ -13,6 +15,7 @@
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.2",
         "league/fractal": "^0.20.1",
+        "maatwebsite/excel": "^3.1",
         "rennokki/laravel-eloquent-query-cache": "^3.4",
         "spatie/data-transfer-object": "^3.9",
         "voku/simple_html_dom": "^4.8",
