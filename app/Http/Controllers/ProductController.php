@@ -25,6 +25,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cache;
 use JetBrains\PhpStorm\ArrayShape;
 use Psr\Container\NotFoundExceptionInterface;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends ResourceController implements iResourceCreateHasViewData
 {
@@ -60,7 +61,8 @@ class ProductController extends ResourceController implements iResourceCreateHas
         try {
             $product = $this->cacheScrapedProduct($url, $platform);
         } catch (\Exception $exception) {
-            //@todo log exception
+            Log::critical($exception->getMessage());
+            Log::critical($exception->getTraceAsString());
             return $ajax->runJavascript("toasterError('Ürün bilgileri okunamadı.');")
                 ->jsonResponse();
         }

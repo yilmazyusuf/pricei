@@ -27,9 +27,9 @@ class N11Adapter extends Adapter implements
 
     private function readJsonPattern()
     {
-        preg_match('/dataLayer.push\({"pBrand"(.*)}\)/', $this->htmlContent, $matches, PREG_OFFSET_CAPTURE);
-        $jsonString = '{"pBrand"' . $matches[1][0] . '}';
-        $decodedJson = json_decode($jsonString);
+        //preg_match('/dataLayer.push\({"pBrand"(.*)}\)/', $this->htmlContent, $matches, PREG_OFFSET_CAPTURE);
+        preg_match('/var obj = (.*);/', $this->htmlContent, $matches, PREG_OFFSET_CAPTURE);
+        $decodedJson = json_decode($matches[1][0]);
         $this->json = $decodedJson;
     }
 
