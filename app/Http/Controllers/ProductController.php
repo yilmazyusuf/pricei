@@ -262,6 +262,11 @@ class ProductController extends ResourceController implements iResourceCreateHas
     //@TODO mağazalar interface i yoksa ürün detayda mağazaları gösterme
     private function cacheScrapedProduct(string $url, Platforms $platform): ScrapedProduct
     {
+
+        $adapter = AdapterFactory::getAdapterInstance($platform->name, $url);
+        $scraper = new Scraper($adapter);
+        return $scraper->scrape()->buildProductDto();
+
         //12 hour cache (43200)
         $decoded = md5($url);
         return Cache::remember('scraped_' . $decoded, 43200, function () use ($url, $platform) {

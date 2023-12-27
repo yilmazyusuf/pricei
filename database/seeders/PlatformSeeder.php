@@ -47,6 +47,12 @@ class PlatformSeeder extends Seeder
                     'domains' => 'a101.com.tr',
                     'logo_url' => '/storage/images/platforms/Amazon.com_.tr_Logo.jpg',
                 ],
+                [
+                    'name' => 'BİM',
+                    'url' => 'https://www.bim.com.tr/',
+                    'domains' => 'bim.com.tr',
+                    'logo_url' => '/storage/images/platforms/Bim_(company)-Logo.wine.png',
+                ],
             ]
         );
     }
