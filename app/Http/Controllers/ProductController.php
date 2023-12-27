@@ -41,6 +41,7 @@ class ProductController extends ResourceController implements iResourceCreateHas
     //@todo magazların toplam fiyat ortalaması
     //@todo mağazalardaki en düşük ve en yüksek fiyatın gösterimi
     //@todo ürün listesi filitreler (Fiyatı artan azalan ürünler, bugün,dün,buhafta bu ay,son 20 gün)
+    //@todo notification_sent tablosu
     /**
      * @param ScrapeProductRequest $request
      * @param Ajax $ajax
