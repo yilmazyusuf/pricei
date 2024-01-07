@@ -6,10 +6,14 @@ use App\Models\Notifications;
 use App\Models\Platforms;
 use App\Models\PriceHistories;
 use App\Models\Products;
+use App\Notifications\PriceChanged;
 use App\Scraper\Dto\ScrapedProduct;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 
 class ProductsRepository extends Products
 {
@@ -89,7 +93,11 @@ class ProductsRepository extends Products
             $productPriceData
         );
         if($priceChanged === true){
-            $priceHistory->notifications()->save(new Notifications());
+            $notification = $priceHistory->notifications()->save(new Notifications());
+            $n = $notification->notify(new PriceChanged($notification));
+            dd($n);
+
+
         }
 
         /* @var $vendor ScrapedProduct */

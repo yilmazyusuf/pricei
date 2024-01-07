@@ -1,1 +1,1 @@
-{"version":1,"defects":[],"times":{"Tests\\Unit\\PriceChangeTest::test_price_history_changed_price_increase":0.204}}
+{"version":1,"defects":{"Tests\\Unit\\PriceChangeTest::test_price_history_changed_price_increase":8},"times":{"Tests\\Unit\\PriceChangeTest::test_price_history_changed_price_increase":0.143}}
