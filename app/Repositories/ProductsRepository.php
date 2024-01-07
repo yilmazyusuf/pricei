@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Models\Notifications;
 use App\Models\Platforms;
+use App\Models\PriceHistories;
 use App\Models\Products;
 use App\Scraper\Dto\ScrapedProduct;
 use Illuminate\Database\Eloquent\Builder;
@@ -68,20 +70,27 @@ class ProductsRepository extends Products
         $lastProductHistory = $savedProduct->priceHistory()
             ->latest('trackedDate')
             ->first();
+        $priceChanged = false;
         if ($lastProductHistory) {
             if ($lastProductHistory->price != $productData['price'] && $lastProductHistory->price > 0) {
                 $productPriceData['pricePreviousDiff'] = ($productData['price'] - $lastProductHistory->price);
                 $productPriceData['pricePreviousPercentDiff'] = priceDiffPercent($lastProductHistory->price, $productData['price']);
+                $priceChanged = true;
             }
         }
-
-        $savedProduct->priceHistory()->updateOrCreate(
+        /**
+         * @var $priceHistory PriceHistories
+         */
+        $priceHistory = $savedProduct->priceHistory()->updateOrCreate(
             [
                 'products_id' => $savedProduct->id,
                 'trackedDate' => $trackedDate,
             ],
             $productPriceData
         );
+        if($priceChanged === true){
+            $priceHistory->notifications()->save(new Notifications());
+        }
 
         /* @var $vendor ScrapedProduct */
         //@todo silinmiş satıcıları bulup işaretle

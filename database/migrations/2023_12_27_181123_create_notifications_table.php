@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->integer('price_history_id');
-            $table->boolean('read');
+            $table->integer('price_histories_id');
+            $table->boolean('read')->default(false);
             $table->timestamps();
         });
     }

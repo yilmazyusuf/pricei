@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -44,6 +45,11 @@ class PriceHistories extends Model
     public function product()
     {
         return $this->belongsTo(Products::class, 'products_id');
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notifications::class);
     }
 
 
