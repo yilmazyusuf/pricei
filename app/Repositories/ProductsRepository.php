@@ -92,10 +92,10 @@ class ProductsRepository extends Products
             ],
             $productPriceData
         );
-        if($priceChanged === true){
+        if($priceChanged === true) {
             $notification = $priceHistory->notifications()->save(new Notifications());
-            $n = $notification->notify(new PriceChanged($notification));
-            dd($n);
+            $notification->notify(new PriceChanged($notification));
+
 
 
         }

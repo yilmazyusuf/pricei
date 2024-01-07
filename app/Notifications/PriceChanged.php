@@ -5,9 +5,12 @@ namespace App\Notifications;
 use App\Models\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class PriceChanged extends Notification implements ShouldQueue
 {
@@ -34,12 +37,10 @@ class PriceChanged extends Notification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
+    public function toMail(object $notifiable): Mailable
     {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+        return (new \App\Mail\PriceChanged())
+            ->to($notifiable->priceHistory->product->user);
     }
 
     /**

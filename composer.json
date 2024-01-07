@@ -16,6 +16,7 @@
         "laravel/ui": "^4.2",
         "league/fractal": "^0.20.1",
         "maatwebsite/excel": "^3.1",
+        "mailersend/laravel-driver": "^2.3",
         "rennokki/laravel-eloquent-query-cache": "^3.4",
         "spatie/data-transfer-object": "^3.9",
         "symfony/http-client": "^6.4",

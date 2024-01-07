@@ -61,6 +61,11 @@ class Products extends Model
         return $this->belongsTo(Platforms::class);
     }
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function vendors(): HasMany
     {
         return $this->hasMany(ProductVendors::class);
